@@ -1,9 +1,9 @@
 {
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/release-23.11";
-    home-manager.url = "github:nix-community/home-manager";
+    nixos-hardware.url = "github:NixOs/nixos-hardware/master";
   };
-  outputs = { self, nixpkgs, ... }@attrs:
+  outputs = { self, nixpkgs, nixos-hardware }:
   let
     system = "x86_64-linux";
     pkgs = import  nixpkgs {
@@ -16,6 +16,8 @@
       modules = [
         ./laptop/configuration.nix
 	self.nixosModule.hyprland
+	# https://github.com/NixOS/nixos-hardware/tree/master/dell/xps/15-9520
+	nixos-hardware.nixosModules.dell-xps-15-9520
       ];
     };
     nixosModule =
