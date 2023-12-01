@@ -11,11 +11,11 @@
       config.allowUnfree = true;
     };
   in {
-    nixosConfigurations.albinvass-dellxps = nixpkgs.lib.nixosSystem {
+    nixosConfigurations."dellxps" = nixpkgs.lib.nixosSystem {
       inherit system;
       modules = [
         ./laptop/configuration.nix
-	self.nixosModule.i3
+	self.nixosModule.hyprland
       ];
     };
     nixosModule =
