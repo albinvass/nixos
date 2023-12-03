@@ -85,9 +85,6 @@
     group = "avass";
     extraGroups = [ "networkmanager" "wheel" ];
     shell = pkgs.zsh;
-    packages = with pkgs; [
-      microsoft-edge
-    ];
   };
 
   nixpkgs.config.allowUnfree = true;

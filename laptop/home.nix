@@ -27,6 +27,8 @@
     go
     yarn
     bitwarden-cli
+    discord
+    microsoft-edge
   ];
 
   home.file = {
