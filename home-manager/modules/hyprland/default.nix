@@ -25,6 +25,7 @@
   };
 
   wayland.windowManager.hyprland.extraConfig = ''
+    exec-once=polkit-agent-helper-1
     exec-once=waybar
     input {
       kb_layout = se
@@ -41,6 +42,15 @@
 
       sensitivity = 0 # -1.0 - 1.0, 0 means no modification.
 
+    }
+
+    general {
+      border_size = 1
+    }
+
+    decoration {
+      rounding = 6
+      col.active_border 0xff444444
     }
 
     $mainMod = SUPER
@@ -105,7 +115,7 @@
       workspace_swipe = true
       workspace_swipe_distance = 400
       workspace_swipe_min_speed_to_force = 50
-      workspace_swipe_cancel_ratio = 0.15
+      workspace_swipe_cancel_ratio = 0.10
       workspace_swipe_invert = false
     }
     plugin {
