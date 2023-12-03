@@ -43,6 +43,7 @@
           homeManagerModules.neovim
           homeManagerModules.zsh
           homeManagerModules.social-media
+          homeManagerModules.music
         ];
       };
     } // self.lib.importModules ./home-manager/modules;
