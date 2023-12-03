@@ -78,9 +78,11 @@
   services.xserver.libinput.enable = true;
 
   programs.zsh.enable = true;
+  users.groups.avass = {};
   users.users.avass = {
     isNormalUser = true;
     description = "Albin Vass";
+    group = "avass";
     extraGroups = [ "networkmanager" "wheel" ];
     shell = pkgs.zsh;
     packages = with pkgs; [
@@ -105,8 +107,4 @@
     vimAlias = true;
     viAlias = true;
   };
-
-  fonts.packages = with pkgs; [
-    (nerdfonts.override { fonts = [ "FiraCode" ]; })
-  ];
 }

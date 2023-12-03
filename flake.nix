@@ -2,27 +2,46 @@
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/release-23.11";
     nixos-hardware.url = "github:NixOs/nixos-hardware/master";
+    hyprland.url = "github:hyprwm/Hyprland";
+    home-manager = {
+      url = "github:nix-community/home-manager/release-23.11";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
-  outputs = { self, nixpkgs, nixos-hardware }:
+  outputs = { self, nixpkgs, nixos-hardware, home-manager, ... }@inputs:
   let
     system = "x86_64-linux";
-    pkgs = import  nixpkgs {
-      inherit system;
-      config.allowUnfree = true;
-    };
-  in {
+  in rec {
     nixosConfigurations."dellxps" = nixpkgs.lib.nixosSystem {
       inherit system;
       modules = [
         ./laptop/configuration.nix
-        self.nixosModule.hyprland
-        self.nixosModule.gaming
-        self.nixosModule.docker
+        nixosModule.hyprland
+        nixosModule.gaming
+        nixosModule.docker
         # https://github.com/NixOS/nixos-hardware/tree/master/dell/xps/15-9520
         nixos-hardware.nixosModules.dell-xps-15-9520
+        home-manager.nixosModules.home-manager
+        {
+          home-manager.useGlobalPkgs = true;
+          home-manager.useUserPackages = true;
+          home-manager.users.avass = homeManagerModules."avass@dellxps";
+        }
       ];
     };
     nixosModule = self.lib.importModules ./modules;
+    homeManagerModules = {
+      "avass@dellxps" = {
+        imports = [
+          ./laptop/home.nix
+          inputs.hyprland.homeManagerModules.default
+          {wayland.windowManager.hyprland.enable = true;}
+          homeManagerModules.hyprland
+          homeManagerModules.neovim
+          homeManagerModules.zsh
+        ];
+      };
+    } // self.lib.importModules ./home-manager/modules;
     lib = {
       importModules =
         let
