@@ -3,6 +3,10 @@
     nixpkgs.url = "github:NixOS/nixpkgs/release-23.11";
     nixos-hardware.url = "github:NixOs/nixos-hardware/master";
     hyprland.url = "github:hyprwm/Hyprland";
+    hyprgrass = {
+       url = "github:horriblename/hyprgrass";
+       inputs.hyprland.follows = "hyprland"; # IMPORTANT
+    };
     home-manager = {
       url = "github:nix-community/home-manager/release-23.11";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -26,6 +30,7 @@
           home-manager.useGlobalPkgs = true;
           home-manager.useUserPackages = true;
           home-manager.users.avass = homeManagerModules."avass@dellxps";
+          home-manager.extraSpecialArgs = with inputs; { inherit hyprland hyprgrass; };
         }
       ];
     };
@@ -34,8 +39,6 @@
       "avass@dellxps" = {
         imports = [
           ./laptop/home.nix
-          inputs.hyprland.homeManagerModules.default
-          {wayland.windowManager.hyprland.enable = true;}
           homeManagerModules.hyprland
           homeManagerModules.neovim
           homeManagerModules.zsh

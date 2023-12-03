@@ -1,29 +1,31 @@
-{ pkgs, ... }:
+{ pkgs, hyprland, hyprgrass, ... }:
 {
-  imports = [ ../konsole ];
+  imports = [
+    ../konsole
+    hyprland.homeManagerModules.default
+  ];
 
   programs.fuzzel.enable = true;
+  wayland.windowManager.hyprland = {
+    enable = true; 
+    plugins = [
+      hyprgrass.packages.${pkgs.system}.default
+    ];
+  };
 
   services.mako = {
     enable = true;
     defaultTimeout = 4000;
   };
 
-  programs.eww = {
+  programs.waybar = {
     enable = true;
-    package = pkgs.eww-wayland;
-    configDir =
-      let
-        eww-widgets = pkgs.fetchFromGitHub {
-          owner = "saimoomedits";
-          repo = "eww-widgets";
-          rev = "cfb2523a4e37ed2979e964998d9a4c37232b2975";
-          sha256 = "sha256-yPSUdLgkwJyAX0rMjBGOuUIDvUKGPcVA5CSaCNcq0e8=";
-        };
-      in "${eww-widgets}/eww/bar";
+    settings = {
+    };
   };
 
   wayland.windowManager.hyprland.extraConfig = ''
+    exec-once=waybar
     input {
       kb_layout = se
       kb_variant =
@@ -98,5 +100,29 @@
     # Move/resize windows with mainMod + LMB/RMB and dragging
     bindm = $mainMod, mouse:272, movewindow
     bindm = $mainMod, mouse:273, resizewindow
+
+    gestures {
+      workspace_swipe = true
+      workspace_swipe_distance = 400
+      workspace_swipe_min_speed_to_force = 50
+      workspace_swipe_cancel_ratio = 0.15
+      workspace_swipe_invert = false
+    }
+    plugin {
+      touch_gestures {
+        # The default sensitivity is probably too low on tablet screens,
+        # I recommend turning it up to 4.0
+        sensitivity = 4.0
+
+        # must be >= 3
+        workspace_swipe_fingers = 3
+
+        experimental {
+          # send proper cancel events to windows instead of hacky touch_up events,
+          # NOT recommended as it crashed a few times, once it's stabilized I'll make it the default
+          send_cancel = 0
+        }
+      }
+    }
   '';
 }
