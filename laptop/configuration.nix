@@ -85,7 +85,6 @@
     shell = pkgs.zsh;
     packages = with pkgs; [
       microsoft-edge
-      libsForQt5.konsole
     ];
   };
 
@@ -106,4 +105,8 @@
     vimAlias = true;
     viAlias = true;
   };
+
+  fonts.packages = with pkgs; [
+    (nerdfonts.override { fonts = [ "FiraCode" ]; })
+  ];
 }

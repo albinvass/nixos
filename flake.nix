@@ -15,10 +15,11 @@
       inherit system;
       modules = [
         ./laptop/configuration.nix
-	self.nixosModule.hyprland
-	self.nixosModule.steam
-	# https://github.com/NixOS/nixos-hardware/tree/master/dell/xps/15-9520
-	nixos-hardware.nixosModules.dell-xps-15-9520
+        self.nixosModule.hyprland
+        self.nixosModule.gaming
+        self.nixosModule.docker
+        # https://github.com/NixOS/nixos-hardware/tree/master/dell/xps/15-9520
+        nixos-hardware.nixosModules.dell-xps-15-9520
       ];
     };
     nixosModule = self.lib.importModules ./modules;
