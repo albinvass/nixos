@@ -29,6 +29,7 @@
     bitwarden-cli
     discord
     microsoft-edge
+    cloc
   ];
 
   home.file = {
