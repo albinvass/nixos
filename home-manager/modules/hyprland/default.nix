@@ -5,6 +5,14 @@
     hyprland.homeManagerModules.default
   ];
 
+  home.packages = with pkgs; [
+    xwaylandvideobridge
+    xdg-desktop-portal
+    libsForQt5.polkit-kde-agent
+    brillo
+    playerctl
+  ];
+
   programs.fuzzel.enable = true;
   wayland.windowManager.hyprland = {
     enable = true; 
@@ -110,6 +118,17 @@
     # Move/resize windows with mainMod + LMB/RMB and dragging
     bindm = $mainMod, mouse:272, movewindow
     bindm = $mainMod, mouse:273, resizewindow
+
+    # Brightness, Audio etc
+    bind=,XF86MonBrightnessDown, exec, brillo -q -U 5
+    bind=,XF86MonBrightnessUp, exec, brillo -q -A 5
+    bind=,XF86AudioRaiseVolume, exec, wpctl set-volume -l 1.4 @DEFAULT_AUDIO_SINK@ 5%+
+    bind=,XF86AudioLowerVolume, exec, wpctl set-volume -l 1.4 @DEFAULT_AUDIO_SINK@ 5%-
+    bind=,XF86AudioMute, exec, wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle
+    bind=,XF86AudioPlay, exec, playerctl play
+    bind=,XF86AudioPause, exec, playerctl pause
+    bind=,XF86AudioNext, exec, playerctl next
+    bind=,XF86AudioPrevious, exec, playerctl previous
 
     gestures {
       workspace_swipe = true

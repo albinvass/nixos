@@ -79,7 +79,11 @@
     isNormalUser = true;
     description = "Albin Vass";
     group = "avass";
-    extraGroups = [ "networkmanager" "wheel" ];
+    extraGroups = [
+      "networkmanager"
+      "wheel"
+      "video"
+    ];
     shell = pkgs.zsh;
   };
 
