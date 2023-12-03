@@ -39,6 +39,7 @@
           homeManagerModules.hyprland
           homeManagerModules.neovim
           homeManagerModules.zsh
+          homeManagerModules.social-media
         ];
       };
     } // self.lib.importModules ./home-manager/modules;
