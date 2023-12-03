@@ -2,4 +2,3 @@
 {
   programs.hyprland.enable = true;
 }
-
