@@ -125,10 +125,7 @@
     bind=,XF86AudioRaiseVolume, exec, wpctl set-volume -l 1.4 @DEFAULT_AUDIO_SINK@ 5%+
     bind=,XF86AudioLowerVolume, exec, wpctl set-volume -l 1.4 @DEFAULT_AUDIO_SINK@ 5%-
     bind=,XF86AudioMute, exec, wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle
-    bind=,XF86AudioPlay, exec, playerctl play
-    bind=,XF86AudioPause, exec, playerctl pause
-    bind=,XF86AudioNext, exec, playerctl next
-    bind=,XF86AudioPrevious, exec, playerctl previous
+    bind=,XF86AudioPlay, exec, playerctl play-pause
 
     gestures {
       workspace_swipe = true
