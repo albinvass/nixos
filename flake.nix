@@ -27,9 +27,9 @@
         let
           lib = nixpkgs.lib;
           filterDirectories = (files: lib.attrsets.filterAttrs (name: type: type == "directory") files);
-          getDirectories = d: builtins.attrNames (filterDirectories (builtins.readDir d));
+          getDirectories = d: map (n: "${builtins.toString d}/${n}") (builtins.attrNames (filterDirectories (builtins.readDir d)));
           createModule = name: {
-            ${name} = import ./modules/${name};
+            "${builtins.baseNameOf name}" = import name;
           };
           modules = d: map createModule (getDirectories d);
         in d: lib.attrsets.mergeAttrsList (modules d);
