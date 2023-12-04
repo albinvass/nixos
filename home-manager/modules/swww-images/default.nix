@@ -41,10 +41,10 @@ in
       Service =
       let
         script = pkgs.writeScriptBin "swww-images" /* bash */ ''
-          #!/bin/env bash
+          #!${pkgs.bash}/bin/bash
           DISPLAYS="$(${pkgs.swww}/bin/swww query)"
           # See https://superuser.com/a/284226
-          while IFS= read -r DISPLAY || [ -n $DISPLAY ] ; do
+          while IFS= read -r DISPLAY || [[ -n $DISPLAY ]] ; do
             echo "$DISPLAY"
             "${pkgs.swww}/bin/swww" img ${cfg.imageDirectory}/2160x1440/samurai-in-the-mountains.jpg
           done < <(printf '%s' "$DISPLAYS")
