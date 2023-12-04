@@ -2,6 +2,7 @@
 {
   imports = [
     ../konsole
+    ../swww-images
     hyprland.homeManagerModules.default
   ];
 
@@ -11,6 +12,7 @@
     libsForQt5.polkit-kde-agent
     brillo
     playerctl
+    swww
   ];
 
   programs.fuzzel.enable = true;
@@ -32,9 +34,14 @@
     };
   };
 
+  services.swww-images = {
+    enable = true;
+  };
+
   wayland.windowManager.hyprland.extraConfig = ''
     exec-once=polkit-agent-helper-1
     exec-once=waybar
+    exec-once=swww init
     input {
       kb_layout = se
       kb_variant =

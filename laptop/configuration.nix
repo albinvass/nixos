@@ -38,15 +38,6 @@
     LC_TIME = "sv_SE.UTF-8";
   };
 
-  # Enable the X11 windowing system.
-  services.xserver.enable = true;
-
-  # Configure keymap in X11
-  services.xserver = {
-    layout = "se";
-    xkbVariant = "";
-  };
-
   # Configure console keymap
   console.keyMap = "sv-latin1";
 
