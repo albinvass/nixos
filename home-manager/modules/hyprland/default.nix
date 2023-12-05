@@ -2,6 +2,7 @@
 {
   imports = [
     ../konsole
+    ../waybar
     ../swww-images
     hyprland.homeManagerModules.default
   ];
@@ -26,22 +27,6 @@
   services.mako = {
     enable = true;
     defaultTimeout = 4000;
-  };
-
-  programs.waybar = {
-    enable = true;
-    settings = {
-      mainBar = {
-        layer = "top";
-        position = "top";
-        height = 30;
-        modules-left = [ "hyprland/workspaces" "hyprland/window" ];
-        "hyprland/workspaces" = {
-          all-outputs = true;
-          disable-scroll = true;
-        };
-      };
-    };
   };
 
   #services.mpd.enable = true;
