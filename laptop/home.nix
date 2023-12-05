@@ -33,6 +33,11 @@
     microsoft-edge
     cloc
     lsof
+    cmake
+    llvmPackages.clangUseLLVM
+    coreutils
+    gnumake
+    nim
   ];
 
   home.file = {
