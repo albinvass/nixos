@@ -33,6 +33,7 @@ in
       };
       Timer = {
         OnBootSec = "0m";
+        OnStartupSec = "5s";
         OnUnitInactiveSec=cfg.refreshInterval;
         Unit = "swww-images.service";
       };
@@ -48,6 +49,9 @@ in
       let
         script = pkgs.writeScriptBin "swww-images" /* bash */ ''
           #!${pkgs.bash}/bin/bash
+
+          # Will fail until swww daemon is running
+          until ${pkgs.swww}/bin/swww query > /dev/null; do sleep 1; done
           DISPLAYS="$(${pkgs.swww}/bin/swww query)"
           # See https://superuser.com/a/284226
           while IFS= read -r DISPLAY || [[ -n $DISPLAY ]] ; do

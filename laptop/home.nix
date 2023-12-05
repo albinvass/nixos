@@ -32,6 +32,7 @@
     discord
     microsoft-edge
     cloc
+    lsof
   ];
 
   home.file = {
