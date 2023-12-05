@@ -12,6 +12,12 @@ in
           Whether to enable sww-images service.
         '';
       };
+      refreshInterval = mkOption {
+        default = "60m";
+        description = ''
+          How often to update wallpapers.
+        '';
+      };
       imageDirectory = mkOption {
         default = ../../wallpapers;
         description = ''
@@ -26,8 +32,8 @@ in
         Description = "Update wallpaper images.";
       };
       Timer = {
-        OnBootSec = "1m";
-        OnUnitInactiveSec="60m";
+        OnBootSec = "0m";
+        OnUnitInactiveSec=cfg.refreshInterval;
         Unit = "swww-images.service";
       };
       Install = {

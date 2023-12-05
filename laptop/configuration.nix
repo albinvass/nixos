@@ -74,6 +74,8 @@
       "networkmanager"
       "wheel"
       "video"
+      "input"
+      "docker"
     ];
     shell = pkgs.zsh;
   };

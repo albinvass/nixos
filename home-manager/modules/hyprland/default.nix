@@ -31,8 +31,20 @@
   programs.waybar = {
     enable = true;
     settings = {
+      mainBar = {
+        layer = "top";
+        position = "top";
+        height = 30;
+        modules-left = [ "hyprland/workspaces" "hyprland/window" ];
+        "hyprland/workspaces" = {
+          all-outputs = true;
+          disable-scroll = true;
+        };
+      };
     };
   };
+
+  #services.mpd.enable = true;
 
   services.swww-images = {
     enable = true;

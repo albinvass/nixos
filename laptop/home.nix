@@ -6,6 +6,8 @@
 
   fonts.fontconfig.enable = true;
 
+  xdg.userDirs.enable = true;
+
   home.username = "avass";
   home.homeDirectory = "/home/avass";
   home.stateVersion = "23.11";
