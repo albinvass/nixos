@@ -38,6 +38,8 @@
     coreutils
     gnumake
     nim
+    yq
+    jq
   ];
 
   home.file = {
