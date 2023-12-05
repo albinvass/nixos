@@ -55,8 +55,23 @@ in
           DISPLAYS="$(${pkgs.swww}/bin/swww query)"
           # See https://superuser.com/a/284226
           while IFS= read -r DISPLAY || [[ -n $DISPLAY ]] ; do
-            echo "$DISPLAY"
-            "${pkgs.swww}/bin/swww" img ${cfg.imageDirectory}/2160x1440/samurai-in-the-mountains.jpg
+            RESOLUTION=$(echo "$DISPLAY" \
+                       | "${pkgs.coreutils}/bin/cut" -d ',' -f 1 \
+                       | "${pkgs.coreutils}/bin/cut" -d ' ' -f 2)
+            OUTPUT=$(echo "$DISPLAY" \
+                   | "${pkgs.coreutils}/bin/cut" -d ',' -f 1 \
+                   | "${pkgs.coreutils}/bin/cut" -d ' ' -f 1 \
+                   | "${pkgs.coreutils}/bin/tr" -d ':')
+            if [ -d "${cfg.imageDirectory}/$RESOLUTION" ]; then
+              WALLPAPER=$("${pkgs.findutils}/bin/find" "${cfg.imageDirectory}/$RESOLUTION" -mindepth 1 -maxdepth 1 \
+                        | "${pkgs.coreutils}/bin/sort" -R \
+                        | "${pkgs.coreutils}/bin/tail" -n1)
+            else
+              WALLPAPER=$("${pkgs.findutils}/bin/find" "${cfg.imageDirectory}" -mindepth 2 -maxdepth 2 \
+                        | "${pkgs.coreutils}/bin/sort" -R \
+                        | "${pkgs.coreutils}/bin/tail" -n1)
+            fi
+            "${pkgs.swww}/bin/swww" img "$WALLPAPER" --outputs "$OUTPUT"
           done < <(printf '%s' "$DISPLAYS")
         '';
       in {
