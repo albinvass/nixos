@@ -42,6 +42,7 @@
     yq
     jq
     libsForQt5.kwalletmanager
+    gnome.seahorse
   ];
 
   home.file = {
