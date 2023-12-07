@@ -97,4 +97,8 @@
     vimAlias = true;
     viAlias = true;
   };
+
+  programs.ssh = {
+    enableAskPassword = false;
+  };
 }
