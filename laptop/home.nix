@@ -28,6 +28,7 @@
     cargo
     go
     yarn
+    bitwarden
     bitwarden-cli
     discord
     microsoft-edge
@@ -40,6 +41,7 @@
     nim
     yq
     jq
+    libsForQt5.kwalletmanager
   ];
 
   home.file = {
@@ -58,6 +60,7 @@
       userEmail = "albinvass@gmail.com";
       userName = "Albin Vass";
     };
+
   };
 
   home.sessionVariables = {};
