@@ -11,6 +11,10 @@ vim.o.colorcolumn = 80
 vim.o.mouse = nil
 vim.g.mapleader = ","
 vim.o.indent = true
+vim.bo.tabstop = 2
+vim.bo.shiftwidth = 2
+vim.bo.expandtab = true
+vim.bo.softtabstop = 2
 
 vim.cmd 'highlight Normal guibg=NONE ctermbg=NONE'
 
