@@ -15,6 +15,7 @@
       pkgs.tree-sitter
       pkgs.nil
       pkgs.lua-language-server
+      pkgs.terraform-ls
     ];
 
     plugins = with pkgs.vimPlugins; [
