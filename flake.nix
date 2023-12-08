@@ -7,6 +7,9 @@
        url = "github:horriblename/hyprgrass";
        inputs.hyprland.follows = "hyprland"; # IMPORTANT
     };
+    nwg-displays = {
+      url = "github:nwg-piotr/nwg-displays?ref=v0.3.9";
+    };
     home-manager = {
       url = "github:nix-community/home-manager/release-23.11";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -30,7 +33,7 @@
           home-manager.useGlobalPkgs = true;
           home-manager.useUserPackages = true;
           home-manager.users.avass = homeManagerModules."avass@dellxps";
-          home-manager.extraSpecialArgs = with inputs; { inherit hyprland hyprgrass; };
+          home-manager.extraSpecialArgs = with inputs; { inherit hyprland hyprgrass nwg-displays; };
         }
       ];
     };

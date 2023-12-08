@@ -1,4 +1,4 @@
-{ pkgs, hyprland, hyprgrass, ... }:
+{ pkgs, hyprland, hyprgrass, nwg-displays, ... }:
 {
   imports = [
     ../konsole
@@ -14,6 +14,7 @@
     brillo
     playerctl
     swww
+    nwg-displays.packages.${pkgs.system}.default
   ];
 
   programs.fuzzel.enable = true;
@@ -36,6 +37,7 @@
   };
 
   wayland.windowManager.hyprland.extraConfig = ''
+    source = ~/.config/hypr/monitors.conf
     exec-once=polkit-agent-helper-1
     exec-once=waybar
     exec-once=swww init
