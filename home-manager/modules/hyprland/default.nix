@@ -90,6 +90,8 @@
     bind = $mainMod, j, movefocus, d
     bind = $mainMod, k, movefocus, u
     bind = $mainMod, l, movefocus, r
+    bind = $mainMod, x, changegroupactive, f
+    bind = $mainMod, z, changegroupactive, b
 
     # Move window with mainMod + vim keys
     bind = $mainMod_SHIFT, h, movewindow, l
