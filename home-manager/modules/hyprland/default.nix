@@ -73,6 +73,14 @@
     dwindle {
       preserve_split = true
     }
+
+    group {
+      groupbar {
+        font_family = "Ubuntu Nerd Font"
+        font_size	 = 20
+      }
+    }
+
     $mainMod = SUPER
     bind = $mainMod, Return, exec, konsole
     bind = $mainMod_SHIFT, Q, killactive,
