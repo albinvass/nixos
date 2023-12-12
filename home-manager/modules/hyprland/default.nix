@@ -17,7 +17,10 @@
     nwg-displays.packages.${pkgs.system}.default
   ];
 
-  programs.fuzzel.enable = true;
+  programs.rofi = {
+    enable = true;
+    package = pkgs.rofi-wayland;
+  };
   wayland.windowManager.hyprland = {
     enable = true; 
     plugins = [
@@ -71,7 +74,8 @@
     bind = $mainMod, Return, exec, konsole
     bind = $mainMod_SHIFT, Q, killactive,
     bind = $mainMod_SHIFT, E, exit,
-    bind = $mainMod, D, exec, fuzzel
+    bind = $mainMod, D, exec, rofi -show drun
+    bind = $mainMod, C, exec, rofi -show window
     bind = $mainMod, F, fullscreen,
     bind = $mainMod, S, exec, togglegroup
     bind = $mainMod, P, pseudo, # dwindle
