@@ -7,6 +7,10 @@
        url = "github:horriblename/hyprgrass";
        inputs.hyprland.follows = "hyprland"; # IMPORTANT
     };
+    split-monitor-workspaces = {
+      url = "github:Duckonaut/split-monitor-workspaces";
+      inputs.hyprland.follows = "hyprland"; # <- make sure this line is present for the plugin to work as intended
+    };
     nwg-displays = {
       url = "github:nwg-piotr/nwg-displays?ref=v0.3.9";
     };
@@ -33,7 +37,9 @@
           home-manager.useGlobalPkgs = true;
           home-manager.useUserPackages = true;
           home-manager.users.avass = homeManagerModules."avass@dellxps";
-          home-manager.extraSpecialArgs = with inputs; { inherit hyprland hyprgrass nwg-displays; };
+          home-manager.extraSpecialArgs = with inputs; {
+            inherit hyprland hyprgrass nwg-displays split-monitor-workspaces;
+          };
         }
       ];
     };
