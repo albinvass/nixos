@@ -87,8 +87,9 @@
     bind = $mainMod_SHIFT, E, exit,
     bind = $mainMod, D, exec, rofi -show drun
     bind = $mainMod, C, exec, rofi -show window
-    bind = $mainMod, F, fullscreen,
+    bind = $mainMod, F, togglefloating
     bind = $mainMod, S, togglegroup
+    bind = $mainMod, U, moveoutofgroup
     bind = $mainMod, P, pseudo, # dwindle
     bind = $mainMod, V, togglesplit, # dwindle
 
