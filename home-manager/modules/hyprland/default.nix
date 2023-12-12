@@ -109,6 +109,19 @@
     bind = $mainMod_SHIFT, k, movewindow, u
     bind = $mainMod_SHIFT, l, movewindow, r
 
+    # Switch monitor with mainMod + CTRL + [0-9]
+    # TODO: needs a script
+    #bind = $mainMod CTRL, 1, focusmonitor, 1
+    #bind = $mainMod CTRL, 2, focusmonitor, 2
+    #bind = $mainMod CTRL, 3, focusmonitor, 3
+    #bind = $mainMod CTRL, 4, focusmonitor, 4
+    #bind = $mainMod CTRL, 5, focusmonitor, 5
+    #bind = $mainMod CTRL, 6, focusmonitor, 6
+    #bind = $mainMod CTRL, 7, focusmonitor, 7
+    #bind = $mainMod CTRL, 8, focusmonitor, 8
+    #bind = $mainMod CTRL, 9, focusmonitor, 9
+    #bind = $mainMod CTRL, 0, focusmonitor, 10
+
     # Switch workspaces with mainMod + [0-9]
     bind = $mainMod, 1, split-workspace, 1
     bind = $mainMod, 2, split-workspace, 2
@@ -132,6 +145,7 @@
     bind = $mainMod SHIFT, 8, split-movetoworkspace, 8
     bind = $mainMod SHIFT, 9, split-movetoworkspace, 9
     bind = $mainMod SHIFT, 0, split-movetoworkspace, 10
+
 
     # Example special workspace (scratchpad)
     bind = $mainMod, comma, togglespecialworkspace, magic
