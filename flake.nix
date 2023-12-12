@@ -47,6 +47,7 @@
           homeManagerModules.zsh
           homeManagerModules.social-media
           homeManagerModules.music
+          homeManagerModules.git
         ];
       };
     } // self.lib.importModules ./home-manager/modules;

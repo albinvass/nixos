@@ -20,7 +20,6 @@
     act
     actionlint
     gh
-    git-review
     docker-compose
     python311
     poetry
@@ -46,8 +45,6 @@
     dvc-with-remotes
   ];
 
-  home.file = {
-  };
   programs = {
     htop.enable = true;
     awscli.enable = true;
@@ -57,12 +54,6 @@
     };
     ripgrep.enable = true;
     k9s.enable = true;
-    git = {
-      enable = true;
-      userEmail = "albinvass@gmail.com";
-      userName = "Albin Vass";
-    };
-
   };
 
   home.sessionVariables = {};
