@@ -70,6 +70,9 @@
       col.active_border 0xff444444
     }
 
+    dwindle {
+      preserve_split = true
+    }
     $mainMod = SUPER
     bind = $mainMod, Return, exec, konsole
     bind = $mainMod_SHIFT, Q, killactive,
@@ -77,9 +80,10 @@
     bind = $mainMod, D, exec, rofi -show drun
     bind = $mainMod, C, exec, rofi -show window
     bind = $mainMod, F, fullscreen,
-    bind = $mainMod, S, exec, togglegroup
+    bind = $mainMod, S, togglegroup
     bind = $mainMod, P, pseudo, # dwindle
     bind = $mainMod, V, togglesplit, # dwindle
+
 
     # Move focus with mainMod + vim keys
     bind = $mainMod, h, movefocus, l
