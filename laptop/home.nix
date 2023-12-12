@@ -43,6 +43,7 @@
     jq
     libsForQt5.kwalletmanager
     gnome.seahorse
+    dvc-with-remotes
   ];
 
   home.file = {
