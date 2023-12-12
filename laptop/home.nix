@@ -30,7 +30,7 @@
     bitwarden
     bitwarden-cli
     discord
-    microsoft-edge
+    microsoft-edge-dev
     cloc
     lsof
     cmake
