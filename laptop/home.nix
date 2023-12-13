@@ -43,6 +43,8 @@
     libsForQt5.kwalletmanager
     gnome.seahorse
     dvc-with-remotes
+    gnupg
+    rsync
   ];
 
   programs = {
