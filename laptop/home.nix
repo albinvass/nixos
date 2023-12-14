@@ -45,6 +45,7 @@
     dvc-with-remotes
     gnupg
     rsync
+    vault
   ];
 
   programs = {
