@@ -46,6 +46,7 @@
     gnupg
     rsync
     vault
+    whois
   ];
 
   programs = {
