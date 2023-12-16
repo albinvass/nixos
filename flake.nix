@@ -18,6 +18,7 @@
       url = "github:nix-community/home-manager/release-23.11";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    agenix.url = "github:ryantm/agenix";
   };
   outputs = { self, nixpkgs, nixos-hardware, home-manager, ... }@inputs:
   let
@@ -32,6 +33,7 @@
         nixosModule.docker
         # https://github.com/NixOS/nixos-hardware/tree/master/dell/xps/15-9520
         nixos-hardware.nixosModules.dell-xps-15-9520-nvidia
+        inputs.agenix.nixosModules.default
         home-manager.nixosModules.home-manager
         {
           home-manager.useGlobalPkgs = true;
