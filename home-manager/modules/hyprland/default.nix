@@ -15,6 +15,7 @@
     playerctl
     swww
     nwg-displays.packages.${pkgs.system}.default
+    wl-clipboard
   ];
 
   programs.rofi = {
