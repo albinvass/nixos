@@ -58,6 +58,11 @@
     };
     ripgrep.enable = true;
     k9s.enable = true;
+    direnv = {
+      enable = true;
+      enableZshIntegration = true;
+      nix-direnv.enable = true;
+    };
   };
 
   home.sessionVariables = {};
