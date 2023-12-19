@@ -13,13 +13,8 @@
   home.stateVersion = "23.11";
 
   home.packages = with pkgs; [
-    kubectl
-    kubernetes-helm
     azure-cli
     dig
-    act
-    actionlint
-    gh
     docker-compose
     python311
     poetry

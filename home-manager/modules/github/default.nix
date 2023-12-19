@@ -1,0 +1,9 @@
+{ pkgs, ... }:
+{
+  home.packages = with pkgs; [
+    act
+    actionlint
+    gh
+  ];
+}
+

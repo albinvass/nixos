@@ -56,6 +56,8 @@
           homeManagerModules.social-media
           homeManagerModules.music
           homeManagerModules.git
+          homeManagerModules.github
+          homeManagerModules.kubernetes
         ];
       };
     } // self.lib.importModules ./home-manager/modules;
