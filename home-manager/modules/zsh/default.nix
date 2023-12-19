@@ -11,8 +11,8 @@
         export BW_SESSION=$(bw login --raw)
       }
 
-      if [ -f "~/.secrets" ]; then
-        source ~/.secrets
+      if [ -f "$HOME/.secrets" ]; then
+        source "$HOME/.secrets"
       fi
     '';
     enableCompletion = false;
