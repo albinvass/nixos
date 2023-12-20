@@ -67,6 +67,10 @@
       border_size = 1
     }
 
+    misc {
+      disable_hyprland_logo = true
+    }
+
     decoration {
       rounding = 6
       col.active_border 0xff444444
