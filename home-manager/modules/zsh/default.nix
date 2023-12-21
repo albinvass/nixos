@@ -32,18 +32,18 @@
   home.file = {
     ".secrets".text = /* bash */ ''
 
-      function list_secrets() {
+      function list-secrets() {
         subpath=$1
         find "$XDG_RUNTIME_DIR/secrets/$subpath" \
           -mindepth 1 -maxdepth 1
       }
 
-      function source_secrets() {
+      function source-secrets() {
         subpath=$1
         if [[ -v __CLEANUP_SECRETS__ ]]; then
-          cleanup_secrets
+          cleanup-secrets
         fi
-        __SECRETS__=("''${(@f)$(list_secrets $subpath)}")
+        __SECRETS__=("''${(@f)$(list-secrets $subpath)}")
 
         __CLEANUP_SECRETS__=""
         for secret in "''${__SECRETS__[@]}"; do
@@ -54,7 +54,7 @@
         export __CLEANUP_SECRETS__
       }
 
-      function cleanup_secrets() {
+      function cleanup-secrets() {
         for key in ''${(s/:/)__CLEANUP_SECRETS__}; do
           unset $key
         done
