@@ -18,6 +18,7 @@
       terraform-ls
       nodePackages.bash-language-server
       shellcheck
+      gopls
     ];
 
     plugins = with pkgs.vimPlugins; [
