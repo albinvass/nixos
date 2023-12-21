@@ -59,6 +59,7 @@
           homeManagerModules.github
           homeManagerModules.kubernetes
           homeManagerModules.sops
+          homeManagerModules.srenity
           inputs.sops-nix.homeManagerModules.sops
         ];
       };
