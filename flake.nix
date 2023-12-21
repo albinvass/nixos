@@ -45,7 +45,7 @@
         }
       ];
     };
-    nixosModule = self.lib.importModules ./modules;
+    nixosModule = self.lib.importModules ./nixos/modules;
     homeManagerModules = {
       "avass@dellxps" = {
         imports = [
