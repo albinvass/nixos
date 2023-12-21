@@ -43,6 +43,8 @@
     vault
     whois
     sops
+    killall
+    openssl
   ];
 
   programs = {
