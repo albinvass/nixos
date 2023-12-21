@@ -56,6 +56,7 @@
           homeManagerModules.social-media
           homeManagerModules.music
           homeManagerModules.git
+          homeManagerModules.wezterm
           homeManagerModules.github
           homeManagerModules.kubernetes
           homeManagerModules.sops
