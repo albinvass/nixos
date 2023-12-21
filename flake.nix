@@ -27,7 +27,7 @@
     nixosConfigurations."dellxps" = nixpkgs.lib.nixosSystem {
       inherit system;
       modules = [
-        ./laptop/configuration.nix
+        ./hosts/laptop/configuration.nix
         nixosModule.hyprland
         nixosModule.gaming
         nixosModule.docker
@@ -49,7 +49,7 @@
     homeManagerModules = {
       "avass@dellxps" = {
         imports = [
-          ./laptop/home.nix
+          ./hosts/laptop/home.nix
           homeManagerModules.hyprland
           homeManagerModules.neovim
           homeManagerModules.zsh
