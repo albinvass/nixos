@@ -12,6 +12,7 @@ local servers = {
     }
   },
   nil_ls={},
+  eslint={},
   gopls={},
   pylsp={},
   bashls={},

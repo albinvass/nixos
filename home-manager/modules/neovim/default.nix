@@ -17,6 +17,7 @@
       lua-language-server
       terraform-ls
       nodePackages.bash-language-server
+      vscode-langservers-extracted
       shellcheck
       gopls
     ];
