@@ -11,11 +11,13 @@
     withNodeJs = true;
     withPython3 = true;
     withRuby = true;
-    extraPackages = [
-      pkgs.tree-sitter
-      pkgs.nil
-      pkgs.lua-language-server
-      pkgs.terraform-ls
+    extraPackages = with pkgs; [
+      tree-sitter
+      nil
+      lua-language-server
+      terraform-ls
+      nodePackages.bash-language-server
+      shellcheck
     ];
 
     plugins = with pkgs.vimPlugins; [
