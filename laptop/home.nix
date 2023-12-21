@@ -42,6 +42,7 @@
     rsync
     vault
     whois
+    sops
   ];
 
   programs = {

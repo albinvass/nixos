@@ -28,4 +28,38 @@
       theme = "robbyrussell";
     };
   };
+
+  home.file = {
+    ".secrets".text = /* bash */ ''
+
+      function list_secrets() {
+        subpath=$1
+        find "$XDG_RUNTIME_DIR/secrets/$subpath" \
+          -mindepth 1 -maxdepth 1
+      }
+
+      function source_secrets() {
+        subpath=$1
+        if [[ -v __CLEANUP_SECRETS__ ]]; then
+          cleanup_secrets
+        fi
+        __SECRETS__=("''${(@f)$(list_secrets $subpath)}")
+
+        __CLEANUP_SECRETS__=""
+        for secret in "''${__SECRETS__[@]}"; do
+          secretname="$(basename $secret)"
+          export $secretname="$(cat $secret)"
+          __CLEANUP_SECRETS__+="$secretname:"
+        done
+        export __CLEANUP_SECRETS__
+      }
+
+      function cleanup_secrets() {
+        for key in ''${(s/:/)__CLEANUP_SECRETS__}; do
+          unset $key
+        done
+        unset __CLEANUP_SECRETS__
+      }
+    '';
+  };
 }
