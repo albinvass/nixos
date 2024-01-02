@@ -15,6 +15,7 @@
   home.packages = with pkgs; [
     azure-cli
     dig
+    tree
     docker-compose
     python311
     poetry
@@ -45,6 +46,8 @@
     sops
     killall
     openssl
+    ssh-to-age
+    ssh-to-pgp
   ];
 
   programs = {

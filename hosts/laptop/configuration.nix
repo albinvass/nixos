@@ -80,6 +80,7 @@
       "video"
       "input"
       "docker"
+      "libvirtd"
     ];
     shell = pkgs.zsh;
   };
@@ -91,6 +92,7 @@
     git
     dig
     gh
+    qemu
   ];
 
   programs.neovim = {
@@ -106,4 +108,6 @@
   programs.ssh = {
     enableAskPassword = false;
   };
+
+  virtualisation.libvirtd.enable = true;
 }
