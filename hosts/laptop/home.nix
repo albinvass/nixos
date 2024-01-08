@@ -26,7 +26,7 @@
     bitwarden
     bitwarden-cli
     discord
-    microsoft-edge-dev
+    microsoft-edge
     cloc
     lsof
     cmake
@@ -48,6 +48,7 @@
     openssl
     ssh-to-age
     ssh-to-pgp
+    shellcheck
   ];
 
   programs = {

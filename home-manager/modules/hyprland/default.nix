@@ -16,6 +16,7 @@
     swww
     nwg-displays.packages.${pkgs.system}.default
     wl-clipboard
+    rofimoji
   ];
 
   programs.rofi = {
