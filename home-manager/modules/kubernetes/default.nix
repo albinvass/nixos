@@ -5,5 +5,6 @@
     kubernetes-helm
     kind
     minikube
+    kubelogin
   ];
 }

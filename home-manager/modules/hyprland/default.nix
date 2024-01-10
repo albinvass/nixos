@@ -93,6 +93,7 @@
     bind = $mainMod_SHIFT, Q, killactive,
     bind = $mainMod_SHIFT, E, exit,
     bind = $mainMod, D, exec, rofi -show drun
+    bind = $mainMod_SHIFT, D, exec, rofimoji
     bind = $mainMod, C, exec, rofi -show window
     bind = $mainMod, F, togglefloating
     bind = $mainMod, S, togglegroup
