@@ -51,6 +51,7 @@
     shellcheck
     synergy
     waynergy
+    obs-studio
   ];
 
   programs = {
