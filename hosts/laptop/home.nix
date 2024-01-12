@@ -49,6 +49,8 @@
     ssh-to-age
     ssh-to-pgp
     shellcheck
+    synergy
+    waynergy
   ];
 
   programs = {
