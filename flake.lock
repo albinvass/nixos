@@ -241,16 +241,16 @@
         "nixpkgs": "nixpkgs_3"
       },
       "locked": {
-        "lastModified": 1700879499,
-        "narHash": "sha256-pxQlwgmXS6QEzcsK5NMNnDQu/WHafpIOUwyl33ZtDE4=",
+        "lastModified": 1702213136,
+        "narHash": "sha256-clL34Ewzf0sJEWiye4L4e1RrPFIHkmotLpPaibGvVY4=",
         "owner": "nwg-piotr",
         "repo": "nwg-displays",
-        "rev": "a32adb3bc8badc6ee31cfcee0432f25e26a38987",
+        "rev": "9e4d94107f1b2aa4bb040ac1779559e869cf3ad2",
         "type": "github"
       },
       "original": {
         "owner": "nwg-piotr",
-        "ref": "v0.3.9",
+        "ref": "v0.3.10",
         "repo": "nwg-displays",
         "type": "github"
       }

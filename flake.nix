@@ -12,7 +12,7 @@
       inputs.hyprland.follows = "hyprland"; # <- make sure this line is present for the plugin to work as intended
     };
     nwg-displays = {
-      url = "github:nwg-piotr/nwg-displays?ref=v0.3.9";
+      url = "github:nwg-piotr/nwg-displays?ref=v0.3.10";
     };
     home-manager = {
       url = "github:nix-community/home-manager/release-23.11";
