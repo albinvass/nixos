@@ -89,6 +89,9 @@
     }
 
     $mainMod = SUPER
+    $altMod = SUPERALT
+    bind = $mainMod, Return, exec, konsole
+    bind = $altMod, 1, exec, wezterm ssh avass@65.108.153.140
     bind = $mainMod, Return, exec, konsole
     bind = $mainMod_SHIFT, Q, killactive,
     bind = $mainMod_SHIFT, E, exit,
