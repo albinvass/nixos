@@ -45,6 +45,7 @@
             home-manager.useUserPackages = true;
             home-manager.users.avass = homeManagerModules."avass@dellxps";
             home-manager.extraSpecialArgs = with inputs; {
+              inherit inputs homeManagerModules;
               inherit hyprland hyprgrass nwg-displays split-monitor-workspaces;
             };
           }
@@ -62,6 +63,9 @@
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
             home-manager.users.avass = homeManagerModules."avass@wsl";
+            home-manager.extraSpecialArgs = {
+              inherit inputs homeManagerModules;
+            };
           }
         ];
       };
@@ -88,14 +92,7 @@
       "avass@wsl" = {
         imports = [
           ./hosts/laptop/home.nix
-          homeManagerModules.neovim
-          homeManagerModules.zsh
-          homeManagerModules.git
-          homeManagerModules.github
-          homeManagerModules.kubernetes
-          homeManagerModules.sops
-          homeManagerModules.srenity
-          inputs.sops-nix.homeManagerModules.sops
+          homeManagerModules.devtools
         ];
       };
     } // self.lib.importModules ./home-manager/modules;
