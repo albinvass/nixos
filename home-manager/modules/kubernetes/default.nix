@@ -1,4 +1,7 @@
 { pkgs, ... }:
+let
+  kubectl-hns = pkgs.callPackage ./kubectl-hns.nix {};
+in
 {
   home.packages = with pkgs; [
     kubectl
@@ -6,5 +9,7 @@
     kind
     minikube
     kubelogin
+    kubelogin-oidc
+    kubectl-hns
   ];
 }
