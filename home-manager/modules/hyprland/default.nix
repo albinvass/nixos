@@ -24,7 +24,7 @@
     package = pkgs.rofi-wayland;
   };
   wayland.windowManager.hyprland = {
-    enable = true; 
+    enable = true;
     plugins = [
       hyprgrass.packages.${pkgs.system}.default
       split-monitor-workspaces.packages.${pkgs.system}.split-monitor-workspaces
@@ -88,6 +88,7 @@
       }
     }
 
+
     $mainMod = SUPER
     $altMod = SUPERALT
     bind = $mainMod, Return, exec, konsole
@@ -117,6 +118,16 @@
     bind = $mainMod_SHIFT, j, movewindow, d
     bind = $mainMod_SHIFT, k, movewindow, u
     bind = $mainMod_SHIFT, l, movewindow, r
+
+    # will switch to a submap called resize
+    bind = $mainMod, R, submap, resize
+    submap = resize
+    binde = , h, resizeactive, -10 0
+    binde = , j, resizeactive, 0 10
+    binde = , l, resizeactive, 10 0
+    binde = , k, resizeactive, 0 -10
+    bind = , escape, submap, reset
+    submap=reset
 
     # Switch monitor with mainMod + CTRL + [0-9]
     # TODO: needs a script
