@@ -25,4 +25,6 @@
     BROWSER = "/mnt/c/Windows/explorer.exe";
   };
 
+  # Add compatibility for /bin/bash etc.
+  services.envfs.enable = true;
 }
