@@ -19,31 +19,52 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     sops-nix.url = "github:Mic92/sops-nix";
+    wsl = {
+      url = "github:nix-community/NixOS-WSL";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
   outputs = { self, nixpkgs, nixos-hardware, home-manager, ... }@inputs:
   let
     system = "x86_64-linux";
   in rec {
-    nixosConfigurations."dellxps" = nixpkgs.lib.nixosSystem {
-      inherit system;
-      modules = [
-        ./hosts/laptop/configuration.nix
-        nixosModule.hyprland
-        nixosModule.gaming
-        nixosModule.docker
-        nixosModule.tailscale
-        # https://github.com/NixOS/nixos-hardware/tree/master/dell/xps/15-9520
-        nixos-hardware.nixosModules.dell-xps-15-9520-nvidia
-        home-manager.nixosModules.home-manager
-        {
-          home-manager.useGlobalPkgs = true;
-          home-manager.useUserPackages = true;
-          home-manager.users.avass = homeManagerModules."avass@dellxps";
-          home-manager.extraSpecialArgs = with inputs; {
-            inherit hyprland hyprgrass nwg-displays split-monitor-workspaces;
-          };
-        }
-      ];
+    nixosConfigurations = {
+      "dellxps" = nixpkgs.lib.nixosSystem {
+        inherit system;
+        modules = [
+          ./hosts/laptop/configuration.nix
+          nixosModule.hyprland
+          nixosModule.gaming
+          nixosModule.docker
+          nixosModule.tailscale
+          # https://github.com/NixOS/nixos-hardware/tree/master/dell/xps/15-9520
+          nixos-hardware.nixosModules.dell-xps-15-9520-nvidia
+          home-manager.nixosModules.home-manager
+          {
+            home-manager.useGlobalPkgs = true;
+            home-manager.useUserPackages = true;
+            home-manager.users.avass = homeManagerModules."avass@dellxps";
+            home-manager.extraSpecialArgs = with inputs; {
+              inherit hyprland hyprgrass nwg-displays split-monitor-workspaces;
+            };
+          }
+        ];
+      };
+      "wsl" = nixpkgs.lib.nixosSystem {
+        inherit system;
+        modules = [
+          ./hosts/wsl/configuration.nix
+	  inputs.wsl.nixosModules.wsl
+          nixosModule.docker
+          nixosModule.tailscale
+          home-manager.nixosModules.home-manager
+          {
+            home-manager.useGlobalPkgs = true;
+            home-manager.useUserPackages = true;
+            home-manager.users.avass = homeManagerModules."avass@wsl";
+          }
+        ];
+      };
     };
     nixosModule = self.lib.importModules ./nixos/modules;
     homeManagerModules = {
@@ -57,6 +78,19 @@
           homeManagerModules.music
           homeManagerModules.git
           homeManagerModules.wezterm
+          homeManagerModules.github
+          homeManagerModules.kubernetes
+          homeManagerModules.sops
+          homeManagerModules.srenity
+          inputs.sops-nix.homeManagerModules.sops
+        ];
+      };
+      "avass@wsl" = {
+        imports = [
+          ./hosts/laptop/home.nix
+          homeManagerModules.neovim
+          homeManagerModules.zsh
+          homeManagerModules.git
           homeManagerModules.github
           homeManagerModules.kubernetes
           homeManagerModules.sops
