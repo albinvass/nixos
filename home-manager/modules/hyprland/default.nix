@@ -89,6 +89,25 @@
     }
 
 
+    windowrulev2 = workspace silent 5,class:^Slack$
+    windowrulev2 = group,class:^Slack$
+    windowrulev2 = workspace silent 5,class:^discord$
+    windowrulev2 = group,class:^discord$
+    windowrulev2 = workspace silent 5,class:^Element$
+    windowrulev2 = group,class:^Element$
+    windowrulev2 = workspace silent 5,class:^Signal$
+    windowrulev2 = group,class:^Signal$
+
+    exec-once = [workspace 1 silent] konsole
+    exec-once = [workspace 2 silent] konsole
+    exec-once = [workspace 3 silent; group] microsoft-edge
+
+    exec-once = [workspace 5 silent; group] slack
+    exec-once = [workspace 5 silent; group] discord
+    exec-once = [workspace 5 silent; group] element-desktop
+    exec-once = [workspace 5 silent; group] signal-desktop
+
+
     $mainMod = SUPER
     $altMod = SUPERALT
     bind = $mainMod, Return, exec, konsole
