@@ -117,7 +117,7 @@
     bind = $mainMod, D, exec, rofi -show drun
     bind = $mainMod_SHIFT, D, exec, rofimoji
     bind = $mainMod, C, exec, rofi -show window
-    bind = $mainMod, F, togglefloating
+    bind = $mainMod, F, fullscreen, 1
     bind = $mainMod, S, togglegroup
     bind = $mainMod, U, moveoutofgroup
     bind = $mainMod, P, pseudo, # dwindle
