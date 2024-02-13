@@ -82,16 +82,9 @@
         imports = [
           ./hosts/laptop/home.nix
           homeManagerModules.hyprland
-          homeManagerModules.neovim
-          homeManagerModules.zsh
+          homeManagerModules.devtools
           homeManagerModules.social-media
           homeManagerModules.music
-          homeManagerModules.git
-          homeManagerModules.github
-          homeManagerModules.kubernetes
-          homeManagerModules.sops
-          homeManagerModules.srenity
-          inputs.sops-nix.homeManagerModules.sops
         ];
       };
       "avass@wsl" = {
