@@ -1,7 +1,7 @@
 { pkgs, hyprland, hyprgrass, nwg-displays, split-monitor-workspaces, ... }:
 {
   imports = [
-    ../konsole
+    ../wezterm
     ../waybar
     ../swww-images
     hyprland.homeManagerModules.default
@@ -32,14 +32,13 @@
 
     settings = {
       "$mainMod" = "SUPER";
-      "$altMod" = "SUPERALT";
 
       source = [ "~/.config/hypr/monitors.conf" ];
       exec-once = [
         "waybar"
         "swww init"
-        "[workspace 1 silent] konsole"
-        "[workspace 2 silent] konsole"
+        "[workspace 1 silent] wezterm --config-file ~/.config/wezterm/wezterm.lua"
+        "[workspace 2 silent] wezterm --config-file ~/.config/wezterm/wezterm.lua"
         "[workspace 3 silent; group] microsoft-edge"
 
         "[workspace 5 silent; group] slack"
@@ -111,8 +110,8 @@
         "group,class:^Signal$"
       ];
       bind = [
-        "$mainMod, Return, exec, konsole"
-        "$altMod, 1, exec, wezterm ssh avass@65.108.153.140"
+        "$mainMod, Return, exec, wezterm --config-file ~/.config/wezterm/wezterm.lua"
+        "$mainMod_SHIFT, Return, exec, wezterm --config-file ~/.config/wezterm/wezterm.lua ssh avass@nixos-1.dev.albinvass.se"
         "$mainMod_SHIFT, Q, killactive,"
         "$mainMod_SHIFT, E, exit,"
         "$mainMod, D, exec, rofi -show drun"
