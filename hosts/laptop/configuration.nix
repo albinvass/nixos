@@ -108,6 +108,10 @@
     qemu
   ];
 
+  environment.sessionVariables = {
+    XCURSOR_SIZE = "24";
+  };
+
   programs.neovim = {
     enable = true;
     defaultEditor = true;

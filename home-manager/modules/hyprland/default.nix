@@ -7,6 +7,26 @@
     hyprland.homeManagerModules.default
   ];
 
+  gtk = {
+    enable = true;
+    iconTheme = {
+      name = "breeze";
+    };
+    cursorTheme = {
+      name = "Adwaita";
+      size = 24;
+    };
+    font = {
+      name = "Noto Sans,  10";
+    };
+  };
+  home.pointerCursor = {
+    gtk.enable = true;
+    package = pkgs.gnome-themes-extra;
+    name = "Adwaita";
+    size = 24;
+  };
+
   home.packages = with pkgs; [
     xwaylandvideobridge
     xdg-desktop-portal

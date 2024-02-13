@@ -61,7 +61,7 @@
         inherit system;
         modules = [
           ./hosts/wsl/configuration.nix
-	  inputs.wsl.nixosModules.wsl
+          inputs.wsl.nixosModules.wsl
           nixosModule.docker
           nixosModule.tailscale
           home-manager.nixosModules.home-manager
