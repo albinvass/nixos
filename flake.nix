@@ -39,10 +39,10 @@
         inherit system;
         modules = [
           ./hosts/laptop/configuration.nix
-          nixosModule.hyprland
-          nixosModule.gaming
-          nixosModule.docker
-          nixosModule.tailscale
+          nixosModules.hyprland
+          nixosModules.gaming
+          nixosModules.docker
+          nixosModules.tailscale
           # https://github.com/NixOS/nixos-hardware/tree/master/dell/xps/15-9520
           nixos-hardware.nixosModules.dell-xps-15-9520-nvidia
           home-manager.nixosModules.home-manager
@@ -62,8 +62,8 @@
         modules = [
           ./hosts/wsl/configuration.nix
           inputs.wsl.nixosModules.wsl
-          nixosModule.docker
-          nixosModule.tailscale
+          nixosModules.docker
+          nixosModules.tailscale
           home-manager.nixosModules.home-manager
           {
             home-manager.useGlobalPkgs = true;
@@ -76,8 +76,36 @@
         ];
       };
     };
-    nixosModule = self.lib.importModules ./nixos/modules;
+    nixosModules = {
+      devtools = {
+        imports = [
+          home-manager.nixosModules.home-manager
+          {
+            home-manager.useGlobalPkgs = true;
+            home-manager.useUserPackages = true;
+            home-manager.users.avass = homeManagerModules."avass@headless";
+            home-manager.extraSpecialArgs = {
+              inherit inputs homeManagerModules;
+            };
+          }
+        ];
+      };
+    } // self.lib.importModules ./nixos/modules;
     homeManagerModules = {
+      "avass@headless" = {
+        xdg.userDirs.enable = true;
+
+        home.username = "avass";
+        home.homeDirectory = "/home/avass";
+        home.stateVersion = "23.11";
+
+        # Let Home Manager install and manage itself.
+        programs.home-manager.enable = true;
+        imports = [
+          ./hosts/laptop/home.nix
+          homeManagerModules.devtools
+        ];
+      };
       "avass@dellxps" = {
         imports = [
           ./hosts/laptop/home.nix
