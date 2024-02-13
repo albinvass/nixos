@@ -15,7 +15,7 @@ buildGoModule {
     sha256 = "sha256-Ko6Eb9eJttU1Sk+9PzYyTJjXe2joC0jvOQYjFAFAj/8=";
   };
 
-  vendorSha256 = null;
+  vendorHash = null;
   subPackages = [ "./cmd/kubectl" ];
   postInstall = ''
     mv $out/bin/kubectl $out/bin/kubectl-hns
