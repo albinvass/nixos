@@ -1,5 +1,8 @@
-{ ... }:
+{ pkgs, ... }:
 {
+  home.packages = with pkgs; [
+      (nerdfonts.override { fonts = [ "FiraCode" ]; })
+  ];
   programs.wezterm = {
     enable = true;
     enableZshIntegration = true;
