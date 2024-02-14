@@ -87,7 +87,9 @@
             # Read Nix-on-Droid changelog before changing this value
             system.stateVersion = "23.05";
 
-            # insert Nix-on-Droid config
+            nix.extraOptions = ''
+              experimental-features = nix-command flakes
+            '';
 
             home-manager.extraSpecialArgs = {
               inherit inputs homeManagerModules;
