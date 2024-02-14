@@ -29,6 +29,10 @@
       url = "github:nix-community/NixOS-WSL";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    nix-on-droid = {
+      url = "github:nix-community/nix-on-droid/release-23.05";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
   outputs = { self, nixpkgs, nixos-hardware, home-manager, ... }@inputs:
   let
@@ -73,6 +77,29 @@
               inherit inputs homeManagerModules;
             };
           }
+        ];
+      };
+    };
+    nixOnDroidConfigurations = {
+      "avass@s22ultra" = inputs.nix-on-droid.lib.nixOnDroidConfiguration {
+        modules = [
+          {
+            # Read Nix-on-Droid changelog before changing this value
+            system.stateVersion = "23.05";
+
+            # insert Nix-on-Droid config
+
+            home-manager.extraSpecialArgs = {
+              inherit inputs homeManagerModules;
+            };
+            home-manager.config = { pkgs, inputs, homeManagerModules, ... }:
+              {
+                home.stateVersion = "23.05";
+                imports = [
+                  homeManagerModules.devtools
+                ];
+              };
+            }
         ];
       };
     };
