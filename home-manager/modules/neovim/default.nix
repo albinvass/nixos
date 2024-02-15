@@ -27,6 +27,7 @@
       gruvbox
       vimagit
       vim-fugitive
+      vim-helm
       vim-rooter
       popup-nvim
       plenary-nvim
