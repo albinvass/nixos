@@ -6,6 +6,7 @@
   programs = {
     git = {
       enable = true;
+      delta.enable = true;
       userEmail = "albinvass@gmail.com";
       userName = "Albin Vass";
       extraConfig = {
