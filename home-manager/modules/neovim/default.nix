@@ -16,6 +16,7 @@
       nil
       lua-language-server
       terraform-ls
+      helm-ls
       nodePackages.bash-language-server
       vscode-langservers-extracted
       shellcheck

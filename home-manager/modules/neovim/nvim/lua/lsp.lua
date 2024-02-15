@@ -11,6 +11,7 @@ local servers = {
       }
     }
   },
+  helm_ls={},
   nil_ls={},
   eslint={},
   gopls={},
