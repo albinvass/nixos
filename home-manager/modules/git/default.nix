@@ -6,7 +6,12 @@
   programs = {
     git = {
       enable = true;
-      delta.enable = true;
+      delta = {
+        enable = true;
+        options = {
+          side-by-side = true;
+        };
+      };
       userEmail = "albinvass@gmail.com";
       userName = "Albin Vass";
       extraConfig = {
