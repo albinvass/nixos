@@ -20,6 +20,7 @@
   hardware.brillo.enable = true;
   environment.sessionVariables.NIXOS_OZONE_WL = "1";
   environment.systemPackages = with pkgs; [ xwaylandvideobridge ];
+  security.pam.services.swaylock = {};
 
   xdg.portal = {
     enable = true;
