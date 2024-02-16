@@ -21,6 +21,7 @@
       vscode-langservers-extracted
       shellcheck
       gopls
+      nodePackages.pyright
     ];
 
     plugins = with pkgs.vimPlugins; [
