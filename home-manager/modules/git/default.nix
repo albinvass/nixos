@@ -4,6 +4,7 @@
     git-review
   ];
   programs = {
+    gh-dash.enable = true;
     git = {
       enable = true;
       delta = {
