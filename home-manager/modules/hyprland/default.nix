@@ -1,10 +1,10 @@
-{ pkgs, hyprland, hyprgrass, nwg-displays, split-monitor-workspaces, ... }:
+{ pkgs, inputs, ... }:
 {
   imports = [
     ../wezterm
     ../waybar
     ../swww-images
-    hyprland.homeManagerModules.default
+    inputs.hyprland.homeManagerModules.default
   ];
 
   gtk = {
@@ -34,9 +34,10 @@
     brillo
     playerctl
     swww
-    nwg-displays.packages.${pkgs.system}.default
+    inputs.nwg-displays.packages.${pkgs.system}.default
     wl-clipboard
     rofimoji
+    inputs.hyprland-contrib.packages.${pkgs.system}.grimblast
   ];
 
   programs.rofi = {
@@ -46,8 +47,8 @@
   wayland.windowManager.hyprland = {
     enable = true;
     plugins = [
-      hyprgrass.packages.${pkgs.system}.default
-      split-monitor-workspaces.packages.${pkgs.system}.split-monitor-workspaces
+      inputs.hyprgrass.packages.${pkgs.system}.default
+      inputs.split-monitor-workspaces.packages.${pkgs.system}.split-monitor-workspaces
     ];
 
     settings = {

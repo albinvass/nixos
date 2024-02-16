@@ -5,13 +5,17 @@
     hyprland = {
       url = "github:hyprwm/Hyprland";
     };
+    hyprland-contrib = {
+      url = "github:hyprwm/contrib";
+       inputs.nixpkgs.follows = "nixpkgs";
+    };
     hyprgrass = {
        url = "github:horriblename/hyprgrass";
-       inputs.hyprland.follows = "hyprland"; # IMPORTANT
+       inputs.hyprland.follows = "hyprland";
     };
     split-monitor-workspaces = {
       url = "github:Duckonaut/split-monitor-workspaces";
-      inputs.hyprland.follows = "hyprland"; # <- make sure this line is present for the plugin to work as intended
+      inputs.hyprland.follows = "hyprland";
     };
     nwg-displays = {
       url = "github:nwg-piotr/nwg-displays?ref=v0.3.10";
@@ -56,7 +60,6 @@
             home-manager.users.avass = homeManagerModules."avass@dellxps";
             home-manager.extraSpecialArgs = with inputs; {
               inherit inputs homeManagerModules;
-              inherit hyprland hyprgrass nwg-displays split-monitor-workspaces;
             };
           }
         ];
