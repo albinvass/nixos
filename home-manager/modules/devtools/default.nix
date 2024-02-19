@@ -35,6 +35,7 @@
     };
     go.enable = true;
     jq.enable = true;
+    taskwarrior.enable = true;
     nnn = {
       enable = true;
       package = (pkgs.nnn.override { withNerdIcons = true;});
@@ -83,6 +84,7 @@
     ssh-to-age
     ssh-to-pgp
     shellcheck
+    taskwarrior-tui
     unrar
     tldr
     dust
