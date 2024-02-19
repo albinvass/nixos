@@ -22,6 +22,7 @@
       shellcheck
       gopls
       nodePackages.pyright
+      nnn
     ];
 
     plugins = with pkgs.vimPlugins; [
@@ -44,9 +45,9 @@
       luasnip
       cmp_luasnip
       nvim-treesitter.withAllGrammars
-      nvim-tree-lua
       nvim-web-devicons
       nvim-FeMaco-lua
+      pkgs.vimExtraPlugins.nnn-nvim
     ];
 
     # Automatically require all toplevel lua scripts

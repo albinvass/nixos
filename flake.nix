@@ -2,6 +2,8 @@
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     nixos-hardware.url = "github:NixOs/nixos-hardware/master";
+    nixneovimplugins.url = "github:NixNeovim/NixNeovim";
+
     hyprland = {
       url = "github:hyprwm/Hyprland";
     };
@@ -54,6 +56,9 @@
           # https://github.com/NixOS/nixos-hardware/tree/master/dell/xps/15-9520
           nixos-hardware.nixosModules.dell-xps-15-9520-nvidia
           home-manager.nixosModules.home-manager
+          {
+            nixpkgs.overlays = [ inputs.nixneovimplugins.overlays.default ];
+          }
           {
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;

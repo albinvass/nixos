@@ -25,6 +25,23 @@
       enableZshIntegration = true;
       nix-direnv.enable = true;
     };
+    bat.enable = true;
+    btop.enable = true;
+    eza = {
+      enable = true;
+      enableAliases = true;
+      git = true;
+      icons = true;
+    };
+    go.enable = true;
+    jq.enable = true;
+    nnn = {
+      enable = true;
+      package = (pkgs.nnn.override { withNerdIcons = true;});
+      bookmarks = {
+        g = "~/git";
+      };
+    };
   };
 
 
@@ -38,7 +55,6 @@
     poetry
     rustc
     cargo
-    go
     yarn
     cloc
     lsof
@@ -48,7 +64,6 @@
     gnumake
     nim
     yq
-    jq
     gnupg
     rsync
     vault
@@ -63,6 +78,5 @@
     dust
     duf
     dogdns
-    bat
   ];
 }
