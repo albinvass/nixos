@@ -41,6 +41,9 @@
       package = (pkgs.nnn.override { withNerdIcons = true;});
       bookmarks = {
         g = "~/git";
+        n = "~/git/github/albinvass/nixos";
+        c = "~/git/github/cinfinity";
+        s = "~/git/gitlab/srenity";
       };
     };
   };
