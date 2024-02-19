@@ -17,6 +17,14 @@
       userName = "Albin Vass";
       extraConfig = {
         credential.helper = "${pkgs.gitAndTools.gitFull}/bin/git-credential-libsecret";
+        merge.conflictStyle = "zdiff3";
+        pull.rebase = true;
+        push.autoSetupRemote = true;
+        rerere.enabled = true;
+        branch.sort = "-committerdate";
+        tag.sort = "-committerdate";
+        fetch.prune = true;
+        fetch.prunetags = true;
       };
     };
   };
