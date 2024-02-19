@@ -59,5 +59,10 @@
     ssh-to-age
     ssh-to-pgp
     shellcheck
+    tldr
+    dust
+    duf
+    dogdns
+    bat
   ];
 }
