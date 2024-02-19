@@ -43,6 +43,7 @@
         g = "~/git";
         n = "~/git/github/albinvass/nixos";
         c = "~/git/github/cinfinity";
+        d = "~/git/github/DCE-devops";
         s = "~/git/gitlab/srenity";
       };
     };
