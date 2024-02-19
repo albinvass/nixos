@@ -127,4 +127,10 @@
   };
 
   virtualisation.libvirtd.enable = true;
+
+  services.logind = {
+    lidSwitch = "hibernate";
+    lidSwitchDocked = "ignore";
+    lidSwitchExternalPower = "hibernate";
+  };
 }
