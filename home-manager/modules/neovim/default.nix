@@ -23,6 +23,7 @@
       gopls
       nodePackages.pyright
       nnn
+      sqls
     ];
 
     plugins = with pkgs.vimPlugins; [
