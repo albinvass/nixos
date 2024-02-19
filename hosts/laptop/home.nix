@@ -1,7 +1,8 @@
-{ pkgs, ... }:
+{ pkgs, homeManagerModules, ... }:
 {
   imports = [
     ./desktop-files
+    homeManagerModules.thunderbird
   ];
 
   fonts.fontconfig.enable = true;
