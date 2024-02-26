@@ -71,7 +71,6 @@
     cloc
     lsof
     cmake
-    llvmPackages.clangUseLLVM
     coreutils
     gnumake
     nim
@@ -94,5 +93,6 @@
     dust
     duf
     dogdns
+    restic
   ];
 }
