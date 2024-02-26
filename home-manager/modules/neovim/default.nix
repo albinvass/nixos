@@ -14,7 +14,7 @@
     extraPackages = with pkgs; [
       tree-sitter
       nil
-      clangd
+      llvmPackages.clang-unwrapped
       lua-language-server
       terraform-ls
       helm-ls
