@@ -52,6 +52,7 @@
       nvim-FeMaco-lua
       vim-markdown
       markdown-preview-nvim
+      gitsigns-nvim
       pkgs.vimExtraPlugins.nnn-nvim
     ];
 
