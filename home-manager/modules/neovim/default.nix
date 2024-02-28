@@ -53,6 +53,7 @@
       vim-markdown
       markdown-preview-nvim
       gitsigns-nvim
+      trouble-nvim
       pkgs.vimExtraPlugins.nnn-nvim
     ];
 
