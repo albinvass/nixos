@@ -49,6 +49,8 @@
       nvim-treesitter.withAllGrammars
       nvim-web-devicons
       nvim-FeMaco-lua
+      vim-markdown
+      markdown-preview-nvim
       pkgs.vimExtraPlugins.nnn-nvim
     ];
 
