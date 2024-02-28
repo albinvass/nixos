@@ -33,7 +33,3 @@ require'nnn'.setup{
   }
 }
 vim.api.nvim_set_keymap("n", "<C-n>", ":NnnExplorer<CR>", {})
-
-require('gitsigns').setup({
-  current_line_blame = true,
-})
