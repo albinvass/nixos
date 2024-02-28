@@ -16,6 +16,7 @@ local servers = {
   nil_ls={},
   eslint={},
   gopls={},
+  marksman={},
   pyright={},
   bashls={},
   --dockerls={},

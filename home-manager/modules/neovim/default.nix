@@ -25,11 +25,12 @@
       nodePackages.pyright
       nnn
       sqls
+      marksman
     ];
 
     plugins = with pkgs.vimPlugins; [
       vim-surround
-      gruvbox
+      catppuccin-nvim
       vimagit
       vim-fugitive
       vim-helm

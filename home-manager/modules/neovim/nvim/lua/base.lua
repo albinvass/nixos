@@ -1,5 +1,4 @@
-vim.cmd 'colorscheme gruvbox'
-vim.o.background = "dark"
+vim.cmd.colorscheme "catppuccin-mocha"
 vim.o.number = true
 vim.o.showcmd = true
 vim.o.cursorline = true
