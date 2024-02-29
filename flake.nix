@@ -41,77 +41,34 @@
     };
   };
   outputs = { self, nixpkgs, ... }@inputs:
-
   rec {
     nixosConfigurations = 
       let
         hosts = self.lib.getDirectories ./hosts;
-        mkNixosConfigurations = (host: {
+        mkNixosConfiguration = (host: {
           "${host}" = nixpkgs.lib.nixosSystem {
             system = "x86_64-linux";
             modules = [ ./hosts/${host}/configuration.nix ];
             specialArgs = { inherit inputs nixosModules homeManagerModules;};
           };
         });
-      in nixpkgs.lib.attrsets.mergeAttrsList (builtins.map mkNixosConfigurations hosts);
-    nixosModules = {
-      devtools = {
-        imports = [
-          inputs.home-manager.nixosModules.home-manager
-          {
-            home-manager.useGlobalPkgs = true;
-            home-manager.useUserPackages = true;
-            home-manager.users.avass = homeManagerModules."avass@headless";
-            home-manager.extraSpecialArgs = {
-              inherit inputs homeManagerModules;
-            };
-          }
-        ];
-      };
-    } // self.lib.importModules ./nixos/modules;
-    homeManagerModules = {
-      "avass@headless" = {
-        xdg.userDirs.enable = true;
-
-        home.username = "avass";
-        home.homeDirectory = "/home/avass";
-        home.stateVersion = "23.11";
-
-        # Let Home Manager install and manage itself.
-        programs.home-manager.enable = true;
-        imports = [
-          homeManagerModules.devtools
-        ];
-      };
-      "avass@dellxps" = {
-        imports = [
-          ./hosts/dellxps/home.nix
-          homeManagerModules.hyprland
-          homeManagerModules.devtools
-          homeManagerModules.social-media
-          homeManagerModules.music
-        ];
-      };
-      "avass@wsl" = {
-        imports = [
-          ./hosts/dellxps/home.nix
-          homeManagerModules.devtools
-        ];
-      };
-    } // self.lib.importModules ./home-manager/modules;
+        nixosConfigurations = nixpkgs.lib.attrsets.mergeAttrsList (builtins.map mkNixosConfiguration hosts);
+      in nixosConfigurations;
+    nixosModules = self.lib.importModules ./nixos/modules;
+    homeManagerModules = self.lib.importModules ./home-manager/modules;
     lib =
-    let
-      lib = nixpkgs.lib;
-    in rec {
-      filterDirectories = (files: lib.attrsets.filterAttrs (name: type: type == "directory") files);
-      getDirectories = d: (builtins.attrNames (filterDirectories (builtins.readDir d)));
-      importModules =
-        let
-          createModule = name: {
-            "${builtins.baseNameOf name}" = import name;
-          };
-          modules = d: map createModule (map (n: "${builtins.toString d}/${n}") (getDirectories d));
-        in d: lib.attrsets.mergeAttrsList (modules d);
-    };
+      let
+        lib = nixpkgs.lib;
+      in rec {
+        filterDirectories = (files: lib.attrsets.filterAttrs (name: type: type == "directory") files);
+        getDirectories = d: (builtins.attrNames (filterDirectories (builtins.readDir d)));
+        importModules =
+          let
+            createModule = name: {
+              "${builtins.baseNameOf name}" = import name;
+            };
+            modules = d: map createModule (map (n: "${builtins.toString d}/${n}") (getDirectories d));
+          in d: lib.attrsets.mergeAttrsList (modules d);
+      };
   };
 }

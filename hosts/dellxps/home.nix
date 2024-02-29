@@ -3,6 +3,10 @@
   imports = [
     ./desktop-files
     homeManagerModules.thunderbird
+    homeManagerModules.hyprland
+    homeManagerModules.devtools
+    homeManagerModules.social-media
+    homeManagerModules.music
   ];
 
   fonts.fontconfig.enable = true;

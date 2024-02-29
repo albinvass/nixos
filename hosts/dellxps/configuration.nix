@@ -38,7 +38,7 @@
       {
         home-manager.useGlobalPkgs = true;
         home-manager.useUserPackages = true;
-        home-manager.users.avass = homeManagerModules."avass@dellxps";
+        home-manager.users.avass = { imports = [ ./home.nix ]; };
         home-manager.extraSpecialArgs = {
           inherit inputs homeManagerModules;
         };
