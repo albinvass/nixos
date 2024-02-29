@@ -1,8 +1,22 @@
 # NixOS-WSL specific options are documented on the NixOS-WSL repository:
 # https://github.com/nix-community/NixOS-WSL
 
-{ pkgs, ... }:
+{ pkgs, nixosModules, homeManagerModules, inputs, ... }:
 {
+  imports = [
+    inputs.wsl.nixosModules.wsl
+    nixosModules.docker
+    nixosModules.tailscale
+    inputs.home-manager.nixosModules.home-manager
+    {
+      home-manager.useGlobalPkgs = true;
+      home-manager.useUserPackages = true;
+      home-manager.users.avass = homeManagerModules."avass@wsl";
+      home-manager.extraSpecialArgs = {
+        inherit inputs homeManagerModules;
+      };
+    }
+  ];
 
   wsl.enable = true;
   wsl.defaultUser = "avass";

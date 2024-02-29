@@ -40,83 +40,24 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };
-  outputs = { self, nixpkgs, nixos-hardware, home-manager, ... }@inputs:
-  let
-    system = "x86_64-linux";
-  in rec {
-    nixosConfigurations = {
-      "dellxps" = nixpkgs.lib.nixosSystem {
-        inherit system;
-        modules = [
-          ./hosts/laptop/configuration.nix
-          nixosModules.hyprland
-          nixosModules.gaming
-          nixosModules.docker
-          nixosModules.tailscale
-          # https://github.com/NixOS/nixos-hardware/tree/master/dell/xps/15-9520
-          nixos-hardware.nixosModules.dell-xps-15-9520-nvidia
-          home-manager.nixosModules.home-manager
-          {
-            nixpkgs.overlays = [ inputs.nixneovimplugins.overlays.default ];
-          }
-          {
-            home-manager.useGlobalPkgs = true;
-            home-manager.useUserPackages = true;
-            home-manager.users.avass = homeManagerModules."avass@dellxps";
-            home-manager.extraSpecialArgs = {
-              inherit inputs homeManagerModules;
-            };
-          }
-        ];
-      };
-      "wsl" = nixpkgs.lib.nixosSystem {
-        inherit system;
-        modules = [
-          ./hosts/wsl/configuration.nix
-          inputs.wsl.nixosModules.wsl
-          nixosModules.docker
-          nixosModules.tailscale
-          home-manager.nixosModules.home-manager
-          {
-            home-manager.useGlobalPkgs = true;
-            home-manager.useUserPackages = true;
-            home-manager.users.avass = homeManagerModules."avass@wsl";
-            home-manager.extraSpecialArgs = {
-              inherit inputs homeManagerModules;
-            };
-          }
-        ];
-      };
-    };
-    nixOnDroidConfigurations = {
-      "avass@s22ultra" = inputs.nix-on-droid.lib.nixOnDroidConfiguration {
-        modules = [
-          {
-            # Read Nix-on-Droid changelog before changing this value
-            system.stateVersion = "23.05";
+  outputs = { self, nixpkgs, ... }@inputs:
 
-            nix.extraOptions = ''
-              experimental-features = nix-command flakes
-            '';
-
-            home-manager.extraSpecialArgs = {
-              inherit inputs homeManagerModules;
-            };
-            home-manager.config = { pkgs, inputs, homeManagerModules, ... }:
-              {
-                home.stateVersion = "23.05";
-                imports = [
-                  homeManagerModules.devtools
-                ];
-              };
-            }
-        ];
-      };
-    };
+  rec {
+    nixosConfigurations = 
+      let
+        hosts = self.lib.getDirectories ./hosts;
+        mkNixosConfigurations = (host: {
+          "${host}" = nixpkgs.lib.nixosSystem {
+            system = "x86_64-linux";
+            modules = [ ./hosts/${host}/configuration.nix ];
+            specialArgs = { inherit inputs nixosModules homeManagerModules;};
+          };
+        });
+      in nixpkgs.lib.attrsets.mergeAttrsList (builtins.map mkNixosConfigurations hosts);
     nixosModules = {
       devtools = {
         imports = [
-          home-manager.nixosModules.home-manager
+          inputs.home-manager.nixosModules.home-manager
           {
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
@@ -144,7 +85,7 @@
       };
       "avass@dellxps" = {
         imports = [
-          ./hosts/laptop/home.nix
+          ./hosts/dellxps/home.nix
           homeManagerModules.hyprland
           homeManagerModules.devtools
           homeManagerModules.social-media
@@ -153,21 +94,23 @@
       };
       "avass@wsl" = {
         imports = [
-          ./hosts/laptop/home.nix
+          ./hosts/dellxps/home.nix
           homeManagerModules.devtools
         ];
       };
     } // self.lib.importModules ./home-manager/modules;
-    lib = {
+    lib =
+    let
+      lib = nixpkgs.lib;
+    in rec {
+      filterDirectories = (files: lib.attrsets.filterAttrs (name: type: type == "directory") files);
+      getDirectories = d: (builtins.attrNames (filterDirectories (builtins.readDir d)));
       importModules =
         let
-          lib = nixpkgs.lib;
-          filterDirectories = (files: lib.attrsets.filterAttrs (name: type: type == "directory") files);
-          getDirectories = d: map (n: "${builtins.toString d}/${n}") (builtins.attrNames (filterDirectories (builtins.readDir d)));
           createModule = name: {
             "${builtins.baseNameOf name}" = import name;
           };
-          modules = d: map createModule (getDirectories d);
+          modules = d: map createModule (map (n: "${builtins.toString d}/${n}") (getDirectories d));
         in d: lib.attrsets.mergeAttrsList (modules d);
     };
   };

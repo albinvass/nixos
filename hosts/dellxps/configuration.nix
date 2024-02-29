@@ -2,7 +2,7 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
-{ pkgs, ... }:
+{ pkgs, nixosModules, homeManagerModules, inputs, ... }:
 
 {
   system.stateVersion = "23.05"; # Did you read the comment?
@@ -25,6 +25,24 @@
   imports =
     [ # Include the results of the hardware scan.
       ./hardware-configuration.nix
+      # https://github.com/NixOS/nixos-hardware/tree/master/dell/xps/15-9520
+      inputs.nixos-hardware.nixosModules.dell-xps-15-9520-nvidia
+      nixosModules.hyprland
+      nixosModules.gaming
+      nixosModules.docker
+      nixosModules.tailscale
+      inputs.home-manager.nixosModules.home-manager
+      {
+        nixpkgs.overlays = [ inputs.nixneovimplugins.overlays.default ];
+      }
+      {
+        home-manager.useGlobalPkgs = true;
+        home-manager.useUserPackages = true;
+        home-manager.users.avass = homeManagerModules."avass@dellxps";
+        home-manager.extraSpecialArgs = {
+          inherit inputs homeManagerModules;
+        };
+      }
     ];
 
   # Bootloader.

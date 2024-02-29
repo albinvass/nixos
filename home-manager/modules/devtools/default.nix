@@ -94,5 +94,6 @@
     duf
     dogdns
     restic
+    statix
   ];
 }
