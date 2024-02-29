@@ -38,7 +38,7 @@
     taskwarrior.enable = true;
     nnn = {
       enable = true;
-      package = (pkgs.nnn.override { withNerdIcons = true;});
+      package = pkgs.nnn.override { withNerdIcons = true;};
       bookmarks = {
         g = "~/git";
         n = "~/git/github/albinvass/nixos";

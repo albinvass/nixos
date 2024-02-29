@@ -63,13 +63,13 @@
         luaFiles = 
           let
             luaDir = builtins.readDir ./nvim/lua;
-            onlyFiles = (n: v: v == "regular");
+            onlyFiles = n: v: v == "regular";
           in builtins.attrNames (lib.attrsets.filterAttrs onlyFiles luaDir);
-        mkRequire = (path: 
+        mkRequire = path: 
           let
             filePath = toString path;
             requireName = lib.strings.removeSuffix ''.lua'' filePath;
-          in "require'${requireName}'");
+          in "require'${requireName}'";
       in lib.strings.concatMapStrings (s: s + "\n") (map mkRequire luaFiles);
   };
 }

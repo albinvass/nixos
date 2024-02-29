@@ -45,22 +45,22 @@
     nixosConfigurations = 
       let
         hosts = self.lib.getDirectories ./hosts;
-        mkNixosConfiguration = (host: {
+        mkNixosConfiguration = host: {
           "${host}" = nixpkgs.lib.nixosSystem {
             system = "x86_64-linux";
             modules = [ ./hosts/${host}/configuration.nix ];
             specialArgs = { inherit inputs nixosModules homeManagerModules;};
           };
-        });
+        };
         nixosConfigurations = nixpkgs.lib.attrsets.mergeAttrsList (builtins.map mkNixosConfiguration hosts);
       in nixosConfigurations;
     nixosModules = self.lib.importModules ./nixos/modules;
     homeManagerModules = self.lib.importModules ./home-manager/modules;
     lib =
       let
-        lib = nixpkgs.lib;
+        inherit (nixpkgs) lib;
       in rec {
-        filterDirectories = (files: lib.attrsets.filterAttrs (name: type: type == "directory") files);
+        filterDirectories = files: lib.attrsets.filterAttrs (name: type: type == "directory") files;
         getDirectories = d: (builtins.attrNames (filterDirectories (builtins.readDir d)));
         importModules =
           let
