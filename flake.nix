@@ -4,9 +4,7 @@
     nixos-hardware.url = "github:NixOs/nixos-hardware/master";
     nixneovimplugins.url = "github:NixNeovim/NixNeovim";
 
-    hyprland = {
-      url = "github:hyprwm/Hyprland";
-    };
+    hyprland.url = "github:hyprwm/Hyprland";
     hyprland-contrib = {
       url = "github:hyprwm/contrib";
        inputs.nixpkgs.follows = "nixpkgs";
@@ -20,7 +18,7 @@
       inputs.hyprland.follows = "hyprland";
     };
     nwg-displays = {
-      url = "github:nwg-piotr/nwg-displays?ref=v0.3.10";
+      url = "github:nwg-piotr/nwg-displays?ref=v0.3.13";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     home-manager = {
@@ -33,10 +31,6 @@
     };
     wsl = {
       url = "github:nix-community/NixOS-WSL";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-    nix-on-droid = {
-      url = "github:nix-community/nix-on-droid/release-23.05";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };
