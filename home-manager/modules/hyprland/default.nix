@@ -19,6 +19,10 @@
     font = {
       name = "Noto Sans,  10";
     };
+    theme = {
+      name = "Catppuccin-Mocha-Standard-Blue-Dark";
+      package = pkgs.catppuccin-gtk.override { variant = "mocha"; };
+    };
   };
   home.pointerCursor = {
     gtk.enable = true;
