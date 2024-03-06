@@ -31,6 +31,7 @@
       nixosModules.gaming
       nixosModules.docker
       nixosModules.tailscale
+      nixosModules.nh
       inputs.home-manager.nixosModules.home-manager
       {
         nixpkgs.overlays = [ inputs.nixneovimplugins.overlays.default ];
