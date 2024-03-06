@@ -9,9 +9,12 @@
     homeManagerModules.sops
     homeManagerModules.srenity
     inputs.sops-nix.homeManagerModules.sops
+    inputs.nix-index-database.hmModules.nix-index
   ];
 
+
   programs = {
+    nix-index-database.comma.enable = true;
     htop.enable = true;
     awscli.enable = true;
     fzf = {

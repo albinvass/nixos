@@ -293,6 +293,26 @@
         "type": "github"
       }
     },
+    "nix-index-database": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1709708644,
+        "narHash": "sha256-XAFOkZ6yexsqeJrCXWoHxopq0i+7ZqbwATXomMnGmr4=",
+        "owner": "nix-community",
+        "repo": "nix-index-database",
+        "rev": "94a1e46434736a40f976a454f8bd3ea2144f349b",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nix-community",
+        "repo": "nix-index-database",
+        "type": "github"
+      }
+    },
     "nixneovimplugins": {
       "inputs": {
         "flake-utils": "flake-utils",
@@ -546,6 +566,7 @@
         "hyprgrass": "hyprgrass",
         "hyprland": "hyprland",
         "hyprland-contrib": "hyprland-contrib",
+        "nix-index-database": "nix-index-database",
         "nixneovimplugins": "nixneovimplugins",
         "nixos-hardware": "nixos-hardware",
         "nixpkgs": "nixpkgs_4",
