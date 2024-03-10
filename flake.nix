@@ -3,6 +3,7 @@
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     nixos-hardware.url = "github:NixOs/nixos-hardware/master";
     nixneovimplugins.url = "github:NixNeovim/NixNeovim";
+    nix-alien.url = "github:thiagokokada/nix-alien";
 
     hyprland.url = "github:hyprwm/Hyprland";
     hyprland-contrib = {
