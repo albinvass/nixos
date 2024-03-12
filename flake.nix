@@ -44,34 +44,13 @@
     };
   };
   outputs = { self, nixpkgs, ... }@inputs:
-  rec {
-    nixosConfigurations = 
-      let
-        hosts = self.lib.getDirectories ./hosts;
-        mkNixosConfiguration = host: {
-          "${host}" = nixpkgs.lib.nixosSystem {
-            system = "x86_64-linux";
-            modules = [ ./hosts/${host}/configuration.nix ];
-            specialArgs = { inherit inputs nixosModules homeManagerModules;};
-          };
-        };
-        nixosConfigurations = nixpkgs.lib.attrsets.mergeAttrsList (builtins.map mkNixosConfiguration hosts);
-      in nixosConfigurations;
+  {
+    nixosConfigurations = self.lib.importHosts ./hosts {
+      inherit inputs;
+      inherit (self) nixosModules homeManagerModules;
+    };
     nixosModules = self.lib.importModules ./nixos/modules;
     homeManagerModules = self.lib.importModules ./home-manager/modules;
-    lib =
-      let
-        inherit (nixpkgs) lib;
-      in rec {
-        filterDirectories = files: lib.attrsets.filterAttrs (name: type: type == "directory") files;
-        getDirectories = d: (builtins.attrNames (filterDirectories (builtins.readDir d)));
-        importModules =
-          let
-            createModule = name: {
-              "${builtins.baseNameOf name}" = import name;
-            };
-            modules = d: map createModule (map (n: "${builtins.toString d}/${n}") (getDirectories d));
-          in d: lib.attrsets.mergeAttrsList (modules d);
-      };
+    lib = import ./lib { inherit (nixpkgs) lib; };
   };
 }
