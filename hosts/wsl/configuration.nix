@@ -7,31 +7,16 @@
     inputs.wsl.nixosModules.wsl
     nixosModules.docker
     nixosModules.tailscale
-    {
-      nixpkgs.overlays = [ inputs.nixneovimplugins.overlays.default ];
-    }
     inputs.home-manager.nixosModules.home-manager
-    {
-      home-manager.useGlobalPkgs = true;
-      home-manager.useUserPackages = true;
-      home-manager.users.avass = {
-        imports = [ ./home.nix ];
-      };
-      home-manager.extraSpecialArgs = {
-        inherit inputs homeManagerModules;
-      };
-    }
   ];
 
-  wsl.enable = true;
-  wsl.defaultUser = "avass";
-  nixpkgs.config.allowUnfree = true;
+  system.stateVersion = "23.11";
 
-  programs.zsh.enable = true;
-  users.users.avass = {
-    shell = pkgs.zsh;
+  nixpkgs = {
+    config.allowUnfree = true;
+    overlays = [ inputs.nixneovimplugins.overlays.default ];
   };
-  
+
   nix = {
     package = pkgs.nix;
     settings = {
@@ -49,17 +34,28 @@
     };
   };
 
-  # This value determines the NixOS release from which the default
-  # settings for stateful data, like file locations and database versions
-  # on your system were taken. It's perfectly fine and recommended to leave
-  # this value at the release version of the first install of this system.
-  # Before changing this value read the documentation for this option
-  # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
-  system.stateVersion = "23.11"; # Did you read the comment?
+  home-manager = {
+    useGlobalPkgs = true;
+    useUserPackages = true;
+    users.avass = { imports = [ ./home.nix ]; };
+    extraSpecialArgs = {
+      inherit inputs homeManagerModules;
+    };
+  };
+
+  wsl = {
+    enable = true;
+    defaultUser = "avass";
+  };
+
+  programs.zsh.enable = true;
+  users.users.avass = {
+    shell = pkgs.zsh;
+  };
+  
   environment.sessionVariables = {
     BROWSER = "/mnt/c/Windows/explorer.exe";
   };
 
-  # Add compatibility for /bin/bash etc.
   services.envfs.enable = true;
 }

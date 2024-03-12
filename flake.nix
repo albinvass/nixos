@@ -43,8 +43,8 @@
       inputs.nixpkgs.follows = "nixpkgs"; # override this repo's nixpkgs snapshot
     };
   };
-  outputs = { self, nixpkgs, ... }@inputs:
-  {
+
+  outputs = { self, nixpkgs, ... }@inputs: {
     nixosConfigurations = self.lib.importHosts ./hosts {
       inherit inputs;
       inherit (self) nixosModules homeManagerModules;
