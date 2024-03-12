@@ -7,6 +7,9 @@
     inputs.wsl.nixosModules.wsl
     nixosModules.docker
     nixosModules.tailscale
+    {
+      nixpkgs.overlays = [ inputs.nixneovimplugins.overlays.default ];
+    }
     inputs.home-manager.nixosModules.home-manager
     {
       home-manager.useGlobalPkgs = true;

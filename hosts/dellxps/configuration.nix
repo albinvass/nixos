@@ -32,10 +32,10 @@
       nixosModules.docker
       nixosModules.tailscale
       nixosModules.nh
-      inputs.home-manager.nixosModules.home-manager
       {
         nixpkgs.overlays = [ inputs.nixneovimplugins.overlays.default ];
       }
+      inputs.home-manager.nixosModules.home-manager
       {
         home-manager.useGlobalPkgs = true;
         home-manager.useUserPackages = true;
