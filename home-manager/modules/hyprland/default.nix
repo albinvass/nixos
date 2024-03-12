@@ -89,7 +89,6 @@
         "[workspace 3 silent; group] microsoft-edge"
 
         "[workspace 5 silent; group] slack"
-        "[workspace 5 silent; group] discord"
         "[workspace 5 silent; group] element-desktop"
         "[workspace 5 silent; group] signal-desktop"
       ];
