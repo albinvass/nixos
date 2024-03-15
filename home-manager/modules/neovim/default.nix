@@ -26,6 +26,7 @@
       nnn
       sqls
       marksman
+      ripgrep
     ];
 
     plugins = with pkgs.vimPlugins; [

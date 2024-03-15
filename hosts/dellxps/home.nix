@@ -18,8 +18,8 @@
   home.stateVersion = "23.11";
 
   home.packages = with pkgs; [
-    bitwarden
     discord
+    bitwarden
     microsoft-edge
     libsForQt5.kwalletmanager
     gnome.seahorse
@@ -31,4 +31,9 @@
   home.sessionVariables = {};
   # Let Home Manager install and manage itself.
   programs.home-manager.enable = true;
+
+  wezterm = {
+    enable_wayland = true;
+    dpi = 192;
+  };
 }

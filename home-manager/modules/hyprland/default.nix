@@ -238,8 +238,6 @@
     defaultTimeout = 4000;
   };
 
-  #services.mpd.enable = true;
-
   services.swww-images = {
     enable = true;
   };

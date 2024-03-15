@@ -4,6 +4,7 @@
     nixos-hardware.url = "github:NixOs/nixos-hardware/master";
     nixneovimplugins.url = "github:NixNeovim/NixNeovim";
     nix-alien.url = "github:thiagokokada/nix-alien";
+    nixgl.url = "github:guibou/nixGL";
 
     hyprland.url = "github:hyprwm/Hyprland";
     hyprland-contrib = {
@@ -40,17 +41,37 @@
     };
     nh = {
       url = "github:viperML/nh";
-      inputs.nixpkgs.follows = "nixpkgs"; # override this repo's nixpkgs snapshot
+      inputs.nixpkgs.follows = "nixpkgs";
     };
   };
 
-  outputs = { self, nixpkgs, ... }@inputs: {
+  outputs = { self, nixpkgs, ... }@inputs: rec {
     nixosConfigurations = self.lib.importHosts ./hosts {
       inherit inputs;
       inherit (self) nixosModules homeManagerModules;
     };
     nixosModules = self.lib.importModules ./nixos/modules;
     homeManagerModules = self.lib.importModules ./home-manager/modules;
+    homeConfigurations."avass@5CG0388QDR" = inputs.home-manager.lib.homeManagerConfiguration {
+      pkgs = import nixpkgs {
+        system = "x86_64-linux";
+        config.allowUnfree = true;
+        overlays = [
+          inputs.nixneovimplugins.overlays.default
+          inputs.nixgl.overlay
+        ];
+      };
+      modules = [
+	      ./homes/vcc/home.nix
+        homeManagerModules.devtools
+        homeManagerModules.social-media
+        homeManagerModules.music
+      ];
+      extraSpecialArgs = {
+        inherit inputs;
+        inherit (self) homeManagerModules;
+      };
+    };
     lib = import ./lib { inherit (nixpkgs) lib; };
   };
 }
