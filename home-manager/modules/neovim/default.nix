@@ -27,6 +27,7 @@
       sqls
       marksman
       ripgrep
+      git
     ];
 
     plugins = with pkgs.vimPlugins; [
