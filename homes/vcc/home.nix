@@ -19,16 +19,25 @@
           source-secrets vcc
           vccvpn $@
         '';
+        s = writeShellScriptBin "s" /* bash */ ''
+          #!${pkgs.bash}/bin/bash
+          sudo --preserve-env=PATH env $@
+        '';
       in [
         bitwarden
         microsoft-edge
         cloak
-        vpn
         dmenu
         ninja
         gcc
         i3
-        pkgs.nixgl.nixGLIntel
+        git-repo
+        nixgl.nixGLIntel
+        firecracker
+        virt-manager
+      ] ++ [
+        vpn
+        s
       ];
   };
 

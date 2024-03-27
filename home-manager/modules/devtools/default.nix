@@ -7,7 +7,6 @@
     homeManagerModules.github
     homeManagerModules.kubernetes
     homeManagerModules.sops
-    homeManagerModules.srenity
     inputs.sops-nix.homeManagerModules.sops
     inputs.nix-index-database.hmModules.nix-index
   ];
@@ -99,6 +98,7 @@
     dogdns
     restic
     statix
+    jless
     inputs.nh.packages.${pkgs.system}.default
     inputs.nix-alien.packages.${pkgs.system}.nix-alien
   ];

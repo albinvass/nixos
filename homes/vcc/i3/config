@@ -51,21 +51,25 @@ bindsym Mod4+h focus left
 bindsym Mod4+j focus down
 bindsym Mod4+k focus up
 bindsym Mod4+l focus right
+bindsym Mod4+Shift+h move left
+bindsym Mod4+Shift+j move down
+bindsym Mod4+Shift+k move up
+bindsym Mod4+Shift+l move right
 bindsym Mod4+s layout stacking
 bindsym Mod4+v split v
 bindsym Mod4+w layout tabbed
+bindsym Mod4+r mode "resize"
 
 
 gaps inner 12px
 gaps outer 1px
 
 mode "resize" {
-  bindsym Down resize grow height 10 px or 10 ppt
   bindsym Escape mode default
-  bindsym Left resize shrink width 10 px or 10 ppt
-  bindsym Return mode default
-  bindsym Right resize grow width 10 px or 10 ppt
-  bindsym Up resize shrink height 10 px or 10 ppt
+  bindsym h resize shrink width 5 px or 5 ppt
+  bindsym j resize grow height 5 px or 5 ppt
+  bindsym k resize shrink height 5 px or 5 ppt
+  bindsym l resize grow width 5 px or 5 ppt
 }
 
 bar {

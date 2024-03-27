@@ -9,6 +9,9 @@
       "CDSID" = {};
       "PASSWORD" = {};
       "POINTSHARP_PIN" = {};
+      "ARTIFACTORY_API_KEY" = {};
+      "GERRIT_HTTP_USERNAME" = {};
+      "GERRIT_HTTP_PASSWORD" = {};
     };
   };
 }
