@@ -35,6 +35,7 @@
         nixgl.nixGLIntel
         firecracker
         virt-manager
+        fly
       ] ++ [
         vpn
         s
