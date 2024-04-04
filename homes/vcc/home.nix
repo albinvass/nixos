@@ -21,7 +21,7 @@
         '';
         s = writeShellScriptBin "s" /* bash */ ''
           #!${pkgs.bash}/bin/bash
-          sudo --preserve-env=PATH env $@
+          sudo --preserve-env --preserve-env=PATH env $@
         '';
       in [
         bitwarden
