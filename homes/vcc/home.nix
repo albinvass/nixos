@@ -25,7 +25,6 @@
         '';
       in [
         bitwarden
-        microsoft-edge
         cloak
         dmenu
         ninja
