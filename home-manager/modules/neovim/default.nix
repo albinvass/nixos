@@ -22,6 +22,7 @@
       vscode-langservers-extracted
       shellcheck
       gopls
+      go-tools
       nodePackages.pyright
       nnn
       sqls

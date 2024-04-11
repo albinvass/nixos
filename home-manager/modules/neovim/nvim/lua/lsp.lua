@@ -15,7 +15,14 @@ local servers = {
   helm_ls={},
   nil_ls={},
   eslint={},
-  gopls={},
+  gopls={
+    settings={
+      gopls={
+        completeUnimported = true,
+        staticcheck = true,
+      }
+    }
+  },
   marksman={},
   pyright={},
   bashls={},
