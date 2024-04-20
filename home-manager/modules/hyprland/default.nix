@@ -156,8 +156,10 @@
         "group,class:^Signal$"
       ];
       bind = [
-        "$mainMod, Return, exec, wezterm --config-file ~/.config/wezterm/wezterm.lua"
-        "$mainMod_SHIFT, Return, exec, wezterm --config-file ~/.config/wezterm/wezterm.lua ssh avass@nixos-1.dev.albinvass.se"
+        # [float;tile] is a workaround see:
+        # https://github.com/wez/wezterm/issues/5103#issuecomment-2041148794
+        "$mainMod, Return, exec, [float;tile] wezterm --config-file ~/.config/wezterm/wezterm.lua"
+        "$mainMod_SHIFT, Return, exec, [float;tile] wezterm --config-file ~/.config/wezterm/wezterm.lua ssh avass@nixos-1.dev.albinvass.se"
         "$mainMod_SHIFT, Q, killactive,"
         "$mainMod_SHIFT, E, exit,"
         "$mainMod, D, exec, rofi -show drun"

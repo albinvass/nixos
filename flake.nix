@@ -5,7 +5,6 @@
     nixneovimplugins.url = "github:NixNeovim/NixNeovim";
     nix-alien.url = "github:thiagokokada/nix-alien";
     nixgl.url = "github:guibou/nixGL";
-
     hyprland.url = "github:hyprwm/Hyprland";
     hyprland-contrib = {
       url = "github:hyprwm/contrib";
