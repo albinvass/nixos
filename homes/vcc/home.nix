@@ -35,6 +35,7 @@
         firecracker
         virt-manager
         fly
+        arandr
       ] ++ [
         vpn
         s
