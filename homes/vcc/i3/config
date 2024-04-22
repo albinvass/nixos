@@ -1,3 +1,4 @@
+exec_always i3bar
 font pango:monospace 8.000000
 floating_modifier Mod4
 default_border normal 2
