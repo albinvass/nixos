@@ -38,6 +38,7 @@
         virt-manager
         fly
         arandr
+        flameshot
       ] ++ [
         vpn
         s
