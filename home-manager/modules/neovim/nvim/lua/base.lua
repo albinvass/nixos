@@ -42,3 +42,8 @@ vim.keymap.set("n", "<leader>xl", function() require("trouble").toggle("loclist"
 vim.keymap.set("n", "gR", function() require("trouble").toggle("lsp_references") end)
 
 vim.filetype.add({ extension = { conflist = 'json' } }) 
+
+
+require('whitespace-nvim').setup()
+-- remove trailing whitespace with a keybinding
+vim.keymap.set('n', '<Leader>t', require('whitespace-nvim').trim)
