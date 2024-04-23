@@ -1,12 +1,16 @@
-_:
+{ inputs, ... }:
 {
   programs = {
     starship = {
       enable = true;
       enableZshIntegration = true;
-      settings = {
-        add_newline = true;
-      };
+      settings =
+        let
+        flavour = "mocha";
+        in {
+          add_newline = true;
+          palette = "catppuccin_${flavour}";
+        } // builtins.fromTOML (builtins.readFile "${inputs.catppuccin}/palettes/${flavour}.toml");
     };
     zsh = {
       enable = true;

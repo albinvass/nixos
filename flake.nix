@@ -1,5 +1,9 @@
 {
   inputs = {
+    catppuccin = {
+      url = "github:catppuccin/starship";
+      flake = false;
+    };
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     nixos-hardware.url = "github:NixOs/nixos-hardware/master";
     nixneovimplugins.url = "github:NixNeovim/NixNeovim";
