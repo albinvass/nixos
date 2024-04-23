@@ -1,4 +1,11 @@
 local nvim_lsp = require('lspconfig')
+
+local format_on_close = function()
+  vim.api.nvim_create_autocmd({"BufWritePre"}, {
+      callback = vim.lsp.buf.format { async = false }
+  })
+end
+
 -- See:
 -- https://github.com/neovim/nvim-lspconfig/blob/master/doc/server_configurations.md
 local servers = {
@@ -16,6 +23,9 @@ local servers = {
   nil_ls={},
   eslint={},
   gopls={
+    _on_attach=function()
+      format_on_close()
+    end,
     settings={
       gopls={
         completeUnimported = true,
@@ -28,19 +38,17 @@ local servers = {
   bashls={},
   --dockerls={},
   clangd={},
-  terraformls={_on_attach=function()
-	  vim.api.nvim_create_autocmd({"BufWritePre"}, {
-	      pattern = {"*.tf", "*.tfvars"},
-	      callback = vim.lsp.buf.formatting_sync
-	  })
-      end
+  terraformls={
+    _on_attach=function()
+      format_on_close()
+    end
   },
 }
 
 for lsp, conf in pairs(servers) do
   conf['on_attach'] = function()
       if conf['_on_attach'] ~= nil then
-	  conf._on_attach()
+        conf._on_attach()
       end
   end
   conf['flags'] = {
