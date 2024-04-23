@@ -1,35 +1,44 @@
 _:
 {
-  programs.zsh = {
-    enable = true;
-    initExtra = /* bash */ ''
-      bw-unlock() {
-        export BW_SESSION=$(bw unlock --raw)
-      }
-
-      bw-login() {
-        export BW_SESSION=$(bw login --raw)
-      }
-
-      if [ -f "$HOME/.secrets" ]; then
-        source "$HOME/.secrets"
-      fi
-
-      if [ -f /etc/profiles/per-user/avass/share/quitcd/quitcd.bash_sh_zsh ]; then
-        source /etc/profiles/per-user/avass/share/quitcd/quitcd.bash_sh_zsh
-      fi
-    '';
-    enableCompletion = false;
-    enableAutosuggestions = true;
-    history.extended = true;
-    oh-my-zsh = {
+  programs = {
+    starship = {
       enable = true;
-      plugins = [
-        "git"
-        "kubectl"
-        "ripgrep"
-      ];
-      theme = "robbyrussell";
+      enableZshIntegration = true;
+      settings = {
+        add_newline = true;
+      };
+    };
+    zsh = {
+      enable = true;
+      initExtra = /* bash */ ''
+        bw-unlock() {
+          export BW_SESSION=$(bw unlock --raw)
+        }
+
+        bw-login() {
+          export BW_SESSION=$(bw login --raw)
+        }
+
+        if [ -f "$HOME/.secrets" ]; then
+          source "$HOME/.secrets"
+        fi
+
+        if [ -f /etc/profiles/per-user/avass/share/quitcd/quitcd.bash_sh_zsh ]; then
+          source /etc/profiles/per-user/avass/share/quitcd/quitcd.bash_sh_zsh
+        fi
+      '';
+      enableCompletion = false;
+      enableAutosuggestions = true;
+      history.extended = true;
+      oh-my-zsh = {
+        enable = true;
+        plugins = [
+          "git"
+          "kubectl"
+          "ripgrep"
+        ];
+        theme = "robbyrussell";
+      };
     };
   };
 
