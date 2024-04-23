@@ -24,6 +24,17 @@
         config.adjust_window_size_when_changing_font_size = false
         config.font_size = 10
         config.color_scheme = "Catppuccin Mocha"
+
+        local act = wezterm.action
+        config.keys = {
+          { key = 'UpArrow', mods = 'SHIFT', action = act.ScrollToPrompt(-1) },
+          { key = 'DownArrow', mods = 'SHIFT', action = act.ScrollToPrompt(1) },
+        }
+        config.mouse_bindings = {{
+          event = { Down = { streak = 3, button = 'Left' } },
+          action = wezterm.action.SelectTextAtMouseCursor 'SemanticZone',
+          mods = 'NONE',
+        }}
         return config
       '';
     };
