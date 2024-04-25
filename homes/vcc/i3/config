@@ -1,4 +1,3 @@
-exec_always i3bar
 font pango:monospace 8.000000
 floating_modifier Mod4
 default_border normal 2
@@ -78,8 +77,8 @@ bar {
   mode dock
   hidden_state hide
   position bottom
-  status_command /nix/store/hv639y7ypcsprf78z5b16wj1pvmlidw5-i3status-2.14/bin/i3status
-  i3bar_command /nix/store/g387f3bxbixsapibq25bh84ppjbpkfwg-i3-4.23/bin/i3bar
+  status_command i3status
+  i3bar_command i3bar
   workspace_buttons yes
   strip_workspace_numbers no
   tray_output primary
