@@ -1,4 +1,4 @@
-{ inputs, ... }:
+{ config, inputs, ... }:
 {
   programs = {
     starship = {
@@ -51,7 +51,7 @@
 
       function list-secrets() {
         subpath=$1
-        find "$XDG_RUNTIME_DIR/secrets/$subpath" \
+        find "${config.xdg.configHome}/sops-nix/secrets/$subpath" \
           -mindepth 1 -maxdepth 1
       }
 
