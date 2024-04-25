@@ -5,8 +5,6 @@
     homeManagerModules.wezterm
   ];
 
-  nix.package = pkgs.nixVersions.nix_2_20;
-
   home = {
     username = "avass";
     homeDirectory = "/home/avass";
@@ -39,6 +37,7 @@
         fly
         arandr
         flameshot
+        nix
       ] ++ [
         vpn
         s
