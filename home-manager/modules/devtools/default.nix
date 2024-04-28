@@ -67,7 +67,7 @@
     tree
     docker-compose
     python311
-    poetry
+    #poetry
     rustc
     cargo
     yarn
