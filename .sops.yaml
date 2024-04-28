@@ -9,4 +9,5 @@ creation_rules:
         - *avass
   - key_groups:
     - age:
+        - *vcc
         - *avass
