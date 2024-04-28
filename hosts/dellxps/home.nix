@@ -21,6 +21,7 @@
     discord
     bitwarden
     microsoft-edge
+    firefox
     libsForQt5.kwalletmanager
     gnome.seahorse
     synergy
