@@ -27,6 +27,9 @@
       enable = true;
       enableZshIntegration = true;
       flags = ["--disable-up-arrow"];
+      settings = {
+        dotfiles.enabled = true;
+      };
     };
     ripgrep.enable = true;
     k9s.enable = true;
