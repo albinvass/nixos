@@ -1,4 +1,4 @@
-{ pkgs, inputs, homeManagerModules, ... }:
+{ config, pkgs, inputs, homeManagerModules, ... }:
 {
   imports = [
     homeManagerModules.neovim
@@ -11,14 +11,22 @@
     inputs.nix-index-database.hmModules.nix-index
   ];
 
+  sops = {
+    secrets = builtins.mapAttrs (
+      k: v: (v // { sopsFile = ./secrets.yaml; })
+    ) {
+      "ATUIN_KEY" = { path = "${config.xdg.dataHome}/atuin/key";};
+    };
+  };
 
   programs = {
     nix-index-database.comma.enable = true;
     htop.enable = true;
     awscli.enable = true;
-    fzf = {
+    atuin = {
       enable = true;
       enableZshIntegration = true;
+      flags = ["--disable-up-arrow"];
     };
     ripgrep.enable = true;
     k9s.enable = true;
