@@ -26,6 +26,7 @@
   nix = {
     package = pkgs.nix;
     settings = {
+      trusted-users = [ "root" "avass" ];
       experimental-features = [ "nix-command" "flakes" ];
       extra-substituters = [
         "https://albinvass.cachix.org"
