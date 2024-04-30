@@ -38,6 +38,7 @@
         arandr
         flameshot
         nix
+        xclip
       ] ++ [
         vpn
         s
