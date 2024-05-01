@@ -19,6 +19,13 @@
     };
   };
 
+  home.shellAliases = {
+    "nh-switch" =
+      if config.submoduleSupport.enable
+      then "nh os switch"
+      else "nh home switch";
+  };
+
   programs = {
     nix-index-database.comma.enable = true;
     htop.enable = true;
