@@ -81,6 +81,7 @@
     azure-cli
     bitwarden-cli
     devcontainer
+    devpod
     dig
     libarchive
     tree
