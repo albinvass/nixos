@@ -72,9 +72,10 @@
     archivemount
     atool
     azure-cli
-    libarchive
     bitwarden-cli
+    devcontainer
     dig
+    libarchive
     tree
     docker-compose
     python311
