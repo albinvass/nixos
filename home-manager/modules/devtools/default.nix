@@ -117,6 +117,8 @@
     duf
     dogdns
     restic
+    sad
+    fzf
     statix
     jless
     devenv
