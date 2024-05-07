@@ -56,21 +56,9 @@
     go.enable = true;
     jq.enable = true;
     taskwarrior.enable = true;
-    nnn = {
-      enable = true;
-      package = pkgs.nnn.override { withNerdIcons = true;};
-      bookmarks = {
-        g = "~/git";
-        n = "~/git/github/albinvass/nixos";
-        c = "~/git/github/cinfinity";
-        d = "~/git/github/DCE-devops";
-        s = "~/git/gitlab/srenity";
-      };
-    };
   };
 
   home.sessionVariables = {
-    NNN_ARCHIVE = "\\.(7z|a|ace|alz|arc|arj|bz|bz2|cab|cpio|deb|gz|jar|lha|lz|lzh|lzma|lzo|rar|rpm|rz|t7z|tar|tbz|tbz2|tgz|tlz|txz|tZ|tzo|war|xpi|xz|Z|zip)$";
     FLAKE = "/home/avass/git/github/albinvass/nixos";
   };
 

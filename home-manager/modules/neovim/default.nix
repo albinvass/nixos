@@ -24,7 +24,6 @@
       gopls
       go-tools
       nodePackages.pyright
-      nnn
       sqls
       marksman
       ripgrep
@@ -58,7 +57,7 @@
       gitsigns-nvim
       trouble-nvim
       whitespace-nvim
-      pkgs.vimExtraPlugins.nnn-nvim
+      neo-tree-nvim
     ];
 
     # Automatically require all toplevel lua scripts

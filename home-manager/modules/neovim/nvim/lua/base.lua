@@ -21,18 +21,9 @@ vim.api.nvim_set_keymap("n", "<Leader> ", ":nohlsearch<CR>", {})
 vim.api.nvim_set_keymap("n", "<C-p>", ":Telescope find_files<CR>", {})
 vim.api.nvim_set_keymap("n", "<C-e>", ":Telescope live_grep<CR>", {})
 
-local builtin = require("nnn").builtin
-require'nnn'.setup{
-  mappings = {
-    { "<C-t>", builtin.open_in_tab },       -- open file(s) in tab
-    { "<C-s>", builtin.open_in_split },     -- open file(s) in split
-    { "<C-v>", builtin.open_in_vsplit },    -- open file(s) in vertical split
-    { "<C-y>", builtin.copy_to_clipboard }, -- copy file(s) to clipboard
-    { "<C-w>", builtin.cd_to_path },        -- cd to file directory
-    { "<C-e>", builtin.populate_cmdline },  -- populate cmdline (:) with file(s)
-  }
-}
-vim.api.nvim_set_keymap("n", "<C-n>", ":NnnExplorer<CR>", {})
+require("neo-tree").setup{}
+vim.api.nvim_set_keymap("n", "<C-n>", ":Neotree toggle<CR>", {})
+
 -- keybinds
 vim.keymap.set("n", "<leader>xx", function() require("trouble").toggle() end)
 vim.keymap.set("n", "<leader>xw", function() require("trouble").toggle("workspace_diagnostics") end)
