@@ -29,6 +29,7 @@
         dmenu
         ninja
         gcc
+        light
         i3
         git-repo
         nixgl.nixGLIntel
