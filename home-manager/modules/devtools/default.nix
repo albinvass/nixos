@@ -143,6 +143,8 @@
     devenv
     watchexec
     fly
+    python3Packages.nox
+    pyright
     inputs.nh.packages.${pkgs.system}.default
     inputs.nix-alien.packages.${pkgs.system}.nix-alien
   ];
