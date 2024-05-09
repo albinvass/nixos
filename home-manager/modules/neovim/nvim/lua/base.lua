@@ -9,6 +9,7 @@ vim.o.hlsearch = true
 vim.o.colorcolumn = 80
 vim.o.mouse = nil
 vim.g.mapleader = ","
+vim.g.maplocalleader = " "
 vim.o.indent = true
 vim.bo.tabstop = 2
 vim.bo.shiftwidth = 2
@@ -38,3 +39,19 @@ vim.filetype.add({ extension = { conflist = 'json' } })
 require('whitespace-nvim').setup()
 -- remove trailing whitespace with a keybinding
 vim.keymap.set('n', '<Leader>t', require('whitespace-nvim').trim)
+
+print("neorg")
+require('neorg').setup{
+  load = {
+    ["core.defaults"] = {},
+    ["core.concealer"] = {},
+    ["core.dirman"] = {
+      config = {
+        workspaces = {
+          notes = "~/notes",
+        },
+        default_workspace = "notes",
+      },
+    },
+  }
+}

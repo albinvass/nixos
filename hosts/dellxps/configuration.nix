@@ -20,7 +20,10 @@
 
   nixpkgs = {
     config.allowUnfree = true;
-    overlays = [ inputs.nixneovimplugins.overlays.default ];
+    overlays = [
+      inputs.nixneovimplugins.overlays.default
+      inputs.neorg-overlay.overlays.default
+    ];
   };
 
   nix = {
