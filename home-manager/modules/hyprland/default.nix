@@ -166,6 +166,7 @@
         "$mainMod_SHIFT, D, exec, rofimoji"
         "$mainMod, C, exec, rofi -show window"
         "$mainMod, F, fullscreen, 1"
+        "$mainMod_SHIFT, F, togglefloating"
         "$mainMod, S, togglegroup"
         "$mainMod, U, moveoutofgroup"
         "$mainMod, P, pseudo," # dwindle
