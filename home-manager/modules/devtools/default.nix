@@ -68,6 +68,7 @@
 
   home.sessionVariables = {
     FLAKE = "/home/avass/git/github/albinvass/nixos";
+    ZELLIJ_AUTO_EXIT = "true";
   };
 
 
