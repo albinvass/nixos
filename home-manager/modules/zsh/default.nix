@@ -6,11 +6,11 @@
       enableZshIntegration = true;
       settings =
         let
-        flavour = "mocha";
+          flavour = "mocha";
         in {
           add_newline = true;
           palette = "catppuccin_${flavour}";
-        } // builtins.fromTOML (builtins.readFile "${inputs.catppuccin}/palettes/${flavour}.toml");
+        } // builtins.fromTOML (builtins.readFile "${inputs.catppuccin-starship}/palettes/${flavour}.toml");
     };
     zsh = {
       enable = true;

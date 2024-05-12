@@ -59,6 +59,10 @@
     yazi = {
       enable = true;
       enableZshIntegration = true;
+      theme =
+        let
+          flavour = "mocha";
+        in builtins.fromTOML (builtins.readFile "${inputs.catppuccin-yazi}/themes/${flavour}.toml");
     };
     zellij = {
       enable = true;

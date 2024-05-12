@@ -1,7 +1,11 @@
 {
   inputs = {
-    catppuccin = {
+    catppuccin-starship = {
       url = "github:catppuccin/starship";
+      flake = false;
+    };
+    catppuccin-yazi = {
+      url = "github:catppuccin/yazi";
       flake = false;
     };
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
