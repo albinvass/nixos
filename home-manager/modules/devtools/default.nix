@@ -45,7 +45,18 @@
       enableZshIntegration = true;
       nix-direnv.enable = true;
     };
-    bat.enable = true;
+    bat = {
+      enable = true;
+      config = {
+        theme = "Catppuccin Mocha";
+      };
+      themes = {
+        "Catppuccin Mocha" = {
+          src = inputs.catppuccin-bat;
+          file = "themes/Catppuccin Mocha.tmTheme";
+        };
+      };
+    };
     btop.enable = true;
     eza = {
       enable = true;
@@ -62,7 +73,11 @@
       theme =
         let
           flavour = "mocha";
-        in builtins.fromTOML (builtins.readFile "${inputs.catppuccin-yazi}/themes/${flavour}.toml");
+        in builtins.fromTOML (builtins.readFile "${inputs.catppuccin-yazi}/themes/${flavour}.toml") // {
+          manager = {
+            syntect_theme = "${inputs.catppuccin-bat}/themes/Catppuccin Mocha.tmTheme";
+          };
+        };
     };
     zellij = {
       enable = true;
