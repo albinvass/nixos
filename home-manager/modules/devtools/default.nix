@@ -56,6 +56,10 @@
     go.enable = true;
     jq.enable = true;
     taskwarrior.enable = true;
+    yazi = {
+      enable = true;
+      enableZshIntegration = true;
+    };
     zellij = {
       enable = true;
       enableZshIntegration = true;
