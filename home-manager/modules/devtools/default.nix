@@ -56,6 +56,10 @@
     go.enable = true;
     jq.enable = true;
     taskwarrior.enable = true;
+    zellij = {
+      enable = true;
+      enableZshIntegration = true;
+    };
   };
 
   home.sessionVariables = {
