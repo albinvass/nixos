@@ -86,6 +86,9 @@
         theme = "catppuccin-mocha";
       };
     };
+    zoxide = {
+      enable = true;
+    };
   };
 
   home.sessionVariables = {
