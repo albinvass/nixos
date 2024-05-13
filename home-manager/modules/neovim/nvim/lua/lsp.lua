@@ -23,7 +23,7 @@ local servers = {
   nil_ls={},
   eslint={},
   gopls={
-    _on_attach=function()
+    on_attach=function()
       format_on_close()
     end,
     settings={
@@ -34,23 +34,40 @@ local servers = {
     }
   },
   marksman={},
-  pyright={},
+  pyright={
+    on_init=function(client)
+      local path = client.workspace_folders[1].name
+      if vim.fn.filereadable(path .. "/.gitreview") and vim.fs.basename(path) == "zuul" then
+        client.config.settings.python.analysis = {
+          diagnosticSeverityOverrides = {
+            reportIncompatibleMethodOverride = false,
+          },
+          stubPath = path .. "/" .. "../zuul-typings",
+        }
+        client.notify("workspace/didChangeConfiguration", { settings = client.config.settings })
+        return true
+      end
+    end,
+    settings = {
+      python = {
+        analysis = {
+          reportIncompatibleMethodOverride = true,
+          stubPath = "./typings"
+        },
+      },
+    },
+  },
   bashls={},
   --dockerls={},
   clangd={},
   terraformls={
-    _on_attach=function()
+    on_attach=function()
       format_on_close()
     end
   },
 }
 
 for lsp, conf in pairs(servers) do
-  conf['on_attach'] = function()
-      if conf['_on_attach'] ~= nil then
-        conf._on_attach()
-      end
-  end
   conf['flags'] = {
       debounce_text_changes = 150,
   }
