@@ -137,6 +137,8 @@
     tldr
     dust
     duf
+    parted
+    cloud-utils
     dogdns
     restic
     sad
