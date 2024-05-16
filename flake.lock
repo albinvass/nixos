@@ -246,6 +246,22 @@
         "type": "github"
       }
     },
+    "fzf-git": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1715690668,
+        "narHash": "sha256-ZYgov/P7fcB1Zjj5UMVbr7+bjRKLwzpqddHBOCNd+RQ=",
+        "owner": "junegunn",
+        "repo": "fzf-git.sh",
+        "rev": "bd8ac4ba4c9d7d12b34f7fa2b0d334f50cdb5254",
+        "type": "github"
+      },
+      "original": {
+        "owner": "junegunn",
+        "repo": "fzf-git.sh",
+        "type": "github"
+      }
+    },
     "haumea": {
       "inputs": {
         "nixpkgs": "nixpkgs_7"
@@ -1074,6 +1090,7 @@
         "catppuccin-bat": "catppuccin-bat",
         "catppuccin-starship": "catppuccin-starship",
         "catppuccin-yazi": "catppuccin-yazi",
+        "fzf-git": "fzf-git",
         "home-manager": "home-manager",
         "hyprgrass": "hyprgrass",
         "hyprland": "hyprland",

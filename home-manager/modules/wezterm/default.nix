@@ -29,12 +29,20 @@
         config.keys = {
           { key = 'UpArrow', mods = 'SHIFT', action = act.ScrollToPrompt(-1) },
           { key = 'DownArrow', mods = 'SHIFT', action = act.ScrollToPrompt(1) },
+          -- https://dencode.com/en/string
+          -- https://github.com/zellij-org/zellij/issues/735#issuecomment-1973177193
+          {
+            key = 'G',
+            mods = 'SHIFT|ALT',
+            action = act.SendKey { key = '' },
+          },
         }
         config.mouse_bindings = {{
           event = { Down = { streak = 3, button = 'Left' } },
           action = wezterm.action.SelectTextAtMouseCursor 'SemanticZone',
           mods = 'NONE',
         }}
+
         return config
       '';
     };
