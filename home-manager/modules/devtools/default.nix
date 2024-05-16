@@ -64,7 +64,6 @@
       git = true;
       icons = true;
     };
-    fzf.enable = true;
     go.enable = true;
     jq.enable = true;
     taskwarrior.enable = true;
@@ -85,19 +84,6 @@
       enableZshIntegration = true;
       settings = {
         theme = "catppuccin-mocha";
-        keybinds = {
-          unbind = [ "Ctrl g" ];
-          normal = {
-            "bind \"\"" = {
-              SwitchToMode = [ "locked" ];
-            };
-          };
-          locked = {
-            "bind \"\"" = {
-              SwitchToMode = [ "normal" ];
-            };
-          };
-        };
       };
     };
     zoxide = {
@@ -156,6 +142,7 @@
     dogdns
     restic
     sad
+    fzf
     statix
     jless
     devenv

@@ -30,8 +30,6 @@
         if [ -f /etc/profiles/per-user/avass/share/quitcd/quitcd.bash_sh_zsh ]; then
           source /etc/profiles/per-user/avass/share/quitcd/quitcd.bash_sh_zsh
         fi
-
-        source "${inputs.fzf-git}/fzf-git.sh"
       '';
       enableCompletion = false;
       enableAutosuggestions = true;
