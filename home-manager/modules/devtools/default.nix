@@ -24,6 +24,7 @@
       if config.submoduleSupport.enable
       then "nh os switch"
       else "nh home switch";
+    "cd" = "z";
   };
 
   programs = {
@@ -88,6 +89,7 @@
     };
     zoxide = {
       enable = true;
+      enableZshIntegration = true;
     };
   };
 
