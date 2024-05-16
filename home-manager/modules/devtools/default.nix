@@ -85,6 +85,31 @@
       enableZshIntegration = true;
       settings = {
         theme = "catppuccin-mocha";
+        keybinds = {
+          unbind = ["Ctrl g"];
+          locked = {
+            "bind \"Alt g\"" = {
+              SwitchToMode = ["Normal"];
+            };
+          };
+
+          normal = {
+              "bind \"Alt g\"" = {
+                SwitchToMode = ["Locked"];
+              };
+          };
+
+          "shared_except \"locked\"" = {
+              "bind \"Ctrl a\"" = { SwitchToMode = ["Tmux"]; };
+              "bind \"Alt p\"" = { SwitchToMode = ["Pane"]; };
+              "bind \"Alt r\"" = { SwitchToMode = ["Resize"]; };
+              "bind \"Alt s\"" = { SwitchToMode = ["Scroll"]; };
+              "bind \"Alt o\"" = { SwitchToMode = ["Session"]; };
+              "bind \"Alt t\"" = { SwitchToMode = ["Tab"]; };
+              "bind \"Alt m\"" = { SwitchToMode = ["Move"]; };
+              "bind \"Alt g\"" = { Write = [27 7015]; SwitchToMode = ["Normal"]; }; # send a real Alt+g to the terminal
+          };
+        };
       };
     };
     zoxide = {
