@@ -12,6 +12,10 @@
     };
   };
 
+  environment.sessionVariables = {
+    ELECTRON_OZONE_PLATFORM_HINT="auto";
+  };
+
   services.xserver.displayManager.sddm = {
     enable = true;
     wayland.enable = true;
