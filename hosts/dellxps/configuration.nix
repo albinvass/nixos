@@ -29,6 +29,7 @@
   nix = {
     package = pkgs.nix;
     settings = {
+      auto-optimise-store = true;
       trusted-users = [ "root" "avass" ];
       experimental-features = [ "nix-command" "flakes" ];
       extra-substituters = [
