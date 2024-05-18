@@ -1,5 +1,10 @@
-{ config, inputs, ... }:
+{ config, inputs, pkgs, ... }:
 {
+  home.sessionVariables = {
+    LS_COLORS=builtins.readFile (pkgs.runCommand "vivid-catppuccin-mocha" {} ''
+      ${pkgs.vivid}/bin/vivid generate catppuccin-mocha > $out
+    '');
+  };
   programs = {
     starship = {
       enable = true;
