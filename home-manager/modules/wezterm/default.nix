@@ -1,4 +1,4 @@
-{ config, pkgs, lib, ... }:
+{ config, pkgs, lib, inputs, ... }:
 {
   options.wezterm = {
     enable_wayland = lib.mkEnableOption "Wezterm for wayland";
@@ -13,6 +13,7 @@
     ];
     programs.wezterm = {
       enable = true;
+      package = inputs.wezterm.packages.${pkgs.system}.default;
       enableZshIntegration = true;
       extraConfig = /* lua */ ''
         local config = wezterm.config_builder()
