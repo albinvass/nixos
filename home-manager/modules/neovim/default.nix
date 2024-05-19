@@ -52,6 +52,7 @@
       luasnip
       cmp_luasnip
       nvim-treesitter.withAllGrammars
+      nvim-treesitter-textobjects
       nvim-web-devicons
       nvim-FeMaco-lua
       vim-markdown
