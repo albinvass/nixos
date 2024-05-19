@@ -1032,7 +1032,6 @@
         "nixpkgs": "nixpkgs_9",
         "sops-nix": "sops-nix",
         "split-monitor-workspaces": "split-monitor-workspaces",
-        "taskwarrior-nvim": "taskwarrior-nvim",
         "wsl": "wsl"
       }
     },
@@ -1150,22 +1149,6 @@
       "original": {
         "owner": "nix-systems",
         "repo": "default",
-        "type": "github"
-      }
-    },
-    "taskwarrior-nvim": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1710976454,
-        "narHash": "sha256-KwUnAoPDlDMYL2KZo94yyNqwwhXLstt2Fy95RB7rZpw=",
-        "owner": "ribelo",
-        "repo": "taskwarrior.nvim",
-        "rev": "5383427b88912ff3c37653d76e48b1fc197844dc",
-        "type": "github"
-      },
-      "original": {
-        "owner": "ribelo",
-        "repo": "taskwarrior.nvim",
         "type": "github"
       }
     },

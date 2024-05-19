@@ -86,7 +86,7 @@
         "swww init"
         "[workspace 1 silent] wezterm --config-file ~/.config/wezterm/wezterm.lua"
         "[workspace 2 silent] wezterm --config-file ~/.config/wezterm/wezterm.lua"
-        "[workspace 3 silent; group] microsoft-edge --enable-features=UseOzonePlatform --ozone-platform=wayland"
+        "[workspace 3 silent; group] microsoft-edge --enable-features=UseOzonePlatform --ozone-platform=wayland --restore-last-session"
 
         "[workspace 5 silent; group] slack"
         "[workspace 5 silent; group] element-desktop"
