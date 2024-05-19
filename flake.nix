@@ -18,7 +18,7 @@
     nixneovimplugins.url = "github:NixNeovim/NixNeovim";
     nix-alien.url = "github:thiagokokada/nix-alien";
     nixgl.url = "github:guibou/nixGL";
-    hyprland.url = "github:hyprwm/Hyprland";
+    hyprland.url = "git+https://github.com/hyprwm/Hyprland?submodules=1";
     hyprland-contrib = {
       url = "github:hyprwm/contrib";
        inputs.nixpkgs.follows = "nixpkgs";
@@ -30,10 +30,6 @@
     split-monitor-workspaces = {
       url = "github:Duckonaut/split-monitor-workspaces";
       inputs.hyprland.follows = "hyprland";
-    };
-    nwg-displays = {
-      url = "github:nwg-piotr/nwg-displays?ref=v0.3.13";
-      inputs.nixpkgs.follows = "nixpkgs";
     };
     home-manager = {
       url = "github:nix-community/home-manager/master";

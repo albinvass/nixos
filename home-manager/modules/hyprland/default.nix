@@ -38,7 +38,7 @@
     brillo
     playerctl
     swww
-    inputs.nwg-displays.packages.${pkgs.system}.default
+    nwg-displays
     wl-clipboard
     rofimoji
     inputs.hyprland-contrib.packages.${pkgs.system}.grimblast
