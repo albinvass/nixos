@@ -30,43 +30,37 @@
       git
     ];
 
-    plugins = let
-        taskwarrior-nvim = pkgs.vimUtils.buildVimPlugin {
-          name = "taskwarrior-nvim";
-          src = inputs.taskwarrior-nvim;
-        };
-      in with pkgs.vimPlugins; [
-        vim-surround
-        catppuccin-nvim
-        vimagit
-        vim-fugitive
-        vim-helm
-        vim-rooter
-        popup-nvim
-        plenary-nvim
-        nvim-lspconfig
-        telescope-nvim
-        vim-snippets
-        cmp-nvim-lsp
-        cmp-buffer
-        cmp-cmdline
-        cmp-path
-        neorg
-        neorg-telescope
-        nvim-cmp
-        luasnip
-        cmp_luasnip
-        nvim-treesitter.withAllGrammars
-        nvim-web-devicons
-        nvim-FeMaco-lua
-        vim-markdown
-        markdown-preview-nvim
-        gitsigns-nvim
-        trouble-nvim
-        whitespace-nvim
-        neo-tree-nvim
-        taskwarrior-nvim
-      ];
+    plugins = with pkgs.vimPlugins; [
+      vim-surround
+      catppuccin-nvim
+      vimagit
+      vim-fugitive
+      vim-helm
+      vim-rooter
+      popup-nvim
+      plenary-nvim
+      nvim-lspconfig
+      telescope-nvim
+      vim-snippets
+      cmp-nvim-lsp
+      cmp-buffer
+      cmp-cmdline
+      cmp-path
+      neorg
+      neorg-telescope
+      nvim-cmp
+      luasnip
+      cmp_luasnip
+      nvim-treesitter.withAllGrammars
+      nvim-web-devicons
+      nvim-FeMaco-lua
+      vim-markdown
+      markdown-preview-nvim
+      gitsigns-nvim
+      trouble-nvim
+      whitespace-nvim
+      neo-tree-nvim
+    ];
 
     # Automatically require all toplevel lua scripts
     extraLuaConfig =

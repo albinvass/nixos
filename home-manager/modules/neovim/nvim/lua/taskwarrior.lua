@@ -1,1 +1,0 @@
-require("taskwarrior.nvim").setup({})
