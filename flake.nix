@@ -43,6 +43,10 @@
       url = "github:Mic92/sops-nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    taskwarrior-nvim = {
+      url = "github:ribelo/taskwarrior.nvim";
+      flake = false;
+    };
     wsl = {
       url = "github:nix-community/NixOS-WSL";
       inputs.nixpkgs.follows = "nixpkgs";
