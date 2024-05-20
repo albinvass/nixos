@@ -12,9 +12,10 @@ local servers = {
   lua_ls={
     settings = {
       Lua = {
+        hint = { enable = true },
         diagnostics = {
-	  globals = { 'vim' }
-	}
+          globals = { 'vim' }
+        }
       }
     }
   },
@@ -95,6 +96,9 @@ vim.api.nvim_create_autocmd('LspAttach', {
     vim.keymap.set('n', 'gr', vim.lsp.buf.references, opts)
     vim.keymap.set('n', '<space>f', function()
       vim.lsp.buf.format { async = true }
+    end, opts)
+    vim.keymap.set('n', '<Leader>ih', function()
+        vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled())
     end, opts)
   end
 })
