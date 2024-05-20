@@ -2,7 +2,7 @@ local nvim_lsp = require('lspconfig')
 
 local format_on_close = function()
   vim.api.nvim_create_autocmd({"BufWritePre"}, {
-      callback = vim.lsp.buf.format { async = false }
+      callback = function()vim.lsp.buf.format { async = false }end
   })
 end
 
@@ -24,9 +24,7 @@ local servers = {
   nil_ls={},
   eslint={},
   gopls={
-    on_attach=function()
-      format_on_close()
-    end,
+    on_attach=format_on_close,
     settings={
       gopls={
         completeUnimported = true,
