@@ -168,6 +168,7 @@
     cloud-utils
     dogdns
     restic
+    drawio
     sad
     fzf
     statix
