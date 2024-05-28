@@ -73,6 +73,7 @@ local servers = {
       format_on_close()
     end
   },
+  yamlls={},
 }
 
 for lsp, conf in pairs(servers) do

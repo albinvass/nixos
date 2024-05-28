@@ -28,6 +28,7 @@
       marksman
       ripgrep
       git
+      yaml-language-server
     ];
 
     plugins = with pkgs.vimPlugins; [
