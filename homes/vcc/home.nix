@@ -1,4 +1,4 @@
-{ config, pkgs, homeManagerModules, ... }:
+{ config, pkgs, homeManagerModules, inputs, ... }:
 {
   imports = [
     homeManagerModules.vcc
@@ -40,6 +40,7 @@
         flameshot
         nix
         xclip
+        inputs.git-toprepo.packages.${pkgs.system}.git-toprepo
       ] ++ [
         vpn
         s

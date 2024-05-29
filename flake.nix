@@ -12,6 +12,7 @@
       url = "github:catppuccin/yazi";
       flake = false;
     };
+    git-toprepo.url = "github:meroton/git-toprepo";
     neorg-overlay.url = "github:nvim-neorg/nixpkgs-neorg-overlay";
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     nixos-hardware.url = "github:NixOs/nixos-hardware/master";
