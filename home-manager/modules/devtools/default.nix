@@ -11,6 +11,12 @@
     inputs.nix-index-database.hmModules.nix-index
   ];
 
+  home.file = {
+    tools = {
+      source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/git/github/albinvass/nixos/tools";
+    };
+  };
+
   sops = {
     secrets = builtins.mapAttrs (
       k: v: (v // { sopsFile = ./secrets.yaml; })
