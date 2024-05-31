@@ -131,6 +131,7 @@
     tree
     docker-compose
     python311
+    virtualenv
     #poetry
     rustc
     cargo
