@@ -65,6 +65,21 @@
     in
     rec {
       formatter.x86_64-linux = pkgs.nixfmt-rfc-style;
+      checks.x86_64-linux = {
+        nixfmt = pkgs.stdenv.mkDerivation {
+          name = "nixfmt";
+          src = ./.;
+          doCheck = true;
+          dontBuild = true;
+          nativeBuildInputs = with pkgs; [nixfmt-rfc-style];
+          checkPhase = /* bash */ ''
+            nixfmt --check $(find . -name "*.nix" ! -name "flake.nix")
+          '';
+          installPhase = ''
+            mkdir $out
+          '';
+        };
+      };
       nixosConfigurations = self.lib.importHosts ./hosts {
         inherit inputs;
         inherit (self) nixosModules homeManagerModules;
