@@ -94,7 +94,7 @@
         kb_layout = "se";
         follow_mouse = 1;
         touchpad = {
-            natural_scroll = "no";
+          natural_scroll = "no";
         };
         sensitivity = 0;
       };
@@ -113,14 +113,14 @@
       group = {
         groupbar = {
           font_family = "Ubuntu Nerd Font";
-          font_size	 = 20;
+          font_size = 20;
         };
       };
       gestures = {
         workspace_swipe = true;
         workspace_swipe_distance = 400;
         workspace_swipe_min_speed_to_force = 50;
-        workspace_swipe_cancel_ratio = 0.10;
+        workspace_swipe_cancel_ratio = 0.1;
         workspace_swipe_invert = false;
       };
       plugin = {

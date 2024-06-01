@@ -1,4 +1,10 @@
-{ config, pkgs, homeManagerModules, inputs, ... }:
+{
+  config,
+  pkgs,
+  homeManagerModules,
+  inputs,
+  ...
+}:
 {
   imports = [
     homeManagerModules.vcc
@@ -11,19 +17,25 @@
 
     stateVersion = "23.11";
 
-    packages = with pkgs;
+    packages =
+      with pkgs;
       let
-        vpn = writeShellScriptBin "vpn" /* bash */ ''
-          #!${pkgs.bash}/bin/bash
-          export POINTSHARP_TOKEN="$(${cloak}/bin/cloak view vcc)"
-          source-secrets vcc
-          vccvpn $@
-        '';
-        s = writeShellScriptBin "s" /* bash */ ''
-          #!${pkgs.bash}/bin/bash
-          sudo --preserve-env --preserve-env=PATH env $@
-        '';
-      in [
+        vpn =
+          writeShellScriptBin "vpn" # bash
+            ''
+              #!${pkgs.bash}/bin/bash
+              export POINTSHARP_TOKEN="$(${cloak}/bin/cloak view vcc)"
+              source-secrets vcc
+              vccvpn $@
+            '';
+        s =
+          writeShellScriptBin "s" # bash
+            ''
+              #!${pkgs.bash}/bin/bash
+              sudo --preserve-env --preserve-env=PATH env $@
+            '';
+      in
+      [
         bitwarden
         cloak
         dmenu
@@ -41,7 +53,8 @@
         nix
         xclip
         inputs.git-toprepo.packages.${pkgs.system}.git-toprepo
-      ] ++ [
+      ]
+      ++ [
         vpn
         s
       ];

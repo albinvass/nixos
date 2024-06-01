@@ -1,6 +1,6 @@
 { pkgs, ... }:
 let
-  kubectl-hns = pkgs.callPackage ./kubectl-hns.nix {};
+  kubectl-hns = pkgs.callPackage ./kubectl-hns.nix { };
 in
 {
   home.packages = with pkgs; [

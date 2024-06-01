@@ -1,7 +1,13 @@
 # NixOS-WSL specific options are documented on the NixOS-WSL repository:
 # https://github.com/nix-community/NixOS-WSL
 
-{ pkgs, nixosModules, homeManagerModules, inputs, ... }:
+{
+  pkgs,
+  nixosModules,
+  homeManagerModules,
+  inputs,
+  ...
+}:
 {
   imports = [
     inputs.wsl.nixosModules.wsl
@@ -23,7 +29,10 @@
   nix = {
     package = pkgs.nix;
     settings = {
-      experimental-features = [ "nix-command" "flakes" ];
+      experimental-features = [
+        "nix-command"
+        "flakes"
+      ];
       extra-substituters = [
         "https://albinvass.cachix.org"
         "https://nix-community.cachix.org"
@@ -40,7 +49,9 @@
   home-manager = {
     useGlobalPkgs = true;
     useUserPackages = true;
-    users.avass = { imports = [ ./home.nix ]; };
+    users.avass = {
+      imports = [ ./home.nix ];
+    };
     extraSpecialArgs = {
       inherit inputs homeManagerModules;
     };
@@ -55,7 +66,7 @@
   users.users.avass = {
     shell = pkgs.zsh;
   };
-  
+
   environment.sessionVariables = {
     BROWSER = "/mnt/c/Windows/explorer.exe";
   };

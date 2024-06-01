@@ -22,11 +22,11 @@
     hyprland.url = "git+https://github.com/hyprwm/Hyprland?submodules=1";
     hyprland-contrib = {
       url = "github:hyprwm/contrib";
-       inputs.nixpkgs.follows = "nixpkgs";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
     hyprgrass = {
-       url = "github:horriblename/hyprgrass";
-       inputs.hyprland.follows = "hyprland";
+      url = "github:horriblename/hyprgrass";
+      inputs.hyprland.follows = "hyprland";
     };
     split-monitor-workspaces = {
       url = "github:Duckonaut/split-monitor-workspaces";
@@ -58,34 +58,40 @@
     };
   };
 
-  outputs = { self, nixpkgs, ... }@inputs: rec {
-    nixosConfigurations = self.lib.importHosts ./hosts {
-      inherit inputs;
-      inherit (self) nixosModules homeManagerModules;
-    };
-    nixosModules = self.lib.importModules ./nixos/modules;
-    homeManagerModules = self.lib.importModules ./home-manager/modules;
-    homeConfigurations."avass@5CG0388QDR" = inputs.home-manager.lib.homeManagerConfiguration {
-      pkgs = import nixpkgs {
-        system = "x86_64-linux";
-        config.allowUnfree = true;
-        overlays = [
-          inputs.nixneovimplugins.overlays.default
-          inputs.nixgl.overlay
-          inputs.neorg-overlay.overlays.default
-        ];
-      };
-      modules = [
-	      ./homes/vcc/home.nix
-        homeManagerModules.devtools
-        homeManagerModules.social-media
-        homeManagerModules.music
-      ];
-      extraSpecialArgs = {
+  outputs =
+    { self, nixpkgs, ... }@inputs:
+    let
+      pkgs = import nixpkgs { system = "x86_64-linux"; };
+    in
+    rec {
+      formatter.x86_64-linux = pkgs.nixfmt-rfc-style;
+      nixosConfigurations = self.lib.importHosts ./hosts {
         inherit inputs;
-        inherit (self) homeManagerModules;
+        inherit (self) nixosModules homeManagerModules;
       };
+      nixosModules = self.lib.importModules ./nixos/modules;
+      homeManagerModules = self.lib.importModules ./home-manager/modules;
+      homeConfigurations."avass@5CG0388QDR" = inputs.home-manager.lib.homeManagerConfiguration {
+        pkgs = import nixpkgs {
+          system = "x86_64-linux";
+          config.allowUnfree = true;
+          overlays = [
+            inputs.nixneovimplugins.overlays.default
+            inputs.nixgl.overlay
+            inputs.neorg-overlay.overlays.default
+          ];
+        };
+        modules = [
+          ./homes/vcc/home.nix
+          homeManagerModules.devtools
+          homeManagerModules.social-media
+          homeManagerModules.music
+        ];
+        extraSpecialArgs = {
+          inherit inputs;
+          inherit (self) homeManagerModules;
+        };
+      };
+      lib = import ./lib { inherit (nixpkgs) lib; };
     };
-    lib = import ./lib { inherit (nixpkgs) lib; };
-  };
 }

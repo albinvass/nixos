@@ -4,12 +4,12 @@ rec {
   getDirectories = d: (builtins.attrNames (filterDirectories (builtins.readDir d)));
   importModules =
     let
-      createModule = name: {
-        "${builtins.baseNameOf name}" = import name;
-      };
+      createModule = name: { "${builtins.baseNameOf name}" = import name; };
       modules = d: map createModule (map (n: "${builtins.toString d}/${n}") (getDirectories d));
-    in d: lib.attrsets.mergeAttrsList (modules d);
-  importHosts = hostsDirectory: specialArgs:
+    in
+    d: lib.attrsets.mergeAttrsList (modules d);
+  importHosts =
+    hostsDirectory: specialArgs:
     let
       hosts = getDirectories hostsDirectory;
       mkNixosConfiguration = host: {
@@ -20,5 +20,6 @@ rec {
         };
       };
       nixosConfigurations = lib.attrsets.mergeAttrsList (builtins.map mkNixosConfiguration hosts);
-    in nixosConfigurations;
+    in
+    nixosConfigurations;
 }

@@ -1,4 +1,10 @@
-{ config, pkgs, inputs, homeManagerModules, ... }:
+{
+  config,
+  pkgs,
+  inputs,
+  homeManagerModules,
+  ...
+}:
 {
   imports = [
     homeManagerModules.neovim
@@ -18,18 +24,15 @@
   };
 
   sops = {
-    secrets = builtins.mapAttrs (
-      k: v: (v // { sopsFile = ./secrets.yaml; })
-    ) {
-      "ATUIN_KEY" = { path = "${config.xdg.dataHome}/atuin/key";};
+    secrets = builtins.mapAttrs (k: v: (v // { sopsFile = ./secrets.yaml; })) {
+      "ATUIN_KEY" = {
+        path = "${config.xdg.dataHome}/atuin/key";
+      };
     };
   };
 
   home.shellAliases = {
-    "nh-switch" =
-      if config.submoduleSupport.enable
-      then "nh os switch"
-      else "nh home switch";
+    "nh-switch" = if config.submoduleSupport.enable then "nh os switch" else "nh home switch";
     "cd" = "z";
   };
 
@@ -40,7 +43,7 @@
     atuin = {
       enable = true;
       enableZshIntegration = true;
-      flags = ["--disable-up-arrow"];
+      flags = [ "--disable-up-arrow" ];
       settings = {
         dotfiles.enabled = true;
       };
@@ -80,7 +83,9 @@
       theme =
         let
           flavour = "mocha";
-        in builtins.fromTOML (builtins.readFile "${inputs.catppuccin-yazi}/themes/${flavour}.toml") // {
+        in
+        builtins.fromTOML (builtins.readFile "${inputs.catppuccin-yazi}/themes/${flavour}.toml")
+        // {
           manager = {
             syntect_theme = "${inputs.catppuccin-bat}/themes/Catppuccin Mocha.tmTheme";
           };
@@ -92,17 +97,17 @@
       settings = {
         theme = "catppuccin-mocha";
         keybinds = {
-          unbind = ["Ctrl g"];
+          unbind = [ "Ctrl g" ];
           locked = {
             "bind \"Alt g\"" = {
-              SwitchToMode = ["Normal"];
+              SwitchToMode = [ "Normal" ];
             };
           };
 
           normal = {
-              "bind \"Alt g\"" = {
-                SwitchToMode = ["Locked"];
-              };
+            "bind \"Alt g\"" = {
+              SwitchToMode = [ "Locked" ];
+            };
           };
         };
       };
@@ -117,7 +122,6 @@
     FLAKE = "/home/avass/git/github/albinvass/nixos";
     ZELLIJ_AUTO_EXIT = "true";
   };
-
 
   home.packages = with pkgs; [
     archivemount

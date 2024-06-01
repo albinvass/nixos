@@ -13,7 +13,7 @@
   };
 
   environment.sessionVariables = {
-    ELECTRON_OZONE_PLATFORM_HINT="auto";
+    ELECTRON_OZONE_PLATFORM_HINT = "auto";
   };
 
   services.xserver.displayManager.sddm = {
@@ -27,7 +27,7 @@
   hardware.brillo.enable = true;
   environment.sessionVariables.NIXOS_OZONE_WL = "1";
   environment.systemPackages = with pkgs; [ xwaylandvideobridge ];
-  security.pam.services.swaylock = {};
+  security.pam.services.swaylock = { };
 
   xdg.portal = {
     enable = true;

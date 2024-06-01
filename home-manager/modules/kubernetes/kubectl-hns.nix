@@ -1,5 +1,9 @@
-{ lib, buildGoModule, fetchFromGitHub }:
-let 
+{
+  lib,
+  buildGoModule,
+  fetchFromGitHub,
+}:
+let
   version = "1.1.0";
   owner = "kubernetes-sigs";
   repo = "hierarchical-namespaces";

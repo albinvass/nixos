@@ -2,13 +2,21 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
-{ pkgs, nixosModules, homeManagerModules, inputs, ... }:
+{
+  pkgs,
+  nixosModules,
+  homeManagerModules,
+  inputs,
+  ...
+}:
 
 {
-  imports = [ # Include the results of the hardware scan.
+  imports = [
+    # Include the results of the hardware scan.
     ./hardware-configuration.nix
     nixosModules.hyprland
-    nixosModules.gaming nixosModules.docker
+    nixosModules.gaming
+    nixosModules.docker
     nixosModules.tailscale
     nixosModules.nh
     # https://github.com/NixOS/nixos-hardware/tree/master/dell/xps/15-9520
@@ -30,8 +38,14 @@
     package = pkgs.nix;
     settings = {
       auto-optimise-store = true;
-      trusted-users = [ "root" "avass" ];
-      experimental-features = [ "nix-command" "flakes" ];
+      trusted-users = [
+        "root"
+        "avass"
+      ];
+      experimental-features = [
+        "nix-command"
+        "flakes"
+      ];
       extra-substituters = [
         "https://albinvass.cachix.org"
         "https://nix-community.cachix.org"
@@ -47,17 +61,18 @@
     };
   };
 
-
   home-manager = {
     useGlobalPkgs = true;
     useUserPackages = true;
-    users.avass = { imports = [ ./home.nix ]; };
+    users.avass = {
+      imports = [ ./home.nix ];
+    };
     extraSpecialArgs = {
       inherit inputs homeManagerModules;
     };
   };
 
-  boot = { 
+  boot = {
     loader.systemd-boot.enable = true;
     loader.efi.canTouchEfiVariables = true;
     binfmt.emulatedSystems = [ "aarch64-linux" ];
@@ -111,9 +126,8 @@
   hardware.pulseaudio.enable = false;
   security.rtkit.enable = true;
 
-
   users = {
-    groups.avass = {};
+    groups.avass = { };
     users.avass = {
       isNormalUser = true;
       description = "Albin Vass";
@@ -129,7 +143,6 @@
       shell = pkgs.zsh;
     };
   };
-
 
   environment = {
     sessionVariables = {

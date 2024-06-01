@@ -1,8 +1,6 @@
 { homeManagerModules, ... }:
 {
-  imports = [
-   homeManagerModules.devtools
-  ];
+  imports = [ homeManagerModules.devtools ];
   xdg.userDirs.enable = true;
 
   home.username = "avass";
@@ -12,4 +10,3 @@
   # Let Home Manager install and manage itself.
   programs.home-manager.enable = true;
 }
-

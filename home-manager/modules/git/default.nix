@@ -1,8 +1,6 @@
 { pkgs, ... }:
 {
-  home.packages = with pkgs; [
-    git-review
-  ];
+  home.packages = with pkgs; [ git-review ];
   programs = {
     gh.enable = true;
     gh-dash.enable = true;
