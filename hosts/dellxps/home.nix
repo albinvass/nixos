@@ -20,7 +20,7 @@
   home.packages = with pkgs; [
     discord
     bitwarden
-    microsoft-edge
+    vivaldi
     firefox
     libsForQt5.kwalletmanager
     gnome.seahorse

@@ -84,7 +84,7 @@
       exec-once = [
         "waybar"
         "swww init"
-        "[workspace 3 silent; group] microsoft-edge --enable-features=UseOzonePlatform --ozone-platform=wayland --restore-last-session"
+        "[workspace 3 silent; group] vivaldi --restore-last-session"
 
         "[workspace 5 silent; group] slack"
         "[workspace 5 silent; group] element-desktop"
