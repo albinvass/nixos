@@ -19,7 +19,10 @@
 
   home.file = {
     tools = {
-      source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/git/github/albinvass/nixos/tools";
+      source = ../../../tools;
+      recursive = true;
+      # Broken in nix 2.18.2
+      # source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/git/github/albinvass/nixos/tools";
     };
   };
 
