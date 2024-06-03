@@ -71,10 +71,11 @@
           src = ./.;
           doCheck = true;
           dontBuild = true;
-          nativeBuildInputs = with pkgs; [nixfmt-rfc-style];
-          checkPhase = /* bash */ ''
-            nixfmt --check $(find . -name "*.nix" ! -name "flake.nix")
-          '';
+          nativeBuildInputs = with pkgs; [ nixfmt-rfc-style ];
+          checkPhase = # bash
+            ''
+              nixfmt --check $(find . -name "*.nix" ! -name "flake.nix")
+            '';
           installPhase = ''
             mkdir $out
           '';

@@ -42,8 +42,8 @@
             source "$HOME/.secrets"
           fi
 
-          if [ -f /etc/profiles/per-user/avass/share/quitcd/quitcd.bash_sh_zsh ]; then
-            source /etc/profiles/per-user/avass/share/quitcd/quitcd.bash_sh_zsh
+          if [ -f "$HOME/.local-secrets" ]; then
+            source "$HOME/.local-secrets"
           fi
         '';
       enableCompletion = false;

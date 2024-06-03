@@ -6,10 +6,7 @@
   ...
 }:
 {
-  imports = [
-    homeManagerModules.vcc
-    homeManagerModules.wezterm
-  ];
+  imports = [ homeManagerModules.wezterm ];
 
   home = {
     username = "avass";
@@ -25,7 +22,6 @@
             ''
               #!${pkgs.bash}/bin/bash
               export POINTSHARP_TOKEN="$(${cloak}/bin/cloak view vcc)"
-              source-secrets vcc
               vccvpn $@
             '';
         s =
