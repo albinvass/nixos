@@ -49,6 +49,7 @@
         nix
         xclip
         inputs.git-toprepo.packages.${pkgs.system}.git-toprepo
+        vivaldi
       ]
       ++ [
         vpn
