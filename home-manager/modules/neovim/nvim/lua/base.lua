@@ -22,6 +22,7 @@ vim.api.nvim_set_keymap("n", "<Leader> ", ":nohlsearch<CR>", {})
 vim.api.nvim_set_keymap("n", "<C-p>", ":Telescope find_files<CR>", {})
 vim.api.nvim_set_keymap("n", "<C-e>", ":Telescope live_grep<CR>", {})
 
+require("nvim-surround").setup{}
 require("neo-tree").setup{}
 vim.api.nvim_set_keymap("n", "<C-n>", ":Neotree toggle<CR>", {})
 

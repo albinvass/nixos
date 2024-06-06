@@ -38,7 +38,7 @@
     ];
 
     plugins = with pkgs.vimPlugins; [
-      vim-surround
+      nvim-surround
       catppuccin-nvim
       vimagit
       vim-fugitive
