@@ -17,6 +17,7 @@
       extraConfig = {
         credential.helper = "${pkgs.gitAndTools.gitFull}/bin/git-credential-libsecret";
         merge.conflictStyle = "zdiff3";
+        fetch.writeCommitGraph = true;
         pull.rebase = true;
         push.autoSetupRemote = true;
         rerere.enabled = true;
