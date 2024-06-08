@@ -22,6 +22,7 @@
         rerere.enabled = true;
         branch.sort = "-committerdate";
         tag.sort = "-committerdate";
+        column.ui = "auto";
         fetch.prune = true;
         fetch.prunetags = true;
       };
