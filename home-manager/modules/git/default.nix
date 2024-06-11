@@ -9,6 +9,7 @@
       delta = {
         enable = true;
         options = {
+          features = "Catppuccin Mocha";
           side-by-side = true;
         };
       };
