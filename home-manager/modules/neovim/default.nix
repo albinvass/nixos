@@ -68,6 +68,7 @@
       trouble-nvim
       whitespace-nvim
       neo-tree-nvim
+      otter-nvim
     ];
 
     # Automatically require all toplevel lua scripts
