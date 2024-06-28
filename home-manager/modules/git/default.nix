@@ -11,6 +11,7 @@
         options = {
           features = "Catppuccin Mocha";
           side-by-side = true;
+          dark = true;
         };
       };
       userEmail = "albinvass@gmail.com";
