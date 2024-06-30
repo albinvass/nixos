@@ -35,6 +35,7 @@
       ripgrep
       git
       yaml-language-server
+      rust-analyzer
     ];
 
     plugins = with pkgs.vimPlugins; [
