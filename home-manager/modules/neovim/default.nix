@@ -36,6 +36,8 @@
       git
       yaml-language-server
       rust-analyzer
+      elixir-ls
+      elixir
     ];
 
     plugins = with pkgs.vimPlugins; [
