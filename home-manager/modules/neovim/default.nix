@@ -71,6 +71,7 @@
       trouble-nvim
       whitespace-nvim
       neo-tree-nvim
+      dressing-nvim
     ];
 
     # Automatically require all toplevel lua scripts

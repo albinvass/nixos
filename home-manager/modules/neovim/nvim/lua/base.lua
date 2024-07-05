@@ -55,3 +55,10 @@ require('neorg').setup{
     },
   }
 }
+
+require('gitsigns').setup({
+  current_line_blame = true,
+})
+-- Fix: https://github.com/LunarVim/darkplus.nvim/pull/25/files
+vim.api.nvim_set_hl(0, "GitSignsCurrentLineBlame", {fg = "DarkGrey", bg = 'NONE'})
+
