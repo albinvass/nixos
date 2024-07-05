@@ -55,5 +55,3 @@ require('neorg').setup{
     },
   }
 }
-
-require("otter")
