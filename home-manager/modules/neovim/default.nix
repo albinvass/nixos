@@ -29,7 +29,7 @@
       shellcheck
       gopls
       go-tools
-      nodePackages.pyright
+      pyright
       sqls
       marksman
       ripgrep
