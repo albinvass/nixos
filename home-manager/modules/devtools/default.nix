@@ -133,6 +133,7 @@
     bitwarden-cli
     devpod
     dig
+    inputs.fh.packages.${pkgs.system}.default
     libarchive
     tree
     docker-compose
