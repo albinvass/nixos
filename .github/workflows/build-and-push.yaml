@@ -23,8 +23,8 @@ jobs:
           trusted-public-keys = nixos:9P6IFV7gsoidt0pX9w1R4CYZKFkvnsU6UGxvzYvcfMg= cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY=
           netrc-file = /tmp/netrc
 
-    - name: Build nixosConfiguration
-      run: nix build .#nixosConfigurations.dellxps.config.system.build.toplevel
+    - name: Build homeConfiguration
+      run: nix build .#homeConfigurations."avass@5CG0388QDR".activationPackage
 
     - name: Push to attic
       run: |
