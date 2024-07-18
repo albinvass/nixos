@@ -1,5 +1,6 @@
 {
   inputs = {
+    attic.url = "github:zhaofengli/attic";
     catppuccin-bat = {
       url = "github:catppuccin/bat";
       flake = false;
@@ -65,7 +66,6 @@
       pkgs = import nixpkgs { system = "x86_64-linux"; };
     in
     rec {
-      formatter.x86_64-linux = pkgs.nixfmt-rfc-style;
       checks.x86_64-linux = {
         nixfmt = pkgs.stdenv.mkDerivation {
           name = "nixfmt";
@@ -82,6 +82,10 @@
           '';
         };
       };
+      devShells.x86_64-linux.default = pkgs.mkShell {
+        buildInputs = [ inputs.attic.packages.x86_64-linux.attic-client ];
+      };
+      formatter.x86_64-linux = pkgs.nixfmt-rfc-style;
       nixosConfigurations = self.lib.importHosts ./hosts {
         inherit inputs;
         inherit (self) nixosModules homeManagerModules;
