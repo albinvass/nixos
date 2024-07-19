@@ -28,5 +28,5 @@ jobs:
 
     - name: Push to attic
       run: |
-        nix develop --command attic login attic ${{ secrets.ATTIC_TOKEN }}
+        nix develop --command attic login attic https://attic.albinvass.se ${{ secrets.ATTIC_TOKEN }}
         nix develop --command attic push nixos ./result
