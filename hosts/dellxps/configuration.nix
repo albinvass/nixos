@@ -64,6 +64,7 @@
   home-manager = {
     useGlobalPkgs = true;
     useUserPackages = true;
+    backupFileExtension = "backup";
     users.avass = {
       imports = [ ./home.nix ];
     };
