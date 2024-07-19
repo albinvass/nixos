@@ -1,6 +1,5 @@
 {
   inputs = {
-    attic.url = "github:zhaofengli/attic";
     catppuccin-bat = {
       url = "github:catppuccin/bat";
       flake = false;
