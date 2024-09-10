@@ -46,7 +46,7 @@
         fly
         arandr
         flameshot
-        nix
+        nixVersions.nix_2_23
         xclip
         inputs.git-toprepo.packages.${pkgs.system}.git-toprepo
         vivaldi

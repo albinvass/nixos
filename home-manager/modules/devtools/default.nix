@@ -128,6 +128,7 @@
 
   home.packages = with pkgs; [
     archivemount
+    attic-client
     atool
     azure-cli
     bitwarden-cli
