@@ -6,8 +6,11 @@
     gh-dash.enable = true;
     git = {
       enable = true;
-      delta = {
+      difftastic = {
         enable = true;
+      };
+      delta = {
+        enable = false;
         options = {
           features = "Catppuccin Mocha";
           side-by-side = true;
