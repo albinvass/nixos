@@ -92,7 +92,7 @@
       };
       nixosModules = self.lib.importModules ./nixos/modules;
       homeManagerModules = self.lib.importModules ./home-manager/modules;
-      homeConfigurations."avass@5CG0388QDR" = inputs.home-manager.lib.homeManagerConfiguration {
+      homeConfigurations."avass@5CG4420JDB" = inputs.home-manager.lib.homeManagerConfiguration {
         pkgs = import nixpkgs {
           system = "x86_64-linux";
           config.allowUnfree = true;

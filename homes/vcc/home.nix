@@ -55,6 +55,11 @@
         s
       ];
   };
+  programs.zellij = {
+    settings = {
+      copy_command = "xclip -selection clipboard"; # x11
+    };
+  };
 
   programs.home-manager.enable = true;
   targets.genericLinux.enable = true;
