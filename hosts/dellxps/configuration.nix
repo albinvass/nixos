@@ -153,6 +153,7 @@
       dig
       gh
       qemu
+      openconnect
     ];
   };
 

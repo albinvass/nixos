@@ -23,7 +23,7 @@
     vivaldi
     firefox
     libsForQt5.kwalletmanager
-    gnome.seahorse
+    seahorse
     synergy
     waynergy
     obs-studio
