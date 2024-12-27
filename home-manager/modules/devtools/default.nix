@@ -99,6 +99,7 @@
       enableZshIntegration = true;
       settings = {
         theme = "catppuccin-mocha";
+        default_shell = "zsh";
         keybinds = {
           unbind = [ "Ctrl g" ];
           locked = {

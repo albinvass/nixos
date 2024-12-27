@@ -113,6 +113,23 @@
           inherit (self) homeManagerModules;
         };
       };
+      homeConfigurations."bazzite" = inputs.home-manager.lib.homeManagerConfiguration {
+        pkgs = import nixpkgs {
+          system = "x86_64-linux";
+          config.allowUnfree = true;
+          overlays = [
+            inputs.nixneovimplugins.overlays.default
+          ];
+        };
+        modules = [
+          ./homes/bazzite/home.nix
+          homeManagerModules.devtools
+        ];
+        extraSpecialArgs = {
+          inherit inputs;
+          inherit (self) homeManagerModules;
+        };
+      };
       lib = import ./lib { inherit (nixpkgs) lib; };
     };
 }
