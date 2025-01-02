@@ -79,7 +79,6 @@
     };
     go.enable = true;
     jq.enable = true;
-    taskwarrior.enable = true;
     yazi = {
       enable = true;
       enableZshIntegration = true;
@@ -123,7 +122,7 @@
   };
 
   home.sessionVariables = {
-    FLAKE = "/home/avass/git/github/albinvass/nixos";
+    FLAKE = "${config.home.homeDirectory}/git/github/albinvass/nixos";
     ZELLIJ_AUTO_EXIT = "true";
   };
 
@@ -132,25 +131,19 @@
     attic-client
     atool
     azure-cli
-    bitwarden-cli
-    devpod
     dig
-    inputs.fh.packages.${pkgs.system}.default
     libarchive
     tree
     docker-compose
     python311
     virtualenv
-    #poetry
     rustc
     cargo
     yarn
     cloc
     lsof
     cmake
-    coreutils
     gnumake
-    nim
     yq
     gnupg
     rsync
@@ -159,12 +152,9 @@
     sops
     killall
     openssl
-    rclone
-    sshfs
     ssh-to-age
     ssh-to-pgp
     shellcheck
-    taskwarrior-tui
     unrar
     tldr
     dust
@@ -174,16 +164,13 @@
     dogdns
     restic
     drawio
-    sad
     fzf
     statix
     jless
     devenv
     watchexec
-    fly
     python3Packages.nox
     pyright
-    elixir
     inputs.nh.packages.${pkgs.system}.default
     inputs.nix-alien.packages.${pkgs.system}.nix-alien
   ];
