@@ -99,20 +99,7 @@
       settings = {
         theme = "catppuccin-mocha";
         default_shell = "zsh";
-        keybinds = {
-          unbind = [ "Ctrl g" ];
-          locked = {
-            "bind \"Alt g\"" = {
-              SwitchToMode = [ "Normal" ];
-            };
-          };
-
-          normal = {
-            "bind \"Alt g\"" = {
-              SwitchToMode = [ "Locked" ];
-            };
-          };
-        };
+        default_mode = "locked";
       };
     };
     zoxide = {
