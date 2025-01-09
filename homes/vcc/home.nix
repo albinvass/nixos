@@ -41,7 +41,6 @@
         i3
         git-repo
         nixgl.nixGLIntel
-        firecracker
         virt-manager
         fly
         arandr
