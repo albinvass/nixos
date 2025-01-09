@@ -1,6 +1,6 @@
 { pkgs, ... }:
 {
-  home.packages = with pkgs; [ (nerdfonts.override { fonts = [ "Ubuntu" ]; }) ];
+  home.packages = with pkgs; [ pkgs.nerd-fonts.ubuntu ];
   programs.waybar = {
     enable = true;
     style = builtins.readFile ./style.css;
