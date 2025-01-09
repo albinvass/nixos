@@ -6,10 +6,7 @@
   ...
 }:
 {
-  home.file."${config.xdg.configHome}/nvim" = {
-    source = ./nvim;
-    recursive = true;
-  };
+  home.file."${config.xdg.configHome}/nvim".source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/git/github/albinvass/nixos/home-manager/modules/neovim/nvim";
   programs.neovim = {
     enable = true;
     defaultEditor = true;
@@ -73,24 +70,5 @@
       neo-tree-nvim
       dressing-nvim
     ];
-
-    # Automatically require all toplevel lua scripts
-    extraLuaConfig =
-      let
-        luaFiles =
-          let
-            luaDir = builtins.readDir ./nvim/lua;
-            onlyFiles = n: v: v == "regular";
-          in
-          builtins.attrNames (lib.attrsets.filterAttrs onlyFiles luaDir);
-        mkRequire =
-          path:
-          let
-            filePath = toString path;
-            requireName = lib.strings.removeSuffix ".lua" filePath;
-          in
-          "require'${requireName}'";
-      in
-      lib.strings.concatMapStrings (s: s + "\n") (map mkRequire luaFiles);
   };
 }

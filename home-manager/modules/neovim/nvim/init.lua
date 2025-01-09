@@ -1,0 +1,6 @@
+require'base'
+require'completion'
+require'femaco-setup'
+require'lsp'
+require'neorg'
+require'tree-sitter'
