@@ -60,7 +60,7 @@
           chpwd_functions+=(zellij_tab_name_update)
         '';
       enableCompletion = false;
-      enableAutosuggestions = true;
+      autosuggestion.enable = true;
       history.extended = true;
       oh-my-zsh = {
         enable = true;
