@@ -79,16 +79,6 @@
     };
     go.enable = true;
     jq.enable = true;
-    yazi = {
-      enable = true;
-      enableZshIntegration = true;
-      theme = builtins.fromTOML (builtins.readFile "${inputs.catppuccin-yazi}/themes/mocha/catppuccin-mocha-blue.toml")
-        // {
-          manager = {
-            syntect_theme = "${inputs.catppuccin-bat}/themes/Catppuccin Mocha.tmTheme";
-          };
-        };
-    };
     zellij = {
       enable = true;
       enableZshIntegration = true;
