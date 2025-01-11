@@ -6,6 +6,7 @@
   pkgs,
   nixosModules,
   homeManagerModules,
+  overlays,
   inputs,
   ...
 }:
@@ -32,6 +33,7 @@
       inputs.nixneovimplugins.overlays.default
       inputs.neorg-overlay.overlays.default
       inputs.openconnect-sso.overlays.default
+      overlays.openconnect
     ];
   };
 

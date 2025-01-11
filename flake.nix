@@ -86,9 +86,19 @@
       formatter.x86_64-linux = pkgs.nixfmt-rfc-style;
       nixosConfigurations = self.lib.importHosts ./hosts {
         inherit inputs;
-        inherit (self) nixosModules homeManagerModules;
+        inherit (self) nixosModules homeManagerModules overlays;
       };
       nixosModules = self.lib.importModules ./nixos/modules;
+      overlays.openconnect = (self: super: {
+        openconnect = super.openconnect.overrideAttrs (old: {
+          src = pkgs.fetchFromGitLab {
+            owner = "openconnect";
+            repo = "openconnect";
+            rev = "32971c1b1e1506e2e9fdb215b8ba6f3b930fe98d";
+            hash = "sha256-NtIFZ4iARPgn5qySdybqNMS8rVtAbuBKViiC9BXZvno=";
+          };
+        });
+      });
       homeManagerModules = self.lib.importModules ./home-manager/modules;
       homeConfigurations."avass@5CG4420JDB" = inputs.home-manager.lib.homeManagerConfiguration {
         pkgs = import nixpkgs {
