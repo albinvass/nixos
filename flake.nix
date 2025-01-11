@@ -34,7 +34,7 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     openconnect-sso = {
-      url = "github:vlaci/openconnect-sso";
+      url = "github:ThinkChaos/openconnect-sso/fix/nix-flake";
     };
     sops-nix = {
       url = "github:Mic92/sops-nix";

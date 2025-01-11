@@ -31,6 +31,7 @@
     overlays = [
       inputs.nixneovimplugins.overlays.default
       inputs.neorg-overlay.overlays.default
+      inputs.openconnect-sso.overlays.default
     ];
   };
 
@@ -81,7 +82,10 @@
 
   networking = {
     hostName = "dellxps";
-    networkmanager.enable = true;
+    networkmanager = {
+      enable = true;
+      plugins = with pkgs; [networkmanager-openconnect];
+    };
   };
 
   time.timeZone = "Europe/Stockholm";
@@ -153,7 +157,7 @@
       dig
       gh
       qemu
-      openconnect
+      openconnect-sso
     ];
   };
 
