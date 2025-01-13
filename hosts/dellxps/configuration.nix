@@ -152,6 +152,8 @@
   environment = {
     sessionVariables = {
       XCURSOR_SIZE = "24";
+      NIXOS_OZONE_WL = "1";
+      ELECTRON_OZONE_PLATFORM_HINT = "auto";
     };
     systemPackages = with pkgs; [
       curl
@@ -160,6 +162,7 @@
       gh
       qemu
       openconnect-sso
+      xwaylandvideobridge
     ];
   };
 
@@ -179,5 +182,20 @@
     zsh.enable = true;
   };
 
+  services.xserver.desktopManager.plasma6.enable = true;
+
   virtualisation.libvirtd.enable = true;
+  xdg.portal = {
+    enable = true;
+    wlr.enable = true;
+    # gtk portal needed to make gtk apps happy
+    extraPortals = with pkgs; [
+      xdg-desktop-portal
+      xdg-desktop-portal-hyprland
+      xdg-desktop-portal-wlr
+      xdg-desktop-portal-gtk
+      xdg-desktop-portal-kde
+    ];
+  };
+  security.pam.services.login.enableGnomeKeyring = true;
 }
