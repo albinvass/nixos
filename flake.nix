@@ -90,6 +90,7 @@
       };
       nixosModules = self.lib.importModules ./nixos/modules;
       overlays.openconnect = (self: super: {
+        # See: https://gitlab.com/openconnect/openconnect/-/issues/730
         openconnect = super.openconnect.overrideAttrs (old: {
           src = pkgs.fetchFromGitLab {
             owner = "openconnect";
