@@ -1,4 +1,4 @@
-{ pkgs, homeManagerModules, ... }:
+{ pkgs, homeManagerModules, inputs, ... }:
 {
   imports = [
     ./desktop-files
@@ -27,6 +27,7 @@
     synergy
     waynergy
     obs-studio
+    inputs.git-toprepo.packages.${pkgs.system}.git-toprepo
   ];
 
   home.sessionVariables = { };
