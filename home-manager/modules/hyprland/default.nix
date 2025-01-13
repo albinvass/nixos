@@ -7,23 +7,23 @@
     inputs.hyprland.homeManagerModules.default
   ];
 
-  gtk = {
-    enable = true;
-    iconTheme = {
-      name = "breeze";
-    };
-    cursorTheme = {
-      name = "Adwaita";
-      size = 24;
-    };
-    font = {
-      name = "Noto Sans,  10";
-    };
-    theme = {
-      name = "Catppuccin-Mocha-Standard-Blue-Dark";
-      package = pkgs.catppuccin-gtk.override { variant = "mocha"; };
-    };
-  };
+  # gtk = {
+  #   enable = true;
+  #   iconTheme = {
+  #     name = "breeze";
+  #   };
+  #   cursorTheme = {
+  #     name = "Adwaita";
+  #     size = 24;
+  #   };
+  #   font = {
+  #     name = "Noto Sans,  10";
+  #   };
+  #   theme = {
+  #     name = "Catppuccin-Mocha-Standard-Blue-Dark";
+  #     package = pkgs.catppuccin-gtk.override { variant = "mocha"; };
+  #   };
+  # };
   home.pointerCursor = {
     gtk.enable = true;
     package = pkgs.gnome-themes-extra;
