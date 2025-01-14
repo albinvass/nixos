@@ -95,7 +95,7 @@
   };
 
   home.sessionVariables = {
-    NH_FLAKE = "${config.home.homeDirectory}/git/github/albinvass/nixos";
+    NH_FLAKE = pkgs.lib.mkDefault "${config.home.homeDirectory}/git/github/albinvass/nixos";
     ZELLIJ_AUTO_EXIT = "true";
   };
 
