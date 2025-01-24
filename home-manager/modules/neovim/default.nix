@@ -38,6 +38,7 @@
     ];
 
     plugins = with pkgs.vimPlugins; [
+      aerial-nvim
       nvim-surround
       catppuccin-nvim
       vimagit
@@ -69,6 +70,7 @@
       whitespace-nvim
       neo-tree-nvim
       dressing-nvim
+      yazi-nvim
     ];
   };
 }

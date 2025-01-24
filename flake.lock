@@ -65,6 +65,22 @@
         "type": "github"
       }
     },
+    "catppuccin-yazi": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1734439154,
+        "narHash": "sha256-UVcPdQFwgBxR6n3/1zRd9ZEkYADkB5nkuom5SxzPTzk=",
+        "owner": "catppuccin",
+        "repo": "yazi",
+        "rev": "5d3a1eecc304524e995fe5b936b8e25f014953e8",
+        "type": "github"
+      },
+      "original": {
+        "owner": "catppuccin",
+        "repo": "yazi",
+        "type": "github"
+      }
+    },
     "fenix": {
       "inputs": {
         "nixpkgs": [
@@ -1542,6 +1558,7 @@
       "inputs": {
         "catppuccin-bat": "catppuccin-bat",
         "catppuccin-starship": "catppuccin-starship",
+        "catppuccin-yazi": "catppuccin-yazi",
         "fh": "fh",
         "git-toprepo": "git-toprepo",
         "home-manager": "home-manager",

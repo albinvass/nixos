@@ -6,7 +6,9 @@
   ...
 }:
 {
-  imports = [ homeManagerModules.wezterm ];
+  imports = [
+    #homeManagerModules.wezterm
+  ];
 
   home = {
     username = "avass";
