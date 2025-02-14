@@ -6,6 +6,7 @@
     homeManagerModules.devtools
     homeManagerModules.social-media
     homeManagerModules.music
+    homeManagerModules.wezterm
   ];
 
   fonts.fontconfig.enable = true;
