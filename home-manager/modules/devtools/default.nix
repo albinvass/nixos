@@ -12,8 +12,6 @@
     homeManagerModules.git
     homeManagerModules.github
     homeManagerModules.kubernetes
-    homeManagerModules.sops
-    inputs.sops-nix.homeManagerModules.sops
     inputs.nix-index-database.hmModules.nix-index
   ];
 
@@ -23,14 +21,6 @@
       #recursive = true;
       # Broken in nix 2.18.2
       source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/git/github/albinvass/nixos/tools";
-    };
-  };
-
-  sops = {
-    secrets = builtins.mapAttrs (k: v: (v // { sopsFile = ./secrets.yaml; })) {
-      "ATUIN_KEY" = {
-        path = "${config.xdg.dataHome}/atuin/key";
-      };
     };
   };
 

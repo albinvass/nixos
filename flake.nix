@@ -20,29 +20,12 @@
     nixneovimplugins.url = "github:NixNeovim/NixNeovim";
     nix-alien.url = "github:thiagokokada/nix-alien";
     nixgl.url = "github:guibou/nixGL";
-    hyprland.url = "git+https://github.com/hyprwm/Hyprland?submodules=1";
-    hyprland-contrib = {
-      url = "github:hyprwm/contrib";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-    hyprgrass = {
-      url = "github:horriblename/hyprgrass";
-      inputs.hyprland.follows = "hyprland";
-    };
-    split-monitor-workspaces = {
-      url = "github:Duckonaut/split-monitor-workspaces";
-      inputs.hyprland.follows = "hyprland";
-    };
     home-manager = {
       url = "github:nix-community/home-manager/master";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     openconnect-sso = {
       url = "github:ThinkChaos/openconnect-sso/fix/nix-flake";
-    };
-    sops-nix = {
-      url = "github:Mic92/sops-nix";
-      inputs.nixpkgs.follows = "nixpkgs";
     };
     wsl = {
       url = "github:nix-community/NixOS-WSL";

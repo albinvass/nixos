@@ -15,7 +15,6 @@
   imports = [
     # Include the results of the hardware scan.
     ./hardware-configuration.nix
-    nixosModules.hyprland
     nixosModules.gaming
     nixosModules.docker
     nixosModules.tailscale
@@ -108,7 +107,11 @@
     };
   };
 
-  # Configure console keymap
+  services.xserver.xkb = {
+    layout = "se";
+    variant = "nodeadkeys";
+  };
+
   console.keyMap = "sv-latin1";
 
   services = {
@@ -126,10 +129,10 @@
       wireplumber.enable = true;
     };
     printing.enable = true;
-    xserver.libinput.enable = true;
+    libinput.enable = true;
   };
 
-  hardware.pulseaudio.enable = false;
+  services.pulseaudio.enable = false;
   security.rtkit.enable = true;
 
   users = {
@@ -169,7 +172,6 @@
   };
 
   programs = {
-    niri.enable = true;
     neovim = {
       enable = true;
       defaultEditor = true;
@@ -185,7 +187,8 @@
     zsh.enable = true;
   };
 
-  services.xserver.desktopManager.plasma6.enable = true;
+  services.desktopManager.plasma6.enable = true;
+  services.displayManager.sddm.enable = true;
 
   virtualisation.libvirtd.enable = true;
   xdg.portal = {

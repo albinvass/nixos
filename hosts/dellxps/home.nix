@@ -3,7 +3,6 @@
   imports = [
     ./desktop-files
     homeManagerModules.thunderbird
-    homeManagerModules.hyprland
     homeManagerModules.devtools
     homeManagerModules.social-media
     homeManagerModules.music
@@ -20,10 +19,15 @@
   home.packages = with pkgs; [
     discord
     bitwarden
-    vivaldi
+    # See: https://discourse.nixos.org/t/new-install-vivaldi-not-starting/53282/8
+    (vivaldi.overrideAttrs (oldAttrs: {
+      dontWrapQtApps = false;
+      dontPatchELF = true;
+      nativeBuildInputs = oldAttrs.nativeBuildInputs ++ [
+        pkgs.kdePackages.wrapQtAppsHook
+      ];
+    }))
     firefox
-    libsForQt5.kwalletmanager
-    seahorse
     synergy
     waynergy
     obs-studio
@@ -31,7 +35,6 @@
   ];
 
   programs = {
-    fuzzel.enable = true;
     joplin-desktop = {
       enable = true;
     };
