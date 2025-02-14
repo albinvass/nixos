@@ -37,6 +37,7 @@
     ];
   };
 
+  services.flatpak.enable = true;
   nix = {
     package = pkgs.nix;
     settings = {
@@ -163,6 +164,7 @@
       qemu
       openconnect-sso
       xwaylandvideobridge
+      kdePackages.discover
     ];
   };
 

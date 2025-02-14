@@ -40,7 +40,6 @@
     swww
     nwg-displays
     wl-clipboard
-    rofimoji
     inputs.hyprland-contrib.packages.${pkgs.system}.grimblast
   ];
 

@@ -30,6 +30,13 @@
     inputs.git-toprepo.packages.${pkgs.system}.git-toprepo
   ];
 
+  programs = {
+    fuzzel.enable = true;
+    joplin-desktop = {
+      enable = true;
+    };
+  };
+
   home.sessionVariables = { };
   # Let Home Manager install and manage itself.
   programs.home-manager.enable = true;
