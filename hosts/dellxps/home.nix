@@ -18,8 +18,15 @@
   home.stateVersion = "23.11";
 
   home.packages = with pkgs; [
+    calibre
     discord
     bitwarden
+    libreoffice-qt
+    lutris
+    protonup-qt
+    hunspell
+    hunspellDicts.sv_SE
+    hunspellDicts.en_US
     # See: https://discourse.nixos.org/t/new-install-vivaldi-not-starting/53282/8
     (vivaldi.overrideAttrs (oldAttrs: {
       dontWrapQtApps = false;
