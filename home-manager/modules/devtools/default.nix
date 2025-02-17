@@ -146,5 +146,6 @@
     pyright
     inputs.nh.packages.${pkgs.system}.default
     inputs.nix-alien.packages.${pkgs.system}.nix-alien
+    joplin
   ];
 }

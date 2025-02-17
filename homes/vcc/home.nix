@@ -56,9 +56,12 @@
         s
       ];
   };
-  programs.zellij = {
-    settings = {
-      copy_command = "xclip -selection clipboard"; # x11
+  programs = {
+    joplin-desktop.enable = true;
+    zellij = {
+      settings = {
+        copy_command = "xclip -selection clipboard"; # x11
+      };
     };
   };
 
