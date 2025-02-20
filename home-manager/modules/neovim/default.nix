@@ -49,6 +49,7 @@
       plenary-nvim
       nvim-lspconfig
       telescope-nvim
+      toggleterm-nvim
       vim-snippets
       cmp-nvim-lsp
       cmp-buffer

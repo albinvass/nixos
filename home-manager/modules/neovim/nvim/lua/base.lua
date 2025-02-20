@@ -67,3 +67,7 @@ vim.api.nvim_set_hl(0, "GitSignsCurrentLineBlame", {fg = "DarkGrey", bg = 'NONE'
 vim.keymap.set("n", "<leader>-", function()
   require("yazi").yazi()
 end)
+
+require('toggleterm').setup{
+  open_mapping = [[<leader>t]]
+}
