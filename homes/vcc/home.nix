@@ -50,6 +50,7 @@
         xclip
         inputs.git-toprepo.packages.${pkgs.system}.git-toprepo
         vivaldi
+        feishin
       ]
       ++ [
         vpn
