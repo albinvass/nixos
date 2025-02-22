@@ -22,7 +22,6 @@ vim.api.nvim_set_keymap("n", "<Leader> ", ":nohlsearch<CR>", {})
 vim.api.nvim_set_keymap("n", "<C-p>", ":Telescope find_files<CR>", {})
 vim.api.nvim_set_keymap("n", "<C-e>", ":Telescope live_grep<CR>", {})
 
-require("aerial").setup{}
 require("nvim-surround").setup{}
 require("neo-tree").setup{}
 vim.api.nvim_set_keymap("n", "<C-n>", ":Neotree toggle<CR>", {})
@@ -67,7 +66,3 @@ vim.api.nvim_set_hl(0, "GitSignsCurrentLineBlame", {fg = "DarkGrey", bg = 'NONE'
 vim.keymap.set("n", "<leader>-", function()
   require("yazi").yazi()
 end)
-
-require('toggleterm').setup{
-  open_mapping = [[<leader>t]]
-}
