@@ -165,6 +165,7 @@
       openconnect-sso
       xwaylandvideobridge
       kdePackages.discover
+      wl-clipboard
     ];
   };
 
