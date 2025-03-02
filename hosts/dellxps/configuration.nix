@@ -179,6 +179,7 @@
       viAlias = true;
     };
     ssh = {
+      startAgent = true;
       enableAskPassword = false;
     };
     zsh.enable = true;
