@@ -19,18 +19,16 @@
     packages =
       with pkgs;
       let
-        vpn =
-          writeShellScriptBin "vpn" # bash
-            ''
-              #!${pkgs.bash}/bin/bash
-              export POINTSHARP_TOKEN="$(${cloak}/bin/cloak view vcc)"
-              vccvpn $@
-            '';
         s =
           writeShellScriptBin "s" # bash
             ''
               #!${pkgs.bash}/bin/bash
-              sudo --preserve-env --preserve-env=PATH env $@
+              sudo --preserve-env --preserve-env=PATH env "$@"
+            '';
+        bazel = writeShellScriptBin "bazel" # bash
+            ''
+              #!${pkgs.bash}/bin/bash
+              ${pkgs.bazelisk}/bin/bazelisk "$@"
             '';
       in
       [
@@ -53,8 +51,8 @@
         feishin
       ]
       ++ [
-        vpn
         s
+        bazel
       ];
   };
   programs = {
