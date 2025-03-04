@@ -33,6 +33,7 @@
       git
       yaml-language-server
       rust-analyzer
+      starpls-bin
       elixir-ls
       elixir
     ];

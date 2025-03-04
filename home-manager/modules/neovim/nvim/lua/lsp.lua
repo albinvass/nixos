@@ -72,6 +72,7 @@ local servers = {
   bashls={},
   --dockerls={},
   clangd={},
+  starpls={},
   terraformls={
     on_attach=function()
       format_on_close()
