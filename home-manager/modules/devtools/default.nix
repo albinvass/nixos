@@ -69,6 +69,14 @@
     };
     go.enable = true;
     jq.enable = true;
+    ssh = {
+      enable = true;
+      includes = [ "~/.ssh/local_config" ];
+      extraConfig = ''
+        IdentityFile=~/.ssh/id_ed25519_sk_red
+        IdentityFile=~/.ssh/id_ed25519_sk_green
+      '';
+    };
     yazi = {
       enable = true;
       enableZshIntegration = true;
