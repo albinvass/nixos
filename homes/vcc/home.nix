@@ -13,6 +13,7 @@
   home = {
     username = "avass";
     homeDirectory = "/home/avass";
+    sessionPath = [ "$HOME/.local/bin" ];
 
     stateVersion = "23.11";
 
