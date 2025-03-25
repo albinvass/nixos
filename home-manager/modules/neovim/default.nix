@@ -36,7 +36,14 @@
       starpls-bin
       elixir-ls
       elixir
+      delve
+      rr
+      vscode-extensions.ms-vscode.cpptools
     ];
+
+    extraPython3Packages = (ps: with ps; [
+      debugpy
+    ]);
 
     plugins = with pkgs.vimPlugins; [
       nvim-surround
@@ -71,6 +78,11 @@
       neo-tree-nvim
       dressing-nvim
       yazi-nvim
+      nvim-dap
+      nvim-dap-ui
+      nvim-dap-rr
+      nvim-dap-python
+      nvim-dap-go
     ];
   };
 }
