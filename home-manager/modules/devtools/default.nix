@@ -90,6 +90,7 @@
     zellij = {
       enable = true;
       enableZshIntegration = true;
+      exitShellOnExit = true;
       settings = {
         theme = "catppuccin-mocha";
         default_shell = "zsh";
@@ -104,7 +105,6 @@
 
   home.sessionVariables = {
     NH_FLAKE = pkgs.lib.mkDefault "${config.home.homeDirectory}/git/github/albinvass/nixos";
-    ZELLIJ_AUTO_EXIT = "true";
   };
 
   home.packages = with pkgs; [
