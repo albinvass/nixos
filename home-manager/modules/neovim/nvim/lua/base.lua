@@ -41,21 +41,6 @@ require('whitespace-nvim').setup()
 -- remove trailing whitespace with a keybinding
 vim.keymap.set('n', '<Leader>t', require('whitespace-nvim').trim)
 
-require('neorg').setup{
-  load = {
-    ["core.defaults"] = {},
-    ["core.concealer"] = {},
-    ["core.dirman"] = {
-      config = {
-        workspaces = {
-          notes = "~/notes",
-        },
-        default_workspace = "notes",
-      },
-    },
-  }
-}
-
 require('gitsigns').setup({
   current_line_blame = true,
 })

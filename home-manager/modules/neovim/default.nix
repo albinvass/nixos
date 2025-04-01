@@ -61,8 +61,6 @@
       cmp-buffer
       cmp-cmdline
       cmp-path
-      neorg
-      neorg-telescope
       nvim-cmp
       luasnip
       cmp_luasnip

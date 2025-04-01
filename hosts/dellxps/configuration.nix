@@ -30,9 +30,6 @@
     config.allowUnfree = true;
     overlays = [
       inputs.nixneovimplugins.overlays.default
-      inputs.neorg-overlay.overlays.default
-      inputs.openconnect-sso.overlays.default
-      overlays.openconnect
     ];
   };
 
@@ -86,7 +83,6 @@
     hostName = "dellxps";
     networkmanager = {
       enable = true;
-      plugins = with pkgs; [networkmanager-openconnect];
     };
   };
 
@@ -162,7 +158,6 @@
       dig
       gh
       qemu
-      openconnect-sso
       xwaylandvideobridge
       kdePackages.discover
       wl-clipboard

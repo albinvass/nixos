@@ -14,7 +14,6 @@
     };
     fh.url = "https://flakehub.com/f/DeterminateSystems/fh/*.tar.gz";
     git-toprepo.url = "github:meroton/git-toprepo";
-    neorg-overlay.url = "github:nvim-neorg/nixpkgs-neorg-overlay";
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     nixos-hardware.url = "github:NixOs/nixos-hardware/master";
     nixneovimplugins.url = "github:NixNeovim/NixNeovim";
@@ -22,13 +21,6 @@
     nixgl.url = "github:guibou/nixGL";
     home-manager = {
       url = "github:nix-community/home-manager/master";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-    openconnect-sso = {
-      url = "github:ThinkChaos/openconnect-sso/fix/nix-flake";
-    };
-    wsl = {
-      url = "github:nix-community/NixOS-WSL";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     wezterm = {
@@ -76,17 +68,6 @@
         inherit (self) nixosModules homeManagerModules overlays;
       };
       nixosModules = self.lib.importModules ./nixos/modules;
-      overlays.openconnect = (self: super: {
-        # See: https://gitlab.com/openconnect/openconnect/-/issues/730
-        openconnect = super.openconnect.overrideAttrs (old: {
-          src = pkgs.fetchFromGitLab {
-            owner = "openconnect";
-            repo = "openconnect";
-            rev = "32971c1b1e1506e2e9fdb215b8ba6f3b930fe98d";
-            hash = "sha256-NtIFZ4iARPgn5qySdybqNMS8rVtAbuBKViiC9BXZvno=";
-          };
-        });
-      });
       homeManagerModules = self.lib.importModules ./home-manager/modules;
       homeConfigurations."avass@5CG4420JDB" = inputs.home-manager.lib.homeManagerConfiguration {
         pkgs = import nixpkgs {
@@ -95,14 +76,12 @@
           overlays = [
             inputs.nixneovimplugins.overlays.default
             inputs.nixgl.overlay
-            inputs.neorg-overlay.overlays.default
           ];
         };
         modules = [
           ./homes/vcc/home.nix
           homeManagerModules.devtools
           homeManagerModules.social-media
-          homeManagerModules.music
         ];
         extraSpecialArgs = {
           inherit inputs;
