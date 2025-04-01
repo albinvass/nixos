@@ -1,4 +1,9 @@
-{ pkgs, homeManagerModules, inputs, ... }:
+{
+  pkgs,
+  homeManagerModules,
+  inputs,
+  ...
+}:
 {
   imports = [
     ./desktop-files
@@ -49,8 +54,8 @@
   };
 
   home.sessionVariables = {
-      NIXOS_OZONE_WL = "1";
-      ELECTRON_OZONE_PLATFORM_HINT = "auto";
+    NIXOS_OZONE_WL = "1";
+    ELECTRON_OZONE_PLATFORM_HINT = "auto";
   };
   # Let Home Manager install and manage itself.
   programs.home-manager.enable = true;

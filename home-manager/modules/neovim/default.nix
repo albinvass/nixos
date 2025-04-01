@@ -6,7 +6,8 @@
   ...
 }:
 {
-  home.file."${config.xdg.configHome}/nvim".source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/git/github/albinvass/nixos/home-manager/modules/neovim/nvim";
+  home.file."${config.xdg.configHome}/nvim".source =
+    config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/git/github/albinvass/nixos/home-manager/modules/neovim/nvim";
   programs.neovim = {
     enable = true;
     defaultEditor = true;
@@ -41,9 +42,11 @@
       vscode-extensions.ms-vscode.cpptools
     ];
 
-    extraPython3Packages = (ps: with ps; [
-      debugpy
-    ]);
+    extraPython3Packages = (
+      ps: with ps; [
+        debugpy
+      ]
+    );
 
     plugins = with pkgs.vimPlugins; [
       nvim-surround

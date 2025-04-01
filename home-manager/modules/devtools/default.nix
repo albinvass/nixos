@@ -80,7 +80,10 @@
     yazi = {
       enable = true;
       enableZshIntegration = true;
-      theme = builtins.fromTOML (builtins.readFile "${inputs.catppuccin-yazi}/themes/mocha/catppuccin-mocha-blue.toml")
+      theme =
+        builtins.fromTOML (
+          builtins.readFile "${inputs.catppuccin-yazi}/themes/mocha/catppuccin-mocha-blue.toml"
+        )
         // {
           manager = {
             syntect_theme = "${inputs.catppuccin-bat}/themes/mocha/catppuccin-mocha-blue.toml";

@@ -28,7 +28,8 @@
     };
     zsh = {
       enable = true;
-      initExtra = /* bash */ ''
+      initExtra = # bash
+        ''
           bw-unlock() {
             export BW_SESSION=$(bw unlock --raw)
           }

@@ -26,7 +26,8 @@
               #!${pkgs.bash}/bin/bash
               sudo --preserve-env --preserve-env=PATH env "$@"
             '';
-        bazel = writeShellScriptBin "bazel" # bash
+        bazel =
+          writeShellScriptBin "bazel" # bash
             ''
               #!${pkgs.bash}/bin/bash
               ${pkgs.bazelisk}/bin/bazelisk "$@"

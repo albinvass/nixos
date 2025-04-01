@@ -21,7 +21,8 @@
               #!${pkgs.bash}/bin/bash
               sudo --preserve-env --preserve-env=PATH env $@
             '';
-      in [
+      in
+      [
         s
       ];
   };
@@ -34,4 +35,3 @@
     };
   };
 }
-
