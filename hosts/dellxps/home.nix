@@ -7,10 +7,8 @@
 {
   imports = [
     ./desktop-files
-    homeManagerModules.thunderbird
     homeManagerModules.devtools
     homeManagerModules.social-media
-    homeManagerModules.music
     homeManagerModules.wezterm
   ];
 
