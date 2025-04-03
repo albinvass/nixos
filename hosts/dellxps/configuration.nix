@@ -158,7 +158,7 @@
       dig
       gh
       qemu
-      xwaylandvideobridge
+      kdePackages.xwaylandvideobridge
       kdePackages.discover
       wl-clipboard
     ];
@@ -183,14 +183,8 @@
   virtualisation.libvirtd.enable = true;
   xdg.portal = {
     enable = true;
-    #wlr.enable = true;
-    # gtk portal needed to make gtk apps happy
     extraPortals = with pkgs; [
-      xdg-desktop-portal
-      xdg-desktop-portal-hyprland
-      xdg-desktop-portal-wlr
-      xdg-desktop-portal-gtk
-      xdg-desktop-portal-kde
+      kdePackages.xdg-desktop-portal-kde
     ];
   };
   security.pam.services.login.enableGnomeKeyring = true;
