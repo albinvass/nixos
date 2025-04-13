@@ -98,6 +98,7 @@
         theme = "catppuccin-mocha";
         default_shell = "zsh";
         default_mode = "locked";
+        show_startup_tips = false;
       };
     };
     zoxide = {
