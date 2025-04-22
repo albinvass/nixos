@@ -1,0 +1,24 @@
+From d8ddac9c239d2f2ed8c2a7010ad27dd834e29531 Mon Sep 17 00:00:00 2001
+From: Albin Vass <albinvass@gmail.com>
+Date: Tue, 22 Apr 2025 15:02:52 +0200
+Subject: [PATCH] fetch hotfix
+
+---
+ git_toprepo.py | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/git_toprepo.py b/git_toprepo.py
+index 56f88c8..8cd8f2e 100755
+--- a/git_toprepo.py
++++ b/git_toprepo.py
+@@ -1820,6 +1820,7 @@ class TopRepoExpander(RepoExpanderBase):
+         ret = [
+             self.subrepo_id_to_converted_id[parent_id]
+             for parent_id in subrepo_commit_to_insert.parents
++            if parent_id in self.subrepo_id_to_converted_id
+         ]
+         ints = [-1] * len(ret)
+         for i, val in enumerate(ret):
+-- 
+2.48.1
+

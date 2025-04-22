@@ -32,6 +32,9 @@
               #!${pkgs.bash}/bin/bash
               ${pkgs.bazelisk}/bin/bazelisk "$@"
             '';
+        git-toprepo-patched = inputs.git-toprepo.packages.${pkgs.system}.git-toprepo.overrideAttrs (oldAttrs: {
+          patches = ../../patches/toprepo-fetch-hotfix.patch;
+        });
       in
       [
         bitwarden
@@ -48,9 +51,9 @@
         arandr
         flameshot
         xclip
-        inputs.git-toprepo.packages.${pkgs.system}.git-toprepo
         vivaldi
         feishin
+        git-toprepo-patched
       ]
       ++ [
         s
