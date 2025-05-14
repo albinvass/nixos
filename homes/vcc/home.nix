@@ -50,7 +50,6 @@
         flameshot
         xclip
         vivaldi
-        feishin
         git-toprepo
       ]
       ++ [
