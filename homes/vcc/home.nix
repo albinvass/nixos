@@ -41,7 +41,6 @@
         ninja
         gcc
         light
-        i3
         git-repo
         nixgl.nixGLIntel
         virt-manager
@@ -67,8 +66,4 @@
 
   programs.home-manager.enable = true;
   targets.genericLinux.enable = true;
-  home.file."${config.xdg.configHome}/i3" = {
-    source = ./i3;
-    recursive = true;
-  };
 }
