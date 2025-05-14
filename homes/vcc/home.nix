@@ -1,15 +1,9 @@
 {
-  config,
   pkgs,
-  homeManagerModules,
   inputs,
   ...
 }:
 {
-  imports = [
-    #homeManagerModules.wezterm
-  ];
-
   home = {
     username = "avass";
     homeDirectory = "/home/avass";
@@ -35,18 +29,8 @@
         git-toprepo = inputs.git-toprepo.packages.${pkgs.system}.git-toprepo;
       in
       [
-        bitwarden
-        cloak
-        dmenu
-        ninja
-        gcc
-        light
         git-repo
         nixgl.nixGLIntel
-        virt-manager
-        fly
-        arandr
-        flameshot
         xclip
         vivaldi
         git-toprepo
