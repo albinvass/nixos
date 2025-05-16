@@ -13,7 +13,10 @@
       flake = false;
     };
     fh.url = "https://flakehub.com/f/DeterminateSystems/fh/*.tar.gz";
-    git-toprepo.url = "github:meroton/git-toprepo";
+    git-toprepo = {
+      url = "github:meroton/git-toprepo";
+    flake = false;
+    };
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     nixos-hardware.url = "github:NixOs/nixos-hardware/master";
     nixneovimplugins.url = "github:NixNeovim/NixNeovim";

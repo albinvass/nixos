@@ -26,7 +26,13 @@
               #!${pkgs.bash}/bin/bash
               ${pkgs.bazelisk}/bin/bazelisk "$@"
             '';
-        git-toprepo = inputs.git-toprepo.packages.${pkgs.system}.git-toprepo;
+        git-toprepo = pkgs.rustPlatform.buildRustPackage {
+          pname = "git-toprepo";
+          version = "0.1.0";
+          src = inputs.git-toprepo;
+          cargoLock.lockFile = "${inputs.git-toprepo}/Cargo.lock";
+          doCheck = false;
+        };
       in
       [
         git-repo
