@@ -7,7 +7,7 @@ local format_on_close = function()
 end
 
 -- See:
--- https://github.com/neovim/nvim-lspconfig/blob/master/doc/server_configurations.md
+-- https://github.com/neovim/nvim-lspconfig/blob/master/doc/configs.md
 local servers = {
   esbonio={},
   lua_ls={
