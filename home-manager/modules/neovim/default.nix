@@ -34,6 +34,7 @@
       git
       yaml-language-server
       rust-analyzer
+      cargo
       starpls-bin
       elixir-ls
       elixir
