@@ -15,7 +15,6 @@
   imports = [
     # Include the results of the hardware scan.
     ./hardware-configuration.nix
-    nixosModules.gaming
     nixosModules.nh
     # https://github.com/NixOS/nixos-hardware/tree/master/dell/xps/15-9520
     inputs.nixos-hardware.nixosModules.dell-xps-15-9520-nvidia
@@ -171,6 +170,7 @@
       vimAlias = true;
       viAlias = true;
     };
+    steam.enable = true;
     zsh.enable = true;
   };
 
