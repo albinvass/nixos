@@ -16,7 +16,6 @@
     # Include the results of the hardware scan.
     ./hardware-configuration.nix
     nixosModules.gaming
-    nixosModules.docker
     nixosModules.nh
     # https://github.com/NixOS/nixos-hardware/tree/master/dell/xps/15-9520
     inputs.nixos-hardware.nixosModules.dell-xps-15-9520-nvidia
