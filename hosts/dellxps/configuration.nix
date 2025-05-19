@@ -141,8 +141,6 @@
         "wheel"
         "video"
         "input"
-        "docker"
-        "libvirtd"
       ];
       shell = pkgs.zsh;
     };
