@@ -31,10 +31,9 @@
       sqls
       marksman
       ripgrep
+      rust-analyzer
       git
       yaml-language-server
-      rust-analyzer
-      cargo
       starpls-bin
       elixir-ls
       elixir

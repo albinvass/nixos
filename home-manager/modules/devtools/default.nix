@@ -122,8 +122,7 @@
     docker-compose
     python311
     virtualenv
-    rustc
-    cargo
+    rustup
     yarn
     cloc
     lsof

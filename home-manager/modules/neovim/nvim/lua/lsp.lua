@@ -79,7 +79,8 @@ local servers = {
     end
   },
   yamlls={},
-  rust_analyzer={},
+  rust_analyzer={
+  },
 }
 
 for lsp, conf in pairs(servers) do
