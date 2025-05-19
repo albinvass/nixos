@@ -42,7 +42,7 @@
     synergy
     waynergy
     obs-studio
-    inputs.git-toprepo.packages.${pkgs.system}.git-toprepo
+    git-toprepo
   ];
 
   home.sessionVariables = {

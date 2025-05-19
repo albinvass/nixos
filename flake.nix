@@ -20,7 +20,6 @@
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     nixos-hardware.url = "github:NixOs/nixos-hardware/master";
     nixneovimplugins.url = "github:NixNeovim/NixNeovim";
-    nix-alien.url = "github:thiagokokada/nix-alien";
     nixgl.url = "github:guibou/nixGL";
     home-manager = {
       url = "github:nix-community/home-manager/master";
@@ -71,6 +70,7 @@
         inherit (self) nixosModules homeManagerModules overlays;
       };
       nixosModules = self.lib.importModules ./nixos/modules;
+      overlays.default = import ./overlay.nix { inherit pkgs inputs; };
       homeManagerModules = self.lib.importModules ./home-manager/modules;
       homeConfigurations."avass@5CG4420JDB" = inputs.home-manager.lib.homeManagerConfiguration {
         pkgs = import nixpkgs {

@@ -30,6 +30,7 @@
     config.allowUnfree = true;
     overlays = [
       inputs.nixneovimplugins.overlays.default
+      overlays.default
     ];
   };
 
