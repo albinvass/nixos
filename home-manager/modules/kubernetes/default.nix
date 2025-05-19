@@ -7,7 +7,6 @@ in
     kubectl
     kubernetes-helm
     kind
-    minikube
     kubelogin
     kubelogin-oidc
     kubectl-hns

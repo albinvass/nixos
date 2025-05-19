@@ -84,7 +84,7 @@
         modules = [
           ./homes/vcc/home.nix
           homeManagerModules.devtools
-          homeManagerModules.social-media
+          homeManagerModules.chats
         ];
         extraSpecialArgs = {
           inherit inputs;

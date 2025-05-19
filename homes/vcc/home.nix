@@ -32,7 +32,6 @@
         nixgl.nixGLIntel
         xclip
         vivaldi
-        git-toprepo
       ]
       ++ [
         s

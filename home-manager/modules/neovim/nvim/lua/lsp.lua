@@ -24,9 +24,6 @@ local servers = {
   helm_ls={},
   nil_ls={},
   eslint={},
-  elixirls={
-    cmd = { "elixir-ls" },
-  },
   gopls={
     on_attach=format_on_close,
     settings={

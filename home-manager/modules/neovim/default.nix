@@ -31,12 +31,9 @@
       sqls
       marksman
       ripgrep
-      rust-analyzer
       git
       yaml-language-server
       starpls-bin
-      elixir-ls
-      elixir
       delve
       rr
       vscode-extensions.ms-vscode.cpptools

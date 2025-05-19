@@ -8,7 +8,7 @@
   imports = [
     ./desktop-files
     homeManagerModules.devtools
-    homeManagerModules.social-media
+    homeManagerModules.chats
     homeManagerModules.wezterm
   ];
 
@@ -42,7 +42,6 @@
     synergy
     waynergy
     obs-studio
-    git-toprepo
   ];
 
   home.sessionVariables = {

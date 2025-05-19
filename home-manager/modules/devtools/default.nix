@@ -31,7 +31,6 @@
 
   programs = {
     nix-index-database.comma.enable = true;
-    htop.enable = true;
     awscli.enable = true;
     atuin = {
       enable = true;
@@ -113,12 +112,10 @@
 
   home.packages = with pkgs; [
     archivemount
-    attic-client
     atool
     azure-cli
     dig
     libarchive
-    tree
     docker-compose
     python311
     virtualenv
@@ -145,16 +142,12 @@
     duf
     parted
     cloud-utils
-    dogdns
     restic
-    drawio
     fzf
     statix
     jless
     devenv
     watchexec
-    python3Packages.nox
-    pyright
     inputs.nh.packages.${pkgs.system}.default
     git-toprepo
   ];
