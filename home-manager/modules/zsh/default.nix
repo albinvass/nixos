@@ -28,16 +28,8 @@
     };
     zsh = {
       enable = true;
-      initExtra = # bash
+      initContent = # bash
         ''
-          bw-unlock() {
-            export BW_SESSION=$(bw unlock --raw)
-          }
-
-          bw-login() {
-            export BW_SESSION=$(bw login --raw)
-          }
-
           if [ -f "$HOME/.secrets" ]; then
             source "$HOME/.secrets"
           fi
