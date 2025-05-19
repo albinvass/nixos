@@ -125,6 +125,7 @@
     lsof
     cmake
     gnumake
+    gcc
     yq
     gnupg
     rsync
