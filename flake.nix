@@ -79,6 +79,7 @@
           overlays = [
             inputs.nixneovimplugins.overlays.default
             inputs.nixgl.overlay
+            self.overlays.default
           ];
         };
         modules = [
