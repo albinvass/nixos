@@ -159,11 +159,11 @@
     "git-toprepo": {
       "flake": false,
       "locked": {
-        "lastModified": 1747739839,
-        "narHash": "sha256-g5JDiiHe/S9pJGLVbGseoui5l/LAzgYHPMiHlgstAPU=",
+        "lastModified": 1747831921,
+        "narHash": "sha256-VLhYgbn09yTbRG6h56sR6eFzt+3v9yUtoWdiom0PlzI=",
         "owner": "meroton",
         "repo": "git-toprepo",
-        "rev": "cceb1fa8c4c04a0e99abc740a68df12ac5e00482",
+        "rev": "d72c1b25b2c35a4ee48fc6143517f1f9f0b16c10",
         "type": "github"
       },
       "original": {
