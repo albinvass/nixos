@@ -3,6 +3,7 @@
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
 {
+  config,
   pkgs,
   nixosModules,
   homeManagerModules,
@@ -27,6 +28,7 @@
     config.allowUnfree = true;
     overlays = [
       inputs.nixneovimplugins.overlays.default
+      inputs.bacon-ls.overlay.${config.nixpkgs.hostPlatform.system}
       overlays.default
     ];
   };

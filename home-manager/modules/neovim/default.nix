@@ -17,7 +17,10 @@
     withRuby = true;
     extraPackages = with pkgs; [
       tree-sitter
+      bacon
+      bacon-ls
       nil
+      cargo
       llvmPackages.clang-unwrapped
       lua-language-server
       terraform-ls

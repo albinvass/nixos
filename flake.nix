@@ -1,5 +1,8 @@
 {
   inputs = {
+    bacon-ls = {
+      url = "github:crisidev/bacon-ls";
+    };
     catppuccin-bat = {
       url = "github:catppuccin/bat";
       flake = false;
@@ -73,12 +76,15 @@
       overlays.default = import ./overlay.nix { inherit pkgs inputs; };
       homeManagerModules = self.lib.importModules ./home-manager/modules;
       homeConfigurations."avass@5CG4420JDB" = inputs.home-manager.lib.homeManagerConfiguration {
-        pkgs = import nixpkgs {
+        pkgs = let
           system = "x86_64-linux";
+        in import nixpkgs {
+          inherit system;
           config.allowUnfree = true;
           overlays = [
             inputs.nixneovimplugins.overlays.default
             inputs.nixgl.overlay
+            inputs.bacon-ls.overlay.${system}
             self.overlays.default
           ];
         };
