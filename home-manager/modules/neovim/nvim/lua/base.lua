@@ -24,7 +24,12 @@ vim.api.nvim_set_keymap("n", "<C-e>", ":Telescope live_grep<CR>", {})
 
 require("nvim-surround").setup{}
 
+vim.diagnostic.config({ virtual_text = true })
 -- keybinds
+vim.keymap.set("n", "gK", function()
+  local new_config = not vim.diagnostic.config().virtual_lines
+  vim.diagnostic.config({ virtual_lines = new_config })
+end, { desc = 'Toggle diagnostic virtual_lines' })
 vim.keymap.set("n", "<leader>xx", function() require("trouble").toggle("diagnostics") end)
 vim.keymap.set("n", "<C-n>",      function() require("trouble").toggle("symbols") end)
 vim.keymap.set("n", "<leader>xw", function() require("trouble").toggle("workspace_diagnostics") end)
