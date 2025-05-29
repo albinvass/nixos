@@ -76,7 +76,6 @@
       gitsigns-nvim
       trouble-nvim
       whitespace-nvim
-      neo-tree-nvim
       dressing-nvim
       yazi-nvim
       nvim-dap

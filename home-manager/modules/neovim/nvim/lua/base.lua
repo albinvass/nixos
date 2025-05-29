@@ -23,16 +23,30 @@ vim.api.nvim_set_keymap("n", "<C-p>", ":Telescope find_files<CR>", {})
 vim.api.nvim_set_keymap("n", "<C-e>", ":Telescope live_grep<CR>", {})
 
 require("nvim-surround").setup{}
-require("neo-tree").setup{}
-vim.api.nvim_set_keymap("n", "<C-n>", ":Neotree toggle<CR>", {})
 
 -- keybinds
 vim.keymap.set("n", "<leader>xx", function() require("trouble").toggle("diagnostics") end)
+vim.keymap.set("n", "<C-n>",      function() require("trouble").toggle("symbols") end)
 vim.keymap.set("n", "<leader>xw", function() require("trouble").toggle("workspace_diagnostics") end)
 vim.keymap.set("n", "<leader>xd", function() require("trouble").toggle("document_diagnostics") end)
 vim.keymap.set("n", "<leader>xq", function() require("trouble").toggle("quickfix") end)
 vim.keymap.set("n", "<leader>xl", function() require("trouble").toggle("loclist") end)
 vim.keymap.set("n", "gR", function() require("trouble").toggle("lsp_references") end)
+
+
+-- Enabled opening telescope results in trouble window
+local actions = require("telescope.actions")
+local open_with_trouble = require("trouble.sources.telescope").open
+local add_to_trouble = require("trouble.sources.telescope").add
+local telescope = require("telescope")
+telescope.setup({
+  defaults = {
+    mappings = {
+      i = { ["<c-t>"] = open_with_trouble },
+      n = { ["<c-t>"] = open_with_trouble },
+    },
+  },
+})
 
 vim.filetype.add({ extension = { conflist = 'json' } })
 
