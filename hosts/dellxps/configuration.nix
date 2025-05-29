@@ -157,6 +157,8 @@
       kdePackages.xwaylandvideobridge
       kdePackages.discover
       wl-clipboard
+      podman
+      composefs
     ];
   };
 
@@ -177,7 +179,27 @@
   services.desktopManager.plasma6.enable = true;
   services.displayManager.sddm.enable = true;
 
-  virtualisation.libvirtd.enable = true;
+  virtualisation = {
+    libvirtd.enable = true;
+    containers = {
+      enable = true;
+      storage = {
+        settings = {
+          storage.options.overlay = {
+            use_composefs = "true";
+          };
+          storage.options.pull_options = {
+            enable_partial_images = "true";
+            convert_images = "true";
+          };
+        };
+      };
+    };
+    podman = {
+      enable = true;
+    };
+  };
+
   xdg.portal = {
     enable = true;
     extraPortals = with pkgs; [
