@@ -15,6 +15,10 @@
       url = "github:catppuccin/yazi";
       flake = false;
     };
+    fenix = {
+      url = "github:nix-community/fenix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     fh.url = "https://flakehub.com/f/DeterminateSystems/fh/*.tar.gz";
     git-toprepo = {
       url = "github:meroton/git-toprepo";
@@ -45,7 +49,9 @@
   outputs =
     { self, nixpkgs, ... }@inputs:
     let
-      pkgs = import nixpkgs { system = "x86_64-linux"; };
+      pkgs = import nixpkgs {
+        system = "x86_64-linux";
+      };
     in
     rec {
       checks.x86_64-linux = {
