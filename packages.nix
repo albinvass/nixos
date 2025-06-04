@@ -1,11 +1,15 @@
-{ pkgs, inputs }: let
-  rustPlatform = let
-    toolchain = inputs.fenix.packages.${pkgs.system}.minimal.toolchain;
-  in pkgs.makeRustPlatform {
-    cargo = toolchain;
-    rustc = toolchain;
-  };
-in {
+{ pkgs, inputs }:
+let
+  rustPlatform =
+    let
+      toolchain = inputs.fenix.packages.${pkgs.system}.minimal.toolchain;
+    in
+    pkgs.makeRustPlatform {
+      cargo = toolchain;
+      rustc = toolchain;
+    };
+in
+{
   git-toprepo = rustPlatform.buildRustPackage {
     pname = "git-toprepo";
     version = "0.1.0";
