@@ -28,5 +28,6 @@
         fetch.prunetags = true;
       };
     };
+    mergiraf.enable = true;
   };
 }
