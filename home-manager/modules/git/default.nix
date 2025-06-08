@@ -12,7 +12,7 @@
       difftastic = {
         enable = true;
       };
-      userEmail = "git@mail.albinvass.se";
+      userEmail = "git@mail.albinvass.com";
       userName = "Albin Vass";
       extraConfig = {
         credential.helper = "${pkgs.gitAndTools.gitFull}/bin/git-credential-libsecret";
