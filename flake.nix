@@ -20,10 +20,7 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     fh.url = "https://flakehub.com/f/DeterminateSystems/fh/*.tar.gz";
-    git-toprepo = {
-      url = "github:meroton/git-toprepo";
-      flake = false;
-    };
+    git-toprepo.url = "github:meroton/git-toprepo";
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     nixos-hardware.url = "github:NixOs/nixos-hardware/master";
     nixneovimplugins.url = "github:NixNeovim/NixNeovim";
