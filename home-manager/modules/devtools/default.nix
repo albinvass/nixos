@@ -117,6 +117,7 @@
     };
     tmux = {
       enable = true;
+      keyMode = "vi";
       prefix = "§";
       plugins = with pkgs.tmuxPlugins; [
         battery
@@ -126,6 +127,7 @@
         fuzzback
         pain-control
         sensible
+        yank
       ];
     };
     zoxide = {
