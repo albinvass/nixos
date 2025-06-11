@@ -115,8 +115,12 @@
           };
         };
     };
-    zellij = {
+    tmux = {
       enable = true;
+      prefix = "§";
+    };
+    zellij = {
+      enable = false;
       enableZshIntegration = true;
       exitShellOnExit = true;
       settings = {
