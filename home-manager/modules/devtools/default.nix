@@ -66,6 +66,10 @@
         dotfiles.enabled = true;
       };
     };
+    fzf = {
+      enable = true;
+      enableZshIntegration = true;
+    };
     ripgrep.enable = true;
     k9s.enable = true;
     direnv = {
