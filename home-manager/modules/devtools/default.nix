@@ -118,17 +118,15 @@
     tmux = {
       enable = true;
       prefix = "§";
-    };
-    zellij = {
-      enable = false;
-      enableZshIntegration = true;
-      exitShellOnExit = true;
-      settings = {
-        theme = "catppuccin-mocha";
-        default_shell = "zsh";
-        default_mode = "locked";
-        show_startup_tips = false;
-      };
+      plugins = with pkgs.tmuxPlugins; [
+        battery
+        catppuccin
+        cpu
+        fingers
+        fuzzback
+        pain-control
+        sensible
+      ];
     };
     zoxide = {
       enable = true;
