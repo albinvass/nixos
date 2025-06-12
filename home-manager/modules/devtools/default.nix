@@ -22,6 +22,7 @@
       # Broken in nix 2.18.2
       source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/git/github/albinvass/nixos/tools";
     };
+    ".bazelrc".source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/git/github/albinvass/nixos/home-manager/modules/devtools/bazel/.bazelrc";
   };
 
   home.shellAliases = {
