@@ -49,6 +49,7 @@
     );
 
     plugins = with pkgs.vimPlugins; [
+      codecompanion-nvim
       nvim-surround
       catppuccin-nvim
       vimagit
