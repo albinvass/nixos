@@ -166,6 +166,7 @@
     acpi
     atool
     azure-cli
+    buildozer
     dig
     libarchive
     docker-compose
