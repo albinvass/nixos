@@ -7,8 +7,8 @@
 }:
 {
   home = {
-    username = "bazzite";
-    homeDirectory = "/home/bazzite";
+    username = "avass";
+    homeDirectory = "/home/avass";
 
     stateVersion = "24.11";
 
@@ -24,14 +24,10 @@
       in
       [
         s
+        vivaldi
       ];
   };
 
   programs.home-manager.enable = true;
   targets.genericLinux.enable = true;
-  programs.zellij = {
-    settings = {
-      copy_command = "wl-copy";
-    };
-  };
 }

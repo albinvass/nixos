@@ -104,16 +104,22 @@
           inherit (self) homeManagerModules;
         };
       };
-      homeConfigurations."bazzite" = inputs.home-manager.lib.homeManagerConfiguration {
-        pkgs = import nixpkgs {
-          system = "x86_64-linux";
+      homeConfigurations."avass@steamdeck" = inputs.home-manager.lib.homeManagerConfiguration {
+        pkgs =
+          let
+            system = "x86_64-linux";
+          in import nixpkgs {
+          inherit system;
           config.allowUnfree = true;
-          overlays = [
-            inputs.nixneovimplugins.overlays.default
-          ];
+            overlays = [
+              inputs.nixneovimplugins.overlays.default
+              inputs.nixgl.overlay
+              inputs.bacon-ls.overlay.${system}
+              self.overlays.default
+            ];
         };
         modules = [
-          ./homes/bazzite/home.nix
+          ./homes/steamdeck/home.nix
           homeManagerModules.devtools
         ];
         extraSpecialArgs = {
