@@ -127,6 +127,29 @@
           inherit (self) homeManagerModules;
         };
       };
+      homeConfigurations."avass@desktop" = inputs.home-manager.lib.homeManagerConfiguration {
+        pkgs =
+          let
+            system = "x86_64-linux";
+          in import nixpkgs {
+          inherit system;
+          config.allowUnfree = true;
+            overlays = [
+              inputs.nixneovimplugins.overlays.default
+              inputs.nixgl.overlay
+              inputs.bacon-ls.overlay.${system}
+              self.overlays.default
+            ];
+        };
+        modules = [
+          ./homes/desktop/home.nix
+          homeManagerModules.devtools
+        ];
+        extraSpecialArgs = {
+          inherit inputs;
+          inherit (self) homeManagerModules;
+        };
+      };
       lib = import ./lib { inherit (nixpkgs) lib; };
     };
 }
