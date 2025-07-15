@@ -16,6 +16,7 @@
     programs.wezterm = {
       enable = true;
       enableZshIntegration = true;
+      package = (config.lib.nixGL.wrap pkgs.wezterm);
     };
   };
 }

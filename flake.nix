@@ -144,6 +144,7 @@
         modules = [
           ./homes/desktop/home.nix
           homeManagerModules.devtools
+          homeManagerModules.wezterm
         ];
         extraSpecialArgs = {
           inherit inputs;

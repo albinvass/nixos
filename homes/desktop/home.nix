@@ -27,6 +27,9 @@
         vivaldi
       ];
   };
+  nixGL.packages = inputs.nixgl.packages;
+  nixGL.defaultWrapper = "mesa";
+  nixGL.vulkan.enable = true;
 
   programs.home-manager.enable = true;
   targets.genericLinux.enable = true;
