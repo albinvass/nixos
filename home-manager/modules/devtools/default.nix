@@ -12,7 +12,7 @@
     homeManagerModules.git
     homeManagerModules.github
     homeManagerModules.kubernetes
-    inputs.nix-index-database.hmModules.nix-index
+    inputs.nix-index-database.homeModules.nix-index
   ];
 
   home.file = {
