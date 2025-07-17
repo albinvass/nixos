@@ -24,12 +24,18 @@
       in
       [
         s
-        vivaldi
       ];
   };
   nixGL.packages = inputs.nixgl.packages;
   nixGL.defaultWrapper = "mesa";
   nixGL.vulkan.enable = true;
+
+
+  xdg.systemDirs.data = [
+    "/var/lib/flatpak/exports/share"
+    "/home/avass/.local/share/flatpak/exports/share"
+  ];
+
 
   programs.home-manager.enable = true;
   targets.genericLinux.enable = true;
