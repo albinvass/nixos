@@ -39,5 +39,10 @@
 
   programs.home-manager.enable = true;
   targets.genericLinux.enable = true;
-  wezterm.enable_wayland = true;
+  albinvass = {
+    wezterm = {
+    enable = true;
+    enable_wayland = true;
+    };
+  };
 }

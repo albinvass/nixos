@@ -51,4 +51,7 @@
   programs.home-manager.enable = true;
   targets.genericLinux.enable = true;
   fonts.fontconfig.enable = true;
+  albinvass = {
+    wezterm.enable = true;
+  };
 }

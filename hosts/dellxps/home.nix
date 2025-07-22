@@ -51,4 +51,10 @@
   # Let Home Manager install and manage itself.
   programs.home-manager.enable = true;
 
+  albinvass = {
+    wezterm = {
+      enable = true;
+      enable_wayland = true;
+    };
+  };
 }
