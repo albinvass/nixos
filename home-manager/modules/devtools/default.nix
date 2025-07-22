@@ -28,7 +28,8 @@ in
         # Broken in nix 2.18.2
         source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/git/github/albinvass/nixos/tools";
       };
-      ".bazelrc".source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/git/github/albinvass/nixos/home-manager/modules/devtools/bazel/.bazelrc";
+      ".bazelrc".source =
+        config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/git/github/albinvass/nixos/home-manager/modules/devtools/bazel/.bazelrc";
     };
 
     home.shellAliases = {
@@ -127,11 +128,12 @@ in
         plugins = with pkgs.tmuxPlugins; [
           {
             plugin = catppuccin;
-            extraConfig = /* tmux */ ''
-              # Configure the catppuccin plugin
-              set -g @catppuccin_flavor "mocha"
-              set -g @catppuccin_window_status_style "rounded"
-            '';
+            extraConfig = # tmux
+              ''
+                # Configure the catppuccin plugin
+                set -g @catppuccin_flavor "mocha"
+                set -g @catppuccin_window_status_style "rounded"
+              '';
           }
           fingers
           fuzzback
@@ -139,23 +141,24 @@ in
           sensible
           yank
         ];
-        extraConfig = /* tmux */ ''
-          set -g status-right-length 200
-          set -g status-left-length 100
-          set -g status-left ""
+        extraConfig = # tmux
+          ''
+            set -g status-right-length 200
+            set -g status-left-length 100
+            set -g status-left ""
 
-          # These need to be set before battery and cpu
-          # but after catppuccin. So we set them here in extraConfig
-          # and manually add battery and cpu to be loaded instead since it
-          # doesn't fit the regular plugins usecase.
-          set -g status-right "#{E:@catppuccin_status_application}"
-          set -agF status-right "#{E:@catppuccin_status_cpu}"
-          set -ag status-right "#{E:@catppuccin_status_session}"
-          set -ag status-right "#{E:@catppuccin_status_uptime}"
-          set -agF status-right "#{E:@catppuccin_status_battery}"
-          run-shell ${pkgs.tmuxPlugins.battery.rtp}
-          run-shell ${pkgs.tmuxPlugins.cpu.rtp}
-        '';
+            # These need to be set before battery and cpu
+            # but after catppuccin. So we set them here in extraConfig
+            # and manually add battery and cpu to be loaded instead since it
+            # doesn't fit the regular plugins usecase.
+            set -g status-right "#{E:@catppuccin_status_application}"
+            set -agF status-right "#{E:@catppuccin_status_cpu}"
+            set -ag status-right "#{E:@catppuccin_status_session}"
+            set -ag status-right "#{E:@catppuccin_status_uptime}"
+            set -agF status-right "#{E:@catppuccin_status_battery}"
+            run-shell ${pkgs.tmuxPlugins.battery.rtp}
+            run-shell ${pkgs.tmuxPlugins.cpu.rtp}
+          '';
       };
       zoxide = {
         enable = true;

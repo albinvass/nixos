@@ -105,16 +105,17 @@
         pkgs =
           let
             system = "x86_64-linux";
-          in import nixpkgs {
-          inherit system;
-          config.allowUnfree = true;
+          in
+          import nixpkgs {
+            inherit system;
+            config.allowUnfree = true;
             overlays = [
               inputs.nixneovimplugins.overlays.default
               inputs.nixgl.overlay
               inputs.bacon-ls.overlay.${system}
               self.overlays.default
             ];
-        };
+          };
         modules = [
           ./homes/steamdeck/home.nix
           ./home-manager/modules
@@ -127,16 +128,17 @@
         pkgs =
           let
             system = "x86_64-linux";
-          in import nixpkgs {
-          inherit system;
-          config.allowUnfree = true;
+          in
+          import nixpkgs {
+            inherit system;
+            config.allowUnfree = true;
             overlays = [
               inputs.nixneovimplugins.overlays.default
               inputs.nixgl.overlay
               inputs.bacon-ls.overlay.${system}
               self.overlays.default
             ];
-        };
+          };
         modules = [
           ./homes/desktop/home.nix
           ./home-manager/modules
