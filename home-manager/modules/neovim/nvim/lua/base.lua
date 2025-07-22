@@ -44,8 +44,16 @@ local actions = require("telescope.actions")
 local open_with_trouble = require("trouble.sources.telescope").open
 local add_to_trouble = require("trouble.sources.telescope").add
 local telescope = require("telescope")
+
+local telescopeConfig = require("telescope.config")
+local vimgrep_arguments = { unpack(telescopeConfig.values.vimgrep_arguments) }
+table.insert(vimgrep_arguments, "--hidden")
+table.insert(vimgrep_arguments, "--glob")
+table.insert(vimgrep_arguments, "!**/.git/*")
+
 telescope.setup({
   defaults = {
+    vimgrep_arguments = vimgrep_arguments,
     mappings = {
       i = { ["<c-t>"] = open_with_trouble },
       n = { ["<c-t>"] = open_with_trouble },
