@@ -39,4 +39,5 @@
 
   programs.home-manager.enable = true;
   targets.genericLinux.enable = true;
+  wezterm.enable_wayland = true;
 }

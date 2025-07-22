@@ -98,6 +98,7 @@
           ./homes/vcc/home.nix
           homeManagerModules.devtools
           homeManagerModules.chats
+          homeManagerModules.wezterm
         ];
         extraSpecialArgs = {
           inherit inputs;

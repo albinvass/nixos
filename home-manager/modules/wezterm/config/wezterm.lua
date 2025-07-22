@@ -1,4 +1,5 @@
 local wezterm = require 'wezterm'
+local options = require 'options'
 local config = wezterm.config_builder()
 
 config.window_background_opacity = 0.99
@@ -18,5 +19,7 @@ config.mouse_bindings = {{
   action = wezterm.action.SelectTextAtMouseCursor 'SemanticZone',
   mods = 'NONE',
 }}
+
+config.enable_wayland = options.enable_wayland
 return config
 

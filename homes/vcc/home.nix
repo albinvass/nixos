@@ -45,7 +45,10 @@
       };
     };
   };
+  nixGL.packages = inputs.nixgl.packages;
+  nixGL.defaultWrapper = "mesa";
 
   programs.home-manager.enable = true;
   targets.genericLinux.enable = true;
+  fonts.fontconfig.enable = true;
 }
