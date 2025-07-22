@@ -1,15 +1,10 @@
 {
   pkgs,
-  homeManagerModules,
-  inputs,
   ...
 }:
 {
   imports = [
     ./desktop-files
-    homeManagerModules.devtools
-    homeManagerModules.chats
-    homeManagerModules.wezterm
   ];
 
   fonts.fontconfig.enable = true;
@@ -56,5 +51,7 @@
       enable = true;
       enable_wayland = true;
     };
+    devtools.enable = true;
+    chats.enable = true;
   };
 }

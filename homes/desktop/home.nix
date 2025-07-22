@@ -1,7 +1,5 @@
 {
-  config,
   pkgs,
-  homeManagerModules,
   inputs,
   ...
 }:
@@ -39,10 +37,13 @@
 
   programs.home-manager.enable = true;
   targets.genericLinux.enable = true;
+
   albinvass = {
     wezterm = {
-    enable = true;
-    enable_wayland = true;
+      enable = true;
+      enable_wayland = true;
     };
+    devtools.enable = true;
+    chats.enable = true;
   };
 }

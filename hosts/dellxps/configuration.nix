@@ -6,7 +6,6 @@
   config,
   pkgs,
   nixosModules,
-  homeManagerModules,
   overlays,
   inputs,
   ...
@@ -69,7 +68,7 @@
       imports = [ ./home.nix ];
     };
     extraSpecialArgs = {
-      inherit inputs homeManagerModules;
+      inherit inputs;
     };
   };
 

@@ -1,33 +1,41 @@
-{ pkgs, ... }:
+{ config, lib, pkgs, ... }:
+let
+  cfg = config.albinvass.git;
+in
 {
-  home.packages = with pkgs; [
-    git-review
-    git-toprepo
-  ];
-  programs = {
-    gh.enable = true;
-    gh-dash.enable = true;
-    git = {
-      enable = true;
-      difftastic = {
+  options.albinvass.git = {
+    enable = lib.mkEnableOption "Enable git configuration";
+  };
+  config = lib.mkIf cfg.enable {
+    home.packages = with pkgs; [
+      git-review
+      git-toprepo
+    ];
+    programs = {
+      gh.enable = true;
+      gh-dash.enable = true;
+      git = {
         enable = true;
+        difftastic = {
+          enable = true;
+        };
+        userEmail = "git@mail.albinvass.com";
+        userName = "Albin Vass";
+        extraConfig = {
+          credential.helper = "${pkgs.gitAndTools.gitFull}/bin/git-credential-libsecret";
+          merge.conflictStyle = "zdiff3";
+          fetch.writeCommitGraph = true;
+          pull.rebase = true;
+          push.autoSetupRemote = true;
+          rerere.enabled = true;
+          branch.sort = "-committerdate";
+          tag.sort = "-committerdate";
+          column.ui = "auto";
+          fetch.prune = true;
+          fetch.prunetags = true;
+        };
       };
-      userEmail = "git@mail.albinvass.com";
-      userName = "Albin Vass";
-      extraConfig = {
-        credential.helper = "${pkgs.gitAndTools.gitFull}/bin/git-credential-libsecret";
-        merge.conflictStyle = "zdiff3";
-        fetch.writeCommitGraph = true;
-        pull.rebase = true;
-        push.autoSetupRemote = true;
-        rerere.enabled = true;
-        branch.sort = "-committerdate";
-        tag.sort = "-committerdate";
-        column.ui = "auto";
-        fetch.prune = true;
-        fetch.prunetags = true;
-      };
+      mergiraf.enable = true;
     };
-    mergiraf.enable = true;
   };
 }

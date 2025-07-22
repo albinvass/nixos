@@ -1,8 +1,5 @@
 {
-  config,
   pkgs,
-  homeManagerModules,
-  inputs,
   ...
 }:
 {
@@ -30,4 +27,5 @@
 
   programs.home-manager.enable = true;
   targets.genericLinux.enable = true;
+  albinvass.devtools.enable = true;
 }

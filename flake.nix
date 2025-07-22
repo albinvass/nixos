@@ -74,11 +74,10 @@
       formatter.x86_64-linux = pkgs.nixfmt-rfc-style;
       nixosConfigurations = self.lib.importHosts ./hosts {
         inherit inputs;
-        inherit (self) nixosModules homeManagerModules overlays;
+        inherit (self) nixosModules overlays;
       };
       nixosModules = self.lib.importModules ./nixos/modules;
       overlays.default = import ./overlay.nix { inherit pkgs inputs; };
-      homeManagerModules = self.lib.importModules ./home-manager/modules;
       homeConfigurations."avass@5CG4420JDB" = inputs.home-manager.lib.homeManagerConfiguration {
         pkgs =
           let
@@ -96,13 +95,10 @@
           };
         modules = [
           ./homes/vcc/home.nix
-          homeManagerModules.devtools
-          homeManagerModules.chats
-          homeManagerModules.wezterm
+          ./home-manager/modules
         ];
         extraSpecialArgs = {
           inherit inputs;
-          inherit (self) homeManagerModules;
         };
       };
       homeConfigurations."avass@steamdeck" = inputs.home-manager.lib.homeManagerConfiguration {
@@ -121,11 +117,10 @@
         };
         modules = [
           ./homes/steamdeck/home.nix
-          homeManagerModules.devtools
+          ./home-manager/modules
         ];
         extraSpecialArgs = {
           inherit inputs;
-          inherit (self) homeManagerModules;
         };
       };
       homeConfigurations."avass@desktop" = inputs.home-manager.lib.homeManagerConfiguration {
@@ -144,12 +139,10 @@
         };
         modules = [
           ./homes/desktop/home.nix
-          homeManagerModules.devtools
-          homeManagerModules.wezterm
+          ./home-manager/modules
         ];
         extraSpecialArgs = {
           inherit inputs;
-          inherit (self) homeManagerModules;
         };
       };
       lib = import ./lib { inherit (nixpkgs) lib; };

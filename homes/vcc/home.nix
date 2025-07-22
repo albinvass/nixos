@@ -53,5 +53,7 @@
   fonts.fontconfig.enable = true;
   albinvass = {
     wezterm.enable = true;
+    devtools.enable = true;
+    chats.enable = true;
   };
 }
