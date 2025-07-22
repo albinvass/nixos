@@ -21,5 +21,6 @@ config.mouse_bindings = {{
 }}
 
 config.enable_wayland = options.enable_wayland
+config.audible_bell = "Disabled"
 return config
 
