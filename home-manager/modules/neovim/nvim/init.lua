@@ -1,6 +1,5 @@
 require'base'
 require'completion'
-require'femaco-setup'
 require'lsp'
 require'tree-sitter'
 

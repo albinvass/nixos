@@ -71,7 +71,6 @@
       nvim-treesitter.withAllGrammars
       nvim-treesitter-textobjects
       nvim-web-devicons
-      nvim-FeMaco-lua
       vim-markdown
       markdown-preview-nvim
       gitsigns-nvim
