@@ -26,30 +26,30 @@ in
       withPython3 = true;
       withRuby = true;
       extraPackages = with pkgs; [
-        tree-sitter
         bacon
         bacon-ls
-        nil
         cargo
+        delve
+        git
+        go-tools
+        gopls
+        helm-ls
         llvmPackages.clang-unwrapped
         lua-language-server
-        terraform-ls
-        helm-ls
-        nodePackages.bash-language-server
-        vscode-langservers-extracted
-        shellcheck
-        gopls
-        go-tools
-        pyright
-        sqls
         marksman
+        nil
+        nodePackages.bash-language-server
+        pyright
         ripgrep
-        git
-        yaml-language-server
-        starpls-bin
-        delve
         rr
+        shellcheck
+        sqls
+        starpls-bin
+        terraform-ls
+        tree-sitter
         vscode-extensions.ms-vscode.cpptools
+        vscode-langservers-extracted
+        yaml-language-server
       ];
 
       extraPython3Packages = (
@@ -59,40 +59,40 @@ in
       );
 
       plugins = with pkgs.vimPlugins; [
-        codecompanion-nvim
-        nvim-surround
         catppuccin-nvim
-        vimagit
-        vim-fugitive
-        vim-helm
-        vim-rooter
-        popup-nvim
-        plenary-nvim
-        nvim-lspconfig
-        telescope-nvim
-        vim-snippets
-        cmp-nvim-lsp
         cmp-buffer
         cmp-cmdline
+        cmp-nvim-lsp
         cmp-path
-        nvim-cmp
-        luasnip
         cmp_luasnip
-        nvim-treesitter.withAllGrammars
-        nvim-treesitter-textobjects
-        nvim-web-devicons
-        vim-markdown
-        markdown-preview-nvim
-        gitsigns-nvim
-        trouble-nvim
-        whitespace-nvim
+        codecompanion-nvim
         dressing-nvim
-        yazi-nvim
+        gitsigns-nvim
+        luasnip
+        markdown-preview-nvim
+        nvim-cmp
         nvim-dap
-        nvim-dap-ui
-        nvim-dap-rr
-        nvim-dap-python
         nvim-dap-go
+        nvim-dap-python
+        nvim-dap-rr
+        nvim-dap-ui
+        nvim-lspconfig
+        nvim-surround
+        nvim-treesitter-textobjects
+        nvim-treesitter.withAllGrammars
+        nvim-web-devicons
+        plenary-nvim
+        popup-nvim
+        telescope-nvim
+        trouble-nvim
+        vim-fugitive
+        vim-helm
+        vim-markdown
+        vim-rooter
+        vim-snippets
+        vimagit
+        whitespace-nvim
+        yazi-nvim
       ];
     };
   };
