@@ -79,20 +79,16 @@
       nixosModules = self.lib.importModules ./nixos/modules;
       overlays.default = import ./overlay.nix { inherit pkgs inputs; };
       homeConfigurations."avass@5CG4420JDB" = inputs.home-manager.lib.homeManagerConfiguration {
-        pkgs =
-          let
-            system = "x86_64-linux";
-          in
-          import nixpkgs {
-            inherit system;
-            config.allowUnfree = true;
-            overlays = [
-              inputs.nixneovimplugins.overlays.default
-              inputs.nixgl.overlay
-              inputs.bacon-ls.overlay.${system}
-              self.overlays.default
-            ];
-          };
+        pkgs = let
+          system = "x86_64-linux";
+        in import nixpkgs {
+          inherit system;
+          config.allowUnfree = true;
+          overlays = [
+            inputs.bacon-ls.overlay.${system}
+            self.overlays.default
+          ];
+        };
         modules = [
           ./homes/vcc/home.nix
           ./home-manager/modules
@@ -110,8 +106,6 @@
             inherit system;
             config.allowUnfree = true;
             overlays = [
-              inputs.nixneovimplugins.overlays.default
-              inputs.nixgl.overlay
               inputs.bacon-ls.overlay.${system}
               self.overlays.default
             ];
@@ -133,8 +127,6 @@
             inherit system;
             config.allowUnfree = true;
             overlays = [
-              inputs.nixneovimplugins.overlays.default
-              inputs.nixgl.overlay
               inputs.bacon-ls.overlay.${system}
               self.overlays.default
             ];

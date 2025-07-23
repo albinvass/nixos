@@ -26,10 +26,10 @@ in
         #source = ../../../tools;
         #recursive = true;
         # Broken in nix 2.18.2
-        source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/git/github/albinvass/nixos/tools";
+        source = config.lib.file.mkOutOfStoreSymlink "${config.albinvass.gitDirectory}/tools";
       };
       ".bazelrc".source =
-        config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/git/github/albinvass/nixos/home-manager/modules/devtools/bazel/.bazelrc";
+        config.lib.file.mkOutOfStoreSymlink "${config.albinvass.gitDirectory}/home-manager/modules/devtools/bazel/.bazelrc";
     };
 
     home.shellAliases = {
@@ -167,7 +167,7 @@ in
     };
 
     home.sessionVariables = {
-      NH_FLAKE = pkgs.lib.mkDefault "${config.home.homeDirectory}/git/github/albinvass/nixos";
+      NH_FLAKE = pkgs.lib.mkDefault config.albinvass.gitDirectory;
     };
 
     home.packages = with pkgs; [

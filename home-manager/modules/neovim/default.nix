@@ -2,6 +2,7 @@
   config,
   pkgs,
   lib,
+  inputs,
   ...
 }:
 let
@@ -12,8 +13,11 @@ in
     enable = lib.mkEnableOption "Enable Neovim";
   };
   config = lib.mkIf cfg.enable {
+    nixpkgs.overlays = [
+      inputs.nixneovimplugins.overlays.default
+    ];
     home.file."${config.xdg.configHome}/nvim".source =
-      config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/git/github/albinvass/nixos/home-manager/modules/neovim/nvim";
+      config.lib.file.mkOutOfStoreSymlink "${config.albinvass.gitDirectory}/home-manager/modules/neovim/nvim";
     programs.neovim = {
       enable = true;
       defaultEditor = true;
