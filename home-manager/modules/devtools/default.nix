@@ -170,11 +170,21 @@ in
       NH_FLAKE = pkgs.lib.mkDefault config.albinvass.gitDirectory;
     };
 
-    home.packages = with pkgs; [
+    home.packages = with pkgs; let
+      bazelIsBazelisk = writeShellScriptBin "bazel" /* bash */ ''
+        #!${pkgs.bash}/bin/bash
+        ${pkgs.bazelisk}/bin/bazelisk "$@"
+      '';
+      s = writeShellScriptBin "s" /* bash */ ''
+        #!${pkgs.bash}/bin/bash
+        sudo --preserve-env --preserve-env=PATH env $@
+      '';
+    in with pkgs; [
       archivemount
       acpi
       atool
       azure-cli
+      bazelIsBazelisk
       buildozer
       dig
       libarchive
@@ -213,6 +223,7 @@ in
       watchexec
       inputs.nh.packages.${pkgs.system}.default
       git-toprepo
+      s
     ];
   };
 }

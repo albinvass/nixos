@@ -3,6 +3,7 @@
   imports = [
     ./chats
     ./devtools
+    ./general
     ./git
     ./kubernetes
     ./neovim

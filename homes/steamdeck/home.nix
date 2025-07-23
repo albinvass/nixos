@@ -6,26 +6,18 @@
   home = {
     username = "avass";
     homeDirectory = "/home/avass";
-
     stateVersion = "24.11";
-
-    packages =
-      with pkgs;
-      let
-        s =
-          writeShellScriptBin "s" # bash
-            ''
-              #!${pkgs.bash}/bin/bash
-              sudo --preserve-env --preserve-env=PATH env $@
-            '';
-      in
-      [
-        s
-        vivaldi
-      ];
+    packages = with pkgs; [
+      vivaldi
+    ];
   };
 
-  programs.home-manager.enable = true;
-  targets.genericLinux.enable = true;
-  albinvass.devtools.enable = true;
+  albinvass = {
+    chats.enable = true;
+    devtools.enable = true;
+    wezterm = {
+      enable = true;
+      enable_wayland = true;
+    };
+  };
 }
