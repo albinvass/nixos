@@ -21,11 +21,12 @@ in
     albinvass.git.enable = true;
     albinvass.kubernetes.enable = true;
 
+    nixpkgs.overlays = [
+      inputs.nh.overlays.default
+    ];
+
     home.file = {
       tools = {
-        #source = ../../../tools;
-        #recursive = true;
-        # Broken in nix 2.18.2
         source = config.lib.file.mkOutOfStoreSymlink "${config.albinvass.gitDirectory}/tools";
       };
       ".bazelrc".source =
@@ -180,50 +181,46 @@ in
         sudo --preserve-env --preserve-env=PATH env $@
       '';
     in with pkgs; [
-      archivemount
       acpi
+      archivemount
       atool
-      azure-cli
       bazelIsBazelisk
       buildozer
-      dig
-      libarchive
-      docker-compose
-      python311
-      virtualenv
-      rustup
-      yarn
-      cloc
-      lsof
+      cloud-utils
       cmake
-      gnumake
+      devenv
+      dig
+      docker-compose
+      duf
+      dust
+      fzf
       gcc
-      yq
+      gnumake
       gnupg
-      rsync
-      vault
-      whois
-      sops
+      jless
       killall
+      libarchive
+      lsof
+      nh
       openssl
+      parted
+      python311
+      restic
+      rsync
+      rustup
+      s
+      shellcheck
+      sops
       ssh-to-age
       ssh-to-pgp
-      shellcheck
-      unrar
-      tldr
-      dust
-      duf
-      parted
-      cloud-utils
-      restic
-      fzf
       statix
-      jless
-      devenv
+      tldr
+      tokei
+      unrar
+      virtualenv
       watchexec
-      inputs.nh.packages.${pkgs.system}.default
-      git-toprepo
-      s
+      whois
+      yq
     ];
   };
 }
