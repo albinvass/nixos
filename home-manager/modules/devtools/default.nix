@@ -171,56 +171,64 @@ in
       NH_FLAKE = pkgs.lib.mkDefault config.albinvass.gitDirectory;
     };
 
-    home.packages = with pkgs; let
-      bazelIsBazelisk = writeShellScriptBin "bazel" /* bash */ ''
-        #!${pkgs.bash}/bin/bash
-        ${pkgs.bazelisk}/bin/bazelisk "$@"
-      '';
-      s = writeShellScriptBin "s" /* bash */ ''
-        #!${pkgs.bash}/bin/bash
-        sudo --preserve-env --preserve-env=PATH env $@
-      '';
-    in with pkgs; [
-      acpi
-      archivemount
-      atool
-      bazelIsBazelisk
-      buildozer
-      cloud-utils
-      cmake
-      devenv
-      dig
-      docker-compose
-      duf
-      dust
-      fzf
-      gcc
-      gnumake
-      gnupg
-      jless
-      killall
-      libarchive
-      lsof
-      nh
-      openssl
-      parted
-      python311
-      restic
-      rsync
-      rustup
-      s
-      shellcheck
-      sops
-      ssh-to-age
-      ssh-to-pgp
-      statix
-      tldr
-      tokei
-      unrar
-      virtualenv
-      watchexec
-      whois
-      yq
-    ];
+    home.packages =
+      with pkgs;
+      let
+        bazelIsBazelisk =
+          writeShellScriptBin "bazel" # bash
+            ''
+              #!${pkgs.bash}/bin/bash
+              ${pkgs.bazelisk}/bin/bazelisk "$@"
+            '';
+        s =
+          writeShellScriptBin "s" # bash
+            ''
+              #!${pkgs.bash}/bin/bash
+              sudo --preserve-env --preserve-env=PATH env $@
+            '';
+      in
+      with pkgs;
+      [
+        acpi
+        archivemount
+        atool
+        bazelIsBazelisk
+        buildozer
+        cloud-utils
+        cmake
+        devenv
+        dig
+        docker-compose
+        duf
+        dust
+        fzf
+        gcc
+        gnumake
+        gnupg
+        jless
+        killall
+        libarchive
+        lsof
+        nh
+        openssl
+        parted
+        python311
+        restic
+        rsync
+        rustup
+        s
+        shellcheck
+        sops
+        ssh-to-age
+        ssh-to-pgp
+        statix
+        tldr
+        tokei
+        unrar
+        virtualenv
+        watchexec
+        whois
+        yq
+      ];
   };
 }

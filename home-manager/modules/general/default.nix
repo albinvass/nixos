@@ -1,4 +1,5 @@
-{ config, ... }: {
+{ config, ... }:
+{
   config = {
     programs.home-manager.enable = true;
     targets.genericLinux.enable = !config.submoduleSupport.enable;
