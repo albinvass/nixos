@@ -50,24 +50,10 @@ local servers = {
   },
   marksman={},
   pyright={
-    on_init=function(client)
-      local path = client.workspace_folders[1].name
-      if vim.fn.filereadable(path .. "/.gitreview") and vim.fs.basename(path) == "zuul" then
-        client.config.settings.python.analysis = {
-          diagnosticSeverityOverrides = {
-            reportIncompatibleMethodOverride = false,
-          },
-          stubPath = path .. "/" .. "../zuul-typings",
-        }
-        client.notify("workspace/didChangeConfiguration", { settings = client.config.settings })
-        return true
-      end
-    end,
     settings = {
       python = {
         analysis = {
           reportIncompatibleMethodOverride = true,
-          stubPath = "./typings"
         },
       },
     },
