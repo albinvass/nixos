@@ -10,10 +10,6 @@ config.font_size = 9
 config.color_scheme = "Catppuccin Mocha"
 
 local act = wezterm.action
-config.keys = {
-  { key = 'UpArrow', mods = 'SHIFT', action = act.ScrollToPrompt(-1) },
-  { key = 'DownArrow', mods = 'SHIFT', action = act.ScrollToPrompt(1) },
-}
 config.mouse_bindings = {{
   event = { Down = { streak = 3, button = 'Left' } },
   action = wezterm.action.SelectTextAtMouseCursor 'SemanticZone',
@@ -23,4 +19,3 @@ config.mouse_bindings = {{
 config.enable_wayland = options.enable_wayland
 config.audible_bell = "Disabled"
 return config
-
