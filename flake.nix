@@ -19,7 +19,6 @@
       url = "github:nix-community/fenix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    fh.url = "https://flakehub.com/f/DeterminateSystems/fh/*.tar.gz";
     git-toprepo.url = "github:meroton/git-toprepo";
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     nixos-hardware.url = "github:NixOs/nixos-hardware/master";
@@ -27,10 +26,6 @@
     nixgl.url = "github:guibou/nixGL";
     home-manager = {
       url = "github:nix-community/home-manager/master";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-    wezterm = {
-      url = "github:wez/wezterm?dir=nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     nix-index-database = {
