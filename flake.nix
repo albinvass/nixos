@@ -50,7 +50,7 @@
         system = "x86_64-linux";
       };
     in
-    rec {
+    {
       checks.x86_64-linux = {
         nixfmt = pkgs.stdenv.mkDerivation {
           name = "nixfmt";
@@ -78,69 +78,41 @@
       };
       nixosModules = self.lib.importModules ./nixos/modules;
       overlays.default = import ./overlay.nix { inherit pkgs inputs; };
-      homeConfigurations."avass@5CG4420JDB" = inputs.home-manager.lib.homeManagerConfiguration {
-        pkgs =
-          let
+      homeConfigurations = let
+        mkHomeManagerConfiguration = host: config:
+          pkgs.lib.nameValuePair
+            host
+            (inputs.home-manager.lib.homeManagerConfiguration {
+              pkgs = import nixpkgs {
+                inherit (config) system;
+                config.allowUnfree = true;
+                overlays = [
+                  inputs.bacon-ls.overlay.${config.system}
+                  self.overlays.default
+                ];
+              };
+              modules = [
+                config.home
+                ./home-manager/modules
+              ];
+              extraSpecialArgs = {
+                inherit inputs;
+              };
+            });
+      in pkgs.lib.attrsets.mapAttrs' mkHomeManagerConfiguration {
+          "avass@desktop" = {
             system = "x86_64-linux";
-          in
-          import nixpkgs {
-            inherit system;
-            config.allowUnfree = true;
-            overlays = [
-              inputs.bacon-ls.overlay.${system}
-              self.overlays.default
-            ];
+            home = ./home-manager/homes/desktop/home.nix;
           };
-        modules = [
-          ./homes/vcc/home.nix
-          ./home-manager/modules
-        ];
-        extraSpecialArgs = {
-          inherit inputs;
-        };
-      };
-      homeConfigurations."avass@steamdeck" = inputs.home-manager.lib.homeManagerConfiguration {
-        pkgs =
-          let
+          "avass@steamdeck" = {
             system = "x86_64-linux";
-          in
-          import nixpkgs {
-            inherit system;
-            config.allowUnfree = true;
-            overlays = [
-              inputs.bacon-ls.overlay.${system}
-              self.overlays.default
-            ];
+            home = ./home-manager/homes/steamdeck/home.nix;
           };
-        modules = [
-          ./homes/steamdeck/home.nix
-          ./home-manager/modules
-        ];
-        extraSpecialArgs = {
-          inherit inputs;
-        };
-      };
-      homeConfigurations."avass@desktop" = inputs.home-manager.lib.homeManagerConfiguration {
-        pkgs =
-          let
+          "avass@5CG4420JDB" = {
             system = "x86_64-linux";
-          in
-          import nixpkgs {
-            inherit system;
-            config.allowUnfree = true;
-            overlays = [
-              inputs.bacon-ls.overlay.${system}
-              self.overlays.default
-            ];
+            home = ./home-manager/homes/vcc/home.nix;
           };
-        modules = [
-          ./homes/desktop/home.nix
-          ./home-manager/modules
-        ];
-        extraSpecialArgs = {
-          inherit inputs;
         };
-      };
       lib = import ./lib { inherit (nixpkgs) lib; };
     };
 }
