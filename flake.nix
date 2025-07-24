@@ -48,11 +48,17 @@
           };
         in
         pkgs.nixfmt-tree;
-      nixosConfigurations = self.lib.importHosts ./hosts {
-        inherit inputs;
-        inherit (self) nixosModules overlays;
+      nixosConfigurations = {
+        "dellxps" = nixpkgs.lib.mkNixosConfiguration {
+          system = "x86_64-linux";
+          modules = [
+            ./nixos/hosts/dellxps/configuration.nix
+          ];
+          specialArgs = {
+            inherit inputs;
+          };
+        };
       };
-      nixosModules = self.lib.importModules ./nixos/modules;
       homeConfigurations =
         let
           mkHomeManagerBase =
