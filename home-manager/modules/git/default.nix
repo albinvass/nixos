@@ -1,4 +1,5 @@
 {
+  inputs,
   config,
   lib,
   pkgs,
@@ -12,9 +13,12 @@ in
     enable = lib.mkEnableOption "Enable git configuration";
   };
   config = lib.mkIf cfg.enable {
+    nixpkgs.overlays = [
+      inputs.git-toprepo.overlays.default
+    ];
     home.packages = with pkgs; [
       git-review
-      git-toprepo
+      git-toprepo-stamped
     ];
     programs = {
       gh.enable = true;

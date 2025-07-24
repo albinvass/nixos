@@ -265,11 +265,11 @@
         "nixpkgs": "nixpkgs_4"
       },
       "locked": {
-        "lastModified": 1753130879,
-        "narHash": "sha256-klFCM+ggDnmLftnoLKrgyh0siykz7RYcQEjlp7I5/GQ=",
+        "lastModified": 1753282231,
+        "narHash": "sha256-6k22Vd9lVzdY2BlB14v7KRCJn7JSJhIHL/CZtG2P2m4=",
         "owner": "meroton",
         "repo": "git-toprepo",
-        "rev": "b9a17f4862f0c1a4c1697403a8c72810f503d9cf",
+        "rev": "cbda430715f3ca67ace49f2865448876e740b4ce",
         "type": "github"
       },
       "original": {

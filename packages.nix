@@ -1,6 +1,5 @@
 { pkgs, inputs }:
 {
-  git-toprepo = inputs.git-toprepo.packages.${pkgs.system}.git-toprepo-stamped;
   oils-for-unix =
     let
       pname = "oils-for-unix";
