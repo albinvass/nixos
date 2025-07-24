@@ -40,52 +40,56 @@
 
   outputs =
     { self, nixpkgs, ... }@inputs:
-    let
-      pkgs = import nixpkgs {
-        system = "x86_64-linux";
-      };
-    in
     {
-      formatter.x86_64-linux = pkgs.nixfmt-tree;
+      formatter.x86_64-linux =
+        let
+          pkgs = import nixpkgs {
+            system = "x86_64-linux";
+          };
+        in
+        pkgs.nixfmt-tree;
       nixosConfigurations = self.lib.importHosts ./hosts {
         inherit inputs;
         inherit (self) nixosModules overlays;
       };
       nixosModules = self.lib.importModules ./nixos/modules;
-      homeConfigurations = let
-        mkHomeManagerBase = system: inputs.home-manager.lib.homeManagerConfiguration {
-          pkgs = import nixpkgs {
-            inherit system;
-            config.allowUnfree = true;
-            overlays = [
-              inputs.bacon-ls.overlay.${system}
-              self.overlays.default
+      homeConfigurations =
+        let
+          mkHomeManagerBase =
+            system:
+            inputs.home-manager.lib.homeManagerConfiguration {
+              pkgs = import nixpkgs {
+                inherit system;
+                config.allowUnfree = true;
+                overlays = [
+                  inputs.bacon-ls.overlay.${system}
+                ];
+              };
+              modules = [
+                ./home-manager/modules
+              ];
+              extraSpecialArgs = {
+                inherit inputs;
+              };
+            };
+        in
+        {
+          "avass@desktop" = (mkHomeManagerBase "x86_64-linux").extendModules {
+            modules = [
+              ./home-manager/homes/desktop/home.nix
             ];
           };
-          modules = [
-            ./home-manager/modules
-          ];
-          extraSpecialArgs = {
-            inherit inputs;
+          "avass@steamdeck" = (mkHomeManagerBase "x86_64-linux").extendModules {
+            modules = [
+              ./home-manager/homes/steamdeck/home.nix
+            ];
+          };
+          "avass@5CG4420JDB" = (mkHomeManagerBase "x86_64-linux").extendModules {
+            modules = [
+              ./home-manager/homes/vcc/home.nix
+            ];
           };
         };
-      in {
-        "avass@desktop" = (mkHomeManagerBase "x86_64-linux").extendModules {
-          modules = [
-            ./home-manager/homes/desktop/home.nix
-          ];
-        };
-        "avass@steamdeck" = (mkHomeManagerBase "x86_64-linux").extendModules {
-          modules = [
-            ./home-manager/homes/steamdeck/home.nix
-          ];
-        };
-        "avass@5CG4420JDB" = (mkHomeManagerBase "x86_64-linux").extendModules  {
-          modules = [
-            ./home-manager/homes/vcc/home.nix
-          ];
-        };
-      };
       lib = import ./lib { inherit (nixpkgs) lib; };
     };
 }
