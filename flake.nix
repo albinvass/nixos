@@ -71,35 +71,38 @@
         buildInputs = [ inputs.attic.packages.x86_64-linux.attic-client ];
       };
       packages.x86_64-linux = import ./packages.nix { inherit inputs pkgs; };
-      formatter.x86_64-linux = pkgs.nixfmt-rfc-style;
+      formatter.x86_64-linux = pkgs.nixfmt-tree;
       nixosConfigurations = self.lib.importHosts ./hosts {
         inherit inputs;
         inherit (self) nixosModules overlays;
       };
       nixosModules = self.lib.importModules ./nixos/modules;
       overlays.default = import ./overlay.nix { inherit pkgs inputs; };
-      homeConfigurations = let
-        mkHomeManagerConfiguration = host: config:
-          pkgs.lib.nameValuePair
-            host
-            (inputs.home-manager.lib.homeManagerConfiguration {
-              pkgs = import nixpkgs {
-                inherit (config) system;
-                config.allowUnfree = true;
-                overlays = [
-                  inputs.bacon-ls.overlay.${config.system}
-                  self.overlays.default
+      homeConfigurations =
+        let
+          mkHomeManagerConfiguration =
+            host: config:
+            pkgs.lib.nameValuePair host (
+              inputs.home-manager.lib.homeManagerConfiguration {
+                pkgs = import nixpkgs {
+                  inherit (config) system;
+                  config.allowUnfree = true;
+                  overlays = [
+                    inputs.bacon-ls.overlay.${config.system}
+                    self.overlays.default
+                  ];
+                };
+                modules = [
+                  config.home
+                  ./home-manager/modules
                 ];
-              };
-              modules = [
-                config.home
-                ./home-manager/modules
-              ];
-              extraSpecialArgs = {
-                inherit inputs;
-              };
-            });
-      in pkgs.lib.attrsets.mapAttrs' mkHomeManagerConfiguration {
+                extraSpecialArgs = {
+                  inherit inputs;
+                };
+              }
+            );
+        in
+        pkgs.lib.attrsets.mapAttrs' mkHomeManagerConfiguration {
           "avass@desktop" = {
             system = "x86_64-linux";
             home = ./home-manager/homes/desktop/home.nix;
