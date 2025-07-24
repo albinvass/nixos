@@ -67,9 +67,6 @@
           '';
         };
       };
-      devShells.x86_64-linux.default = pkgs.mkShell {
-        buildInputs = [ inputs.attic.packages.x86_64-linux.attic-client ];
-      };
       packages.x86_64-linux = import ./packages.nix { inherit inputs pkgs; };
       formatter.x86_64-linux = pkgs.nixfmt-tree;
       nixosConfigurations = self.lib.importHosts ./hosts {
