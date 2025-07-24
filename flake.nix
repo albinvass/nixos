@@ -51,22 +51,6 @@
       };
     in
     {
-      checks.x86_64-linux = {
-        nixfmt = pkgs.stdenv.mkDerivation {
-          name = "nixfmt";
-          src = ./.;
-          doCheck = true;
-          dontBuild = true;
-          nativeBuildInputs = with pkgs; [ nixfmt-rfc-style ];
-          checkPhase = # bash
-            ''
-              nixfmt --check $(find . -name "*.nix" ! -name "flake.nix")
-            '';
-          installPhase = ''
-            mkdir $out
-          '';
-        };
-      };
       packages.x86_64-linux = import ./packages.nix { inherit inputs pkgs; };
       formatter.x86_64-linux = pkgs.nixfmt-tree;
       nixosConfigurations = self.lib.importHosts ./hosts {
