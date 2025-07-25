@@ -5,6 +5,7 @@
 {
   imports = [
     ./desktop-files
+    ../../../home-manager/modules
   ];
 
   fonts.fontconfig.enable = true;

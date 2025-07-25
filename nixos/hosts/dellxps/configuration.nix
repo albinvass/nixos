@@ -5,7 +5,6 @@
 {
   config,
   pkgs,
-  nixosModules,
   overlays,
   inputs,
   ...
@@ -15,7 +14,6 @@
   imports = [
     # Include the results of the hardware scan.
     ./hardware-configuration.nix
-    nixosModules.nh
     # https://github.com/NixOS/nixos-hardware/tree/master/dell/xps/15-9520
     inputs.nixos-hardware.nixosModules.dell-xps-15-9520-nvidia
     inputs.home-manager.nixosModules.home-manager
@@ -28,7 +26,7 @@
     overlays = [
       inputs.nixneovimplugins.overlays.default
       inputs.bacon-ls.overlay.${config.nixpkgs.hostPlatform.system}
-      overlays.default
+      inputs.git-toprepo.overlays.default
     ];
   };
 
@@ -175,6 +173,7 @@
     };
     steam.enable = true;
     zsh.enable = true;
+    kdeconnect.enable = true;
   };
 
   services.desktopManager.plasma6.enable = true;

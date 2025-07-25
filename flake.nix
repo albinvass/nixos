@@ -60,7 +60,7 @@
 
       };
       nixosConfigurations = {
-        "dellxps" = nixpkgs.lib.mkNixosConfiguration {
+        "dellxps" = nixpkgs.lib.nixosSystem {
           system = "x86_64-linux";
           modules = [
             ./nixos/hosts/dellxps/configuration.nix
