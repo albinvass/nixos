@@ -7,6 +7,36 @@
 }:
 let
   cfg = config.albinvass.git;
+  pygerrit2 =
+    with pkgs;
+    python3Packages.buildPythonPackage {
+      name = "pygerrit2";
+      src = inputs.pygerrit2;
+      pyproject = true;
+      build-system = with python3Packages; [ setuptools ];
+      buildInputs = with python3Packages; [
+        pbr
+        requests
+      ];
+      PBR_VERSION = "1.0.0";
+    };
+  gerrit-cli =
+    with pkgs;
+    python3Packages.buildPythonApplication {
+      name = "gerrit-cli";
+      src = inputs.gerrit-cli;
+      pyproject = false;
+      propagatedBuildInputs = with python3Packages; [
+        pygerrit2
+        requests
+      ];
+      installPhase = ''
+        mkdir -p $out/bin
+        install -Dm755 $src/py/gerrit.py $out/bin/gerrit
+        install -Dm755 $src/bin/review $out/bin/review
+        install -Dm755 $src/bin/fzf-passthrough $out/bin/fzf-passthrough
+      '';
+    };
 in
 {
   options.albinvass.git = {
@@ -19,6 +49,7 @@ in
     home.packages = with pkgs; [
       git-review
       git-toprepo-stamped
+      gerrit-cli
     ];
     programs = {
       gh.enable = true;

@@ -19,6 +19,10 @@
       url = "github:nix-community/fenix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    gerrit-cli = {
+      url = "github:stagnation/gerrit-cli";
+      flake = false;
+    };
     git-toprepo.url = "github:meroton/git-toprepo";
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     nixos-hardware.url = "github:NixOs/nixos-hardware/master";
@@ -36,6 +40,10 @@
       url = "github:viperML/nh";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    pygerrit2 = {
+      url = "github:dpursehouse/pygerrit2";
+      flake = false;
+    };
   };
 
   outputs =
@@ -48,6 +56,9 @@
           };
         in
         pkgs.nixfmt-tree;
+      overlays.default = {
+
+      };
       nixosConfigurations = {
         "dellxps" = nixpkgs.lib.mkNixosConfiguration {
           system = "x86_64-linux";

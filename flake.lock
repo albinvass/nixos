@@ -183,6 +183,22 @@
         "type": "github"
       }
     },
+    "gerrit-cli": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1749715570,
+        "narHash": "sha256-a9W2DY/ULUPMsYic4vJJkngwfKwuokyxxupk37N8RCU=",
+        "owner": "stagnation",
+        "repo": "gerrit-cli",
+        "rev": "916ea5fe3514575e5a049b00bddc29fb7da51cb2",
+        "type": "github"
+      },
+      "original": {
+        "owner": "stagnation",
+        "repo": "gerrit-cli",
+        "type": "github"
+      }
+    },
     "git-toprepo": {
       "inputs": {
         "fenix": "fenix_2",
@@ -632,6 +648,22 @@
         "type": "github"
       }
     },
+    "pygerrit2": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1690327040,
+        "narHash": "sha256-nxcazBtlSqYQo6psVqw7MW/BvQw2gYZEwGxbIziMovw=",
+        "owner": "dpursehouse",
+        "repo": "pygerrit2",
+        "rev": "eb7a1ab637a79ce955a4ebdd4220866b95766eb0",
+        "type": "github"
+      },
+      "original": {
+        "owner": "dpursehouse",
+        "repo": "pygerrit2",
+        "type": "github"
+      }
+    },
     "root": {
       "inputs": {
         "bacon-ls": "bacon-ls",
@@ -639,6 +671,7 @@
         "catppuccin-starship": "catppuccin-starship",
         "catppuccin-yazi": "catppuccin-yazi",
         "fenix": "fenix",
+        "gerrit-cli": "gerrit-cli",
         "git-toprepo": "git-toprepo",
         "home-manager": "home-manager",
         "nh": "nh",
@@ -646,7 +679,8 @@
         "nixgl": "nixgl",
         "nixneovimplugins": "nixneovimplugins",
         "nixos-hardware": "nixos-hardware",
-        "nixpkgs": "nixpkgs_7"
+        "nixpkgs": "nixpkgs_7",
+        "pygerrit2": "pygerrit2"
       }
     },
     "rust-analyzer-src": {
