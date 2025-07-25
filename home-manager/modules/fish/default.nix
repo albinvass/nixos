@@ -46,6 +46,9 @@ in
           gpsup = "git push --set-upstream origin $(git branch --show-current)";
           gst = "git status";
         };
+        shellInit = /* fish */ ''
+          set -g fish_key_bindings fish_vi_key_bindings
+        '';
       };
     };
   };
