@@ -140,7 +140,7 @@
         "video"
         "input"
       ];
-      shell = pkgs.zsh;
+      shell = pkgs.fish;
     };
   };
 
@@ -162,6 +162,7 @@
   };
 
   programs = {
+    fish.enable = true;
     neovim = {
       enable = true;
       defaultEditor = true;
@@ -172,7 +173,6 @@
       viAlias = true;
     };
     steam.enable = true;
-    zsh.enable = true;
     kdeconnect.enable = true;
   };
 

@@ -16,10 +16,10 @@ in
     enable = lib.mkEnableOption "Enable devtools";
   };
   config = lib.mkIf cfg.enable {
-    albinvass.neovim.enable = true;
-    albinvass.zsh.enable = true;
+    albinvass.fish.enable = true;
     albinvass.git.enable = true;
     albinvass.kubernetes.enable = true;
+    albinvass.neovim.enable = true;
 
     nixpkgs.overlays = [
       inputs.nh.overlays.default
@@ -69,13 +69,12 @@ in
       awscli.enable = true;
       fzf = {
         enable = true;
-        enableZshIntegration = true;
+        enableFishIntegration = config.albinvass.fish.enable;
       };
       ripgrep.enable = true;
       k9s.enable = true;
       direnv = {
         enable = true;
-        enableZshIntegration = true;
         nix-direnv.enable = true;
       };
       bat = {
@@ -93,7 +92,7 @@ in
       btop.enable = true;
       eza = {
         enable = true;
-        enableZshIntegration = true;
+        enableFishIntegration = config.albinvass.fish.enable;
         git = true;
         icons = "auto";
       };
@@ -109,7 +108,7 @@ in
       };
       yazi = {
         enable = true;
-        enableZshIntegration = true;
+        enableFishIntegration = config.albinvass.fish.enable;
         theme =
           builtins.fromTOML (
             builtins.readFile "${inputs.catppuccin-yazi}/themes/mocha/catppuccin-mocha-blue.toml"
@@ -163,7 +162,7 @@ in
       };
       zoxide = {
         enable = true;
-        enableZshIntegration = true;
+        enableFishIntegration = config.albinvass.fish.enable;
       };
     };
 

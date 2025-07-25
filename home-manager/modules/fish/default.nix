@@ -6,11 +6,11 @@
   ...
 }:
 let
-  cfg = config.albinvass.zsh;
+  cfg = config.albinvass.fish;
 in
 {
-  options.albinvass.zsh = {
-    enable = lib.mkEnableOption "Enable zsh configuration";
+  options.albinvass.fish = {
+    enable = lib.mkEnableOption "Enable fish configuration";
   };
   config = lib.mkIf cfg.enable {
     home.sessionVariables = {
@@ -23,7 +23,7 @@ in
     programs = {
       starship = {
         enable = true;
-        enableZshIntegration = true;
+        enableFishIntegration = true;
         settings =
           let
             flavour = "mocha";
@@ -34,31 +34,20 @@ in
           }
           // builtins.fromTOML (builtins.readFile "${inputs.catppuccin-starship}/themes/${flavour}.toml");
       };
-      zsh = {
+      fish = {
         enable = true;
-        initContent = # bash
-          ''
-            if [ -f "$HOME/.secrets" ]; then
-              source "$HOME/.secrets"
-            fi
-
-            if [ -f "$HOME/.local-secrets" ]; then
-              source "$HOME/.local-secrets"
-            fi
-          '';
-        enableCompletion = false;
-        autosuggestion.enable = true;
-        history.extended = true;
-        oh-my-zsh = {
-          enable = true;
-          plugins = [
-            "git"
-            "kubectl"
-            "ripgrep"
-          ];
-          theme = "robbyrussell";
+        shellAbbrs = {
+          gau = "git add --update";
+          gd = "git diff";
+          "gcn!" = "git commit -v --no-edit --amend";
+          glol = "git log --graph --pretty='%Cred%h%Creset -%C(auto)%d%Creset %s %Cgreen(%ar) %C(bold blue)<%an>%Creset'";
+          gpr = "git pull --rebase";
+          gpristine = "git reset --hard && git clean -dffx";
+          gpsup = "git push --set-upstream origin $(git branch --show-current)";
+          gst = "git status";
         };
       };
     };
   };
 }
+

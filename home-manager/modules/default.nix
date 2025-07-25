@@ -8,12 +8,12 @@
   imports = [
     ./chats
     ./devtools
+    ./fish
     ./general
     ./git
     ./kubernetes
     ./neovim
     ./wezterm
-    ./zsh
   ];
   options.albinvass = {
     gitDirectory = lib.options.mkOption {
