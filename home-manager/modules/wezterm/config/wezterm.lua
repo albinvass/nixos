@@ -9,12 +9,14 @@ config.adjust_window_size_when_changing_font_size = false
 config.font_size = 9
 config.color_scheme = "Catppuccin Mocha"
 
-local act = wezterm.action
 config.mouse_bindings = {{
   event = { Down = { streak = 3, button = 'Left' } },
   action = wezterm.action.SelectTextAtMouseCursor 'SemanticZone',
   mods = 'NONE',
 }}
+
+config.default_prog = { 'tmux' }
+
 
 config.enable_wayland = options.enable_wayland
 config.audible_bell = "Disabled"
