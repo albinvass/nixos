@@ -36,6 +36,9 @@ in
       };
       fish = {
         enable = true;
+        plugins = with pkgs.fishPlugins; [
+          { name = "fifc"; src = fifc.src; }
+        ];
         shellAbbrs = {
           gau = "git add --update";
           gd = "git diff";
