@@ -7,6 +7,10 @@
       url = "github:catppuccin/bat";
       flake = false;
     };
+    catppuccin-btop = {
+      url = "github:catppuccin/btop";
+      flake = false;
+    };
     catppuccin-starship = {
       url = "github:catppuccin/starship";
       flake = false;

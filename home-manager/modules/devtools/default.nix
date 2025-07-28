@@ -29,8 +29,13 @@ in
       tools = {
         source = config.lib.file.mkOutOfStoreSymlink "${config.albinvass.gitDirectory}/tools";
       };
-      ".bazelrc".source =
-        config.lib.file.mkOutOfStoreSymlink "${config.albinvass.gitDirectory}/home-manager/modules/devtools/bazel/.bazelrc";
+      ".bazelrc" = {
+        source = config.lib.file.mkOutOfStoreSymlink "${config.albinvass.gitDirectory}/home-manager/modules/devtools/bazel/.bazelrc";
+      };
+      "${config.xdg.configHome}/btop/themes" = {
+        source = "${inputs.catppuccin-btop}/themes";
+        recursive = true;
+      };
     };
 
     home.shellAliases = {
@@ -89,7 +94,13 @@ in
           };
         };
       };
-      btop.enable = true;
+      btop = {
+        enable = true;
+        settings = {
+          color_theme = "catppuccin_mocha";
+          theme_background = false;
+        };
+      };
       eza = {
         enable = true;
         enableFishIntegration = config.albinvass.fish.enable;
