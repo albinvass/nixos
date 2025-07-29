@@ -143,16 +143,6 @@ in
                 # Configure the catppuccin plugin
                 set -g @catppuccin_flavor "mocha"
                 set -g @catppuccin_window_status_style "rounded"
-
-                # Custom catppuccin status formats has to be defined before
-                # the plugin loads. The upstream documentation is wrong.
-
-                # Define catppuccin_status_continuum format
-                %hidden MODULE_NAME="continuum"
-                set -g "@catppuccin_''${MODULE_NAME}_icon" "⟲ "
-                set -gF "@catppuccin_''${MODULE_NAME}_icon_bg" "#{E:@thm_pink}"
-                set -g "@catppuccin_''${MODULE_NAME}_text" " #{l:#{continuum_status}}"
-                source "${builtins.dirOf catppuccin.rtp}/utils/status_module.conf"
               '';
           }
           fingers
@@ -171,7 +161,6 @@ in
             # and manually add battery and cpu to be loaded instead since it
             # doesn't fit the regular plugins usecase.
             set -g status-right "#{E:@catppuccin_status_application}"
-            set -agF status-right "#{E:@catppuccin_status_continuum}"
             set -agF status-right "#{E:@catppuccin_status_cpu}"
             set -ag status-right "#{E:@catppuccin_status_session}"
             set -ag status-right "#{E:@catppuccin_status_uptime}"
