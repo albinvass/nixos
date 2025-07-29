@@ -139,11 +139,20 @@ in
         plugins = with pkgs.tmuxPlugins; [
           {
             plugin = catppuccin;
-            extraConfig = # tmux
-              ''
+            extraConfig = /* tmux */ ''
                 # Configure the catppuccin plugin
                 set -g @catppuccin_flavor "mocha"
                 set -g @catppuccin_window_status_style "rounded"
+
+                # Custom catppuccin status formats has to be defined before
+                # the plugin loads. The upstream documentation is wrong.
+
+                # Define catppuccin_status_continuum format
+                %hidden MODULE_NAME="continuum"
+                set -g "@catppuccin_''${MODULE_NAME}_icon" "⟲ "
+                set -gF "@catppuccin_''${MODULE_NAME}_icon_bg" "#{E:@thm_pink}"
+                set -g "@catppuccin_''${MODULE_NAME}_text" " #{l:#{continuum_status}}"
+                source "${builtins.dirOf catppuccin.rtp}/utils/status_module.conf"
               '';
           }
           fingers
@@ -152,8 +161,7 @@ in
           sensible
           yank
         ];
-        extraConfig = # tmux
-          ''
+        extraConfig = /* tmux */ ''
             set -g status-right-length 200
             set -g status-left-length 100
             set -g status-left ""
@@ -163,13 +171,24 @@ in
             # and manually add battery and cpu to be loaded instead since it
             # doesn't fit the regular plugins usecase.
             set -g status-right "#{E:@catppuccin_status_application}"
+            set -agF status-right "#{E:@catppuccin_status_continuum}"
             set -agF status-right "#{E:@catppuccin_status_cpu}"
             set -ag status-right "#{E:@catppuccin_status_session}"
             set -ag status-right "#{E:@catppuccin_status_uptime}"
             set -agF status-right "#{E:@catppuccin_status_battery}"
             run-shell ${pkgs.tmuxPlugins.battery.rtp}
             run-shell ${pkgs.tmuxPlugins.cpu.rtp}
-          '';
+
+            # These apparently have to after anything else that edit status-right
+            # https://haseebmajid.dev/posts/2023-07-10-setting-up-tmux-with-nix-home-manager/#continuum--resurrect-issues
+            set -g @resurrect-strategy-vim 'session'
+            set -g @resurrect-strategy-nvim 'session'
+            set -g @resurrect-capture-pane-contents 'on'
+            run-shell ${pkgs.tmuxPlugins.resurrect.rtp}
+            run-shell ${pkgs.tmuxPlugins.continuum.rtp}
+            set -g @continuum-restore 'on'
+            set -g @continuum-save-interval '5'
+        '';
       };
       zoxide = {
         enable = true;
