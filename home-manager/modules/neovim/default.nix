@@ -67,6 +67,7 @@ in
         cmp_luasnip
         codecompanion-nvim
         dressing-nvim
+        telescope-fzf-native-nvim
         gitsigns-nvim
         luasnip
         markdown-preview-nvim
