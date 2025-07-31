@@ -54,10 +54,6 @@ table.insert(vimgrep_arguments, "!**/.git/*")
 telescope.setup({
   defaults = {
     vimgrep_arguments = vimgrep_arguments,
-    mappings = {
-      i = { ["<c-t>"] = open_with_trouble },
-      n = { ["<c-t>"] = open_with_trouble },
-    },
   },
   extensions = {
     fzf = {
