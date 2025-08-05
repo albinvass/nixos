@@ -81,7 +81,6 @@ in
         nvim-treesitter.withAllGrammars
         nvim-web-devicons
         plenary-nvim
-        popup-nvim
         snacks-nvim
         telescope-fzf-native-nvim
         telescope-nvim
