@@ -66,8 +66,6 @@ in
         cmp-path
         cmp_luasnip
         codecompanion-nvim
-        dressing-nvim
-        telescope-fzf-native-nvim
         gitsigns-nvim
         luasnip
         markdown-preview-nvim
@@ -84,6 +82,8 @@ in
         nvim-web-devicons
         plenary-nvim
         popup-nvim
+        snacks-nvim
+        telescope-fzf-native-nvim
         telescope-nvim
         trouble-nvim
         vim-fugitive
