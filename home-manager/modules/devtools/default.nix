@@ -150,6 +150,7 @@ in
           pain-control
           sensible
           yank
+          tmux-floax
         ];
         extraConfig = /* tmux */ ''
             set -g status-right-length 200
