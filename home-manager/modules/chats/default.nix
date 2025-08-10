@@ -16,7 +16,6 @@ in
       slack
       discord
       element-desktop
-      signal-desktop
     ];
   };
 }
