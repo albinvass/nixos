@@ -18,9 +18,7 @@ vim.bo.softtabstop = 2
 
 vim.cmd 'highlight Normal guibg=NONE ctermbg=NONE'
 
-vim.api.nvim_set_keymap("n", "<Leader> ", ":nohlsearch<CR>", {})
-vim.api.nvim_set_keymap("n", "<C-p>", ":Telescope find_files<CR>", {})
-vim.api.nvim_set_keymap("n", "<C-e>", ":Telescope live_grep<CR>", {})
+vim.keymap.set("n","<leader> ", vim.cmd.nohlsearch)
 
 require("snacks").setup({
     input = { enabled = true },
@@ -47,6 +45,11 @@ local actions = require("telescope.actions")
 local open_with_trouble = require("trouble.sources.telescope").open
 local add_to_trouble = require("trouble.sources.telescope").add
 local telescope = require("telescope")
+
+local telescope_builtin = require("telescope.builtin")
+vim.keymap.set("n","<C-p>", telescope_builtin.find_files)
+vim.keymap.set("n","<C-b>", function() telescope_builtin.buffers({initial_mode = "normal"}) end)
+vim.keymap.set("n","<C-e>", telescope_builtin.live_grep)
 
 local telescopeConfig = require("telescope.config")
 local vimgrep_arguments = { unpack(telescopeConfig.values.vimgrep_arguments) }
