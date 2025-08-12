@@ -24,6 +24,7 @@ require("snacks").setup({
     input = { enabled = true },
 })
 require("nvim-surround").setup{}
+require('csvview').setup()
 
 vim.diagnostic.config({ virtual_text = true })
 -- keybinds

@@ -66,6 +66,7 @@ in
         cmp-path
         cmp_luasnip
         codecompanion-nvim
+        csvview-nvim
         gitsigns-nvim
         luasnip
         markdown-preview-nvim
