@@ -213,6 +213,7 @@ in
         atool
         bazelIsBazelisk
         buildozer
+        claude-code
         cloud-utils
         cmake
         devenv
