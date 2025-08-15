@@ -214,6 +214,7 @@ in
         bazelIsBazelisk
         buildozer
         claude-code
+        opencode
         cloud-utils
         cmake
         devenv
