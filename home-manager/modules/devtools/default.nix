@@ -150,7 +150,12 @@ in
           pain-control
           sensible
           yank
-          tmux-floax
+          {
+            plugin = tmux-floax;
+            extraConfig = /* tmux */ ''
+              set -g @floax-change-path 'false'
+            '';
+          }
         ];
         extraConfig = /* tmux */ ''
             set -g status-right-length 200
