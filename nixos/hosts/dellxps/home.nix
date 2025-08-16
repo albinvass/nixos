@@ -38,6 +38,7 @@
     synergy
     waynergy
     obs-studio
+    onlyoffice-bin
   ];
 
   home.sessionVariables = {
