@@ -221,14 +221,12 @@ in
         claude-code
         opencode
         cloud-utils
-        cmake
         devenv
         dig
         docker-compose
         duf
         dust
         fzf
-        gcc
         gnumake
         gnupg
         jless
