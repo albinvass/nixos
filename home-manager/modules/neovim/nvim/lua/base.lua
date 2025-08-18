@@ -47,10 +47,29 @@ local open_with_trouble = require("trouble.sources.telescope").open
 local add_to_trouble = require("trouble.sources.telescope").add
 local telescope = require("telescope")
 
+
+local git_root = function()
+  return vim.fn.systemlist("git rev-parse --show-toplevel")[1]
+end
 local telescope_builtin = require("telescope.builtin")
-vim.keymap.set("n","<C-p>", telescope_builtin.find_files)
-vim.keymap.set("n","<C-b>", function() telescope_builtin.buffers({initial_mode = "normal"}) end)
-vim.keymap.set("n","<C-e>", telescope_builtin.live_grep)
+vim.keymap.set(
+  "n",
+  "<C-p>",
+  function()
+    telescope_builtin.find_files({
+      cwd = git_root()
+    })
+  end
+)
+vim.keymap.set(
+  "n",
+  "<C-e>",
+  function()
+    telescope_builtin.live_grep({
+      cwd = git_root()
+    })
+  end
+)
 
 local telescopeConfig = require("telescope.config")
 local vimgrep_arguments = { unpack(telescopeConfig.values.vimgrep_arguments) }
