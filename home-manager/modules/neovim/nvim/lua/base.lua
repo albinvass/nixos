@@ -124,3 +124,5 @@ require("codecompanion").setup({
     },
   },
 })
+
+require("ibl").setup()

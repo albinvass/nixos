@@ -68,6 +68,7 @@ in
         codecompanion-nvim
         csvview-nvim
         gitsigns-nvim
+        indent-blankline-nvim
         luasnip
         markdown-preview-nvim
         nvim-cmp
