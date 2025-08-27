@@ -111,18 +111,4 @@ vim.keymap.set("n", "<leader>-", function()
   require("yazi").yazi()
 end)
 
-require("codecompanion").setup({
-  strategies = {
-    chat = {
-      adapter = "copilot",
-    },
-    inline = {
-      adapter = "copilot",
-    },
-    cmd = {
-      adapter = "copilot",
-    },
-  },
-})
-
 require("ibl").setup()

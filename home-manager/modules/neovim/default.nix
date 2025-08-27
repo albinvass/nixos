@@ -65,7 +65,6 @@ in
         cmp-nvim-lsp
         cmp-path
         cmp_luasnip
-        codecompanion-nvim
         csvview-nvim
         gitsigns-nvim
         indent-blankline-nvim
