@@ -6,8 +6,7 @@
   ...
 }:
 let
-  cfg = config.albinvass.git;
-  pygerrit2 =
+  cfg = config.albinvass.git; pygerrit2 =
     with pkgs;
     python3Packages.buildPythonPackage {
       name = "pygerrit2";
@@ -56,6 +55,11 @@ in
       gh-dash.enable = true;
       git = {
         enable = true;
+        aliases = {
+          dl = "-c diff.external=difft log --ext-diff";
+          ds = "-c diff.external=difft show --ext-diff";
+          dft = "-c diff.external=difft diff --ext-diff";
+        };
         difftastic = {
           enable = true;
         };
