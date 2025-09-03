@@ -2,6 +2,7 @@
   inputs = {
     bacon-ls = {
       url = "github:crisidev/bacon-ls";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
     catppuccin-bat = {
       url = "github:catppuccin/bat";
