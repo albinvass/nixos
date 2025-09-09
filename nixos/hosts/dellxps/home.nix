@@ -20,6 +20,7 @@
     calibre
     discord
     bitwarden
+    arduino-ide
     libreoffice-qt
     lutris
     protonup-qt
