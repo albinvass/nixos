@@ -111,11 +111,18 @@ in
       jq.enable = true;
       ssh = {
         enable = true;
+        enableDefaultConfig = false;
+        matchBlocks = {
+          "*" = {
+            identityFile = [
+              "~/.ssh/id_rsa"
+              "~/.ssh/id_ed25519"
+              "~/.ssh/id_ed25519_sk_red"
+              "~/.ssh/id_ed25519_sk_green"
+            ];
+          };
+        };
         includes = [ "~/.ssh/local_config" ];
-        extraConfig = ''
-          IdentityFile=~/.ssh/id_ed25519_sk_red
-          IdentityFile=~/.ssh/id_ed25519_sk_green
-        '';
       };
       yazi = {
         enable = true;
