@@ -51,31 +51,33 @@ in
       gerrit-cli
     ];
     programs = {
+      difftastic.enable = true;
       gh.enable = true;
       gh-dash.enable = true;
       git = {
         enable = true;
-        aliases = {
-          dl = "-c diff.external=difft log --ext-diff";
-          ds = "-c diff.external=difft show --ext-diff";
-          dft = "-c diff.external=difft diff --ext-diff";
-        };
-        difftastic = {
-          enable = true;
-        };
-        userName = "Albin Vass";
-        extraConfig = {
+        settings = {
+          alias = {
+            dl = "-c diff.external=difft log --ext-diff";
+            ds = "-c diff.external=difft show --ext-diff";
+            dft = "-c diff.external=difft diff --ext-diff";
+          };
+          branch.sort = "-committerdate";
+          column.ui = "auto";
           credential.helper = "${pkgs.gitAndTools.gitFull}/bin/git-credential-libsecret";
-          merge.conflictStyle = "zdiff3";
-          fetch.writeCommitGraph = true;
+          fetch = {
+            writeCommitGraph = true;
+            prune = true;
+            prunetags = true;
+          };
+          merge.conflictStyle = lib.mkDefault "zdiff3";
           pull.rebase = true;
           push.autoSetupRemote = true;
           rerere.enabled = true;
-          branch.sort = "-committerdate";
           tag.sort = "-committerdate";
-          column.ui = "auto";
-          fetch.prune = true;
-          fetch.prunetags = true;
+          user = {
+            name = "Albin Vass";
+          };
         };
       };
       mergiraf.enable = true;
