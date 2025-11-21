@@ -16,8 +16,10 @@
     ];
   };
 
-  nixGL.packages = inputs.nixgl.packages;
-  nixGL.defaultWrapper = "mesa";
+  targets.genericLinux.nixGL = {
+    packages = inputs.nixgl.packages;
+    defaultWrapper = "mesa";
+  };
 
   albinvass = {
     chats.enable = true;

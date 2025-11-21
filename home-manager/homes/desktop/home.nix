@@ -8,9 +8,11 @@
     homeDirectory = "/home/avass";
     stateVersion = "24.11";
   };
-  nixGL.packages = inputs.nixgl.packages;
-  nixGL.defaultWrapper = "mesa";
-  nixGL.vulkan.enable = true;
+  targets.genericLinux.nixGL = {
+    packages = inputs.nixgl.packages;
+    defaultWrapper = "mesa";
+    vulkan.enable = true;
+  };
 
   albinvass = {
     chats.enable = true;
