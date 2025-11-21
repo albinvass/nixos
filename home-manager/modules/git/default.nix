@@ -64,7 +64,7 @@ in
           };
           branch.sort = "-committerdate";
           column.ui = "auto";
-          credential.helper = "${pkgs.gitAndTools.gitFull}/bin/git-credential-libsecret";
+          credential.helper = "${pkgs.gitFull}/bin/git-credential-libsecret";
           fetch = {
             writeCommitGraph = true;
             prune = true;

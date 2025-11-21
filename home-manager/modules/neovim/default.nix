@@ -44,7 +44,7 @@ in
         rr
         shellcheck
         sqls
-        starpls-bin
+        starpls
         terraform-ls
         tree-sitter
         vscode-extensions.ms-vscode.cpptools
