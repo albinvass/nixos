@@ -19,7 +19,6 @@
   home.packages = with pkgs; [
     calibre
     discord
-    bitwarden
     arduino-ide
     libreoffice-qt
     lutris
@@ -39,7 +38,7 @@
     synergy
     waynergy
     obs-studio
-    onlyoffice-bin
+    onlyoffice-desktopeditors
   ];
 
   home.sessionVariables = {

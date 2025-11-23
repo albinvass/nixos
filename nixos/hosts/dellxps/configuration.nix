@@ -153,7 +153,6 @@
       dig
       gh
       qemu
-      kdePackages.xwaylandvideobridge
       kdePackages.discover
       wl-clipboard
       podman
