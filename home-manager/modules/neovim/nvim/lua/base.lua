@@ -80,6 +80,7 @@ table.insert(vimgrep_arguments, "!**/.git/*")
 telescope.setup({
   defaults = {
     vimgrep_arguments = vimgrep_arguments,
+    layout_strategy = "bottom_pane",
   },
   extensions = {
     fzf = {
