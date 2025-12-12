@@ -190,6 +190,8 @@ in
             run-shell ${pkgs.tmuxPlugins.continuum.rtp}
             set -g @continuum-restore 'on'
             set -g @continuum-save-interval '5'
+
+            set -g default-shell ~/.nix-profile/bin/fish
         '';
       };
       zoxide = {

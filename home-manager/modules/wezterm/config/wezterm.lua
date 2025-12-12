@@ -6,7 +6,7 @@ config.window_background_opacity = 0.99
 config.hide_tab_bar_if_only_one_tab = true
 config.font = wezterm.font('FiraCode Nerd Font SemBd')
 config.adjust_window_size_when_changing_font_size = false
-config.font_size = 9
+config.font_size = 8
 config.color_scheme = "Catppuccin Mocha"
 
 config.mouse_bindings = {{
