@@ -106,9 +106,9 @@
               ./home-manager/homes/steamdeck/home.nix
             ];
           };
-          "avass@5CG4420JDB" = (mkHomeManagerBase "x86_64-linux").extendModules {
+          "albin-vass@framework" = (mkHomeManagerBase "x86_64-linux").extendModules {
             modules = [
-              ./home-manager/homes/vcc/home.nix
+              ./home-manager/homes/framework/home.nix
             ];
           };
         };
