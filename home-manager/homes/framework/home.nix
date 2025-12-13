@@ -12,7 +12,6 @@
     packages = with pkgs; [
       nixgl.nixGLIntel
       xclip
-      vivaldi
     ];
   };
 
