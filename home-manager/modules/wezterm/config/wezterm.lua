@@ -15,6 +15,13 @@ config.mouse_bindings = {{
   action = wezterm.action.SelectTextAtMouseCursor 'SemanticZone',
   mods = 'NONE',
 }}
+config.keys = {
+  {
+    key = 'n',
+    mods = 'SUPER',
+    action = wezterm.action.DisableDefaultAssignment,
+  },
+}
 
 config.default_prog = { 'tmux' }
 
