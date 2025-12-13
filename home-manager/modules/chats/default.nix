@@ -13,7 +13,6 @@ in
   };
   config = lib.mkIf cfg.enable {
     home.packages = with pkgs; [
-      slack
       discord
       element-desktop
     ];
