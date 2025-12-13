@@ -12,6 +12,7 @@
     packages = with pkgs; [
       nixgl.nixGLIntel
       xclip
+      brightnessctl
     ];
   };
 
