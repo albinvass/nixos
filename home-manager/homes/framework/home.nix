@@ -13,6 +13,9 @@
       nixgl.nixGLIntel
       xclip
       brightnessctl
+      nodejs
+      gemini-cli-bin
+      podman
     ];
   };
 
