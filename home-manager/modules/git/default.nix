@@ -49,6 +49,7 @@ in
       git-review
       git-toprepo-stamped
       gerrit-cli
+      git-absorb
     ];
     programs = {
       difftastic.enable = true;
