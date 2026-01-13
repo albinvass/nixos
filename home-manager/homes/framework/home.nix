@@ -13,6 +13,7 @@
       nixgl.nixGLIntel
       xclip
       brightnessctl
+      git-lfs
       nodejs
       gemini-cli-bin
       podman
