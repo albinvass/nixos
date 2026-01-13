@@ -1,5 +1,5 @@
 require('nvim-treesitter-textobjects')
-require('nvim-treesitter.configs').setup({
+require('nvim-treesitter.config').setup({
   highlight = {
     enable = true
   },

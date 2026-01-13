@@ -1,5 +1,3 @@
-local nvim_lsp = require('lspconfig')
-
 local format_on_close = function()
   vim.api.nvim_create_autocmd({"BufWritePre"}, {
       callback = function()vim.lsp.buf.format { async = false }end
@@ -82,7 +80,8 @@ for lsp, conf in pairs(servers) do
   conf['flags'] = {
       debounce_text_changes = 150,
   }
-  nvim_lsp[lsp].setup(conf)
+  vim.lsp.config[lsp] = conf
+  vim.lsp.enable(lsp)
 end
 
 vim.api.nvim_create_autocmd('LspAttach', {

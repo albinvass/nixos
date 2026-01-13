@@ -79,6 +79,7 @@
         let
           mkHomeManagerBase =
             system:
+            modules:
             inputs.home-manager.lib.homeManagerConfiguration {
               pkgs = import nixpkgs {
                 inherit system;
@@ -89,33 +90,25 @@
               };
               modules = [
                 ./home-manager/modules
-              ];
+              ] ++ modules;
               extraSpecialArgs = {
                 inherit inputs;
               };
             };
         in
         {
-          "avass@desktop" = (mkHomeManagerBase "x86_64-linux").extendModules {
-            modules = [
+          "avass@desktop" = (mkHomeManagerBase "x86_64-linux" [
               ./home-manager/homes/desktop/home.nix
-            ];
-          };
-          "avass@steamdeck" = (mkHomeManagerBase "x86_64-linux").extendModules {
-            modules = [
+          ]);
+          "avass@steamdeck" = (mkHomeManagerBase "x86_64-linux" [
               ./home-manager/homes/steamdeck/home.nix
-            ];
-          };
-          "avass@5CG4420JDB" = (mkHomeManagerBase "x86_64-linux").extendModules {
-            modules = [
+          ]);
+          "avass@5CG4420JDB" = (mkHomeManagerBase "x86_64-linux" [
               ./home-manager/homes/vcc/home.nix
-            ];
-          };
-          "albin-vass@framework" = (mkHomeManagerBase "x86_64-linux").extendModules {
-            modules = [
+          ]);
+          "albin-vass@framework" = (mkHomeManagerBase "x86_64-linux" [
               ./home-manager/homes/framework/home.nix
-            ];
-          };
+          ]);
         };
       lib = import ./lib { inherit (nixpkgs) lib; };
     };
