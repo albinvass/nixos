@@ -13,6 +13,7 @@
       nixgl.nixGLIntel
       xclip
       vivaldi
+      git-lfs
     ];
   };
 
