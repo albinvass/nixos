@@ -152,7 +152,12 @@ in
                 set -g @catppuccin_window_status_style "rounded"
               '';
           }
-          fingers
+          {
+            plugin = fingers;
+            extraConfig = /* tmux */ ''
+              set -g @fingers-pattern-0 '(([.\w\-~\$@+]+)?(/[.\w\-@+]+)+/?)'
+            '';
+          }
           fuzzback
           pain-control
           sensible
@@ -192,6 +197,7 @@ in
             set -g @continuum-save-interval '5'
 
             set -g default-shell ~/.nix-profile/bin/fish
+
         '';
       };
       zoxide = {
