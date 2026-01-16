@@ -139,6 +139,20 @@ in
       };
       tmux = {
         enable = true;
+        package = let
+          # Fixes an issue with the TERM variable being unset causing plugins
+          # to fail to render color
+          # https://github.com/tmux/tmux/commit/55d660a548cbeb8cb3b6975cc67fa1b0b031a4e8
+          tmux = pkgs.tmux.overrideAttrs (old: {
+            version = "git";
+            src = pkgs.fetchFromGitHub {
+              owner = "tmux";
+              repo = "tmux";
+              rev = "95b4bb51c640664ac4602dd24d29bb7c112c83c5";
+              sha256 = "sha256-j9yvisNsaJuvoWZ72HTbnCjXgU12RSz2tfG3Q2E/pjA";
+            };
+          });
+        in tmux;
         mouse = true;
         keyMode = "vi";
         prefix = "§";
