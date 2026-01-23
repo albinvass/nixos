@@ -35,7 +35,7 @@ in
             add_newline = true;
             palette = "catppuccin_${flavour}";
           }
-          // builtins.fromTOML (builtins.readFile "${inputs.catppuccin-starship}/themes/${flavour}.toml");
+          // fromTOML (builtins.readFile "${inputs.catppuccin-starship}/themes/${flavour}.toml");
       };
       fish = {
         enable = true;

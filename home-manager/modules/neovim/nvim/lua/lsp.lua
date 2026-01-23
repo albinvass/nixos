@@ -26,7 +26,15 @@ local servers = {
   },
   sqls={},
   helm_ls={},
-  nil_ls={},
+  nixd={
+    settings = {
+      nixd = {
+        formatting = {
+          command = { "nixfmt" },
+        },
+      },
+    },
+  },
   eslint={},
   gopls={
     on_attach=format_on_close,

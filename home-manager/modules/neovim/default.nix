@@ -37,7 +37,7 @@ in
         llvmPackages.clang-unwrapped
         lua-language-server
         marksman
-        nil
+        nixd
         nodePackages.bash-language-server
         pyright
         ripgrep
