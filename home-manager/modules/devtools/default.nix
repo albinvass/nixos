@@ -126,7 +126,7 @@ in
       };
       yazi = {
         enable = true;
-        enableFishIntegration = config.albinvass.fish.enable;
+        enableFishIntegration = false;
         theme =
           builtins.fromTOML (
             builtins.readFile "${inputs.catppuccin-yazi}/themes/mocha/catppuccin-mocha-blue.toml"
