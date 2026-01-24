@@ -33,6 +33,10 @@
     nixos-hardware.url = "github:NixOs/nixos-hardware/master";
     nixneovimplugins.url = "github:NixNeovim/NixNeovim";
     nixgl.url = "github:guibou/nixGL";
+    nix-darwin = {
+      url = "github:nix-darwin/nix-darwin/master";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     home-manager = {
       url = "github:nix-community/home-manager/master";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -74,6 +78,9 @@
             inherit inputs;
           };
         };
+      };
+      darwinConfigurations."Albins-MacBook-Air" = inputs.nix-darwin.lib.darwinSystem {
+        modules = [ ./nix-darwin/configuration.nix ];
       };
       homeConfigurations =
         let

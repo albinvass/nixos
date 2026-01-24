@@ -336,6 +336,27 @@
         "type": "github"
       }
     },
+    "nix-darwin": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1768764703,
+        "narHash": "sha256-5ulSDyOG1U+1sJhkJHYsUOWEsmtLl97O0NTVMvgIVyc=",
+        "owner": "nix-darwin",
+        "repo": "nix-darwin",
+        "rev": "0fc4e7ac670a0ed874abacf73c4b072a6a58064b",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nix-darwin",
+        "ref": "master",
+        "repo": "nix-darwin",
+        "type": "github"
+      }
+    },
     "nix-flake-tests": {
       "locked": {
         "lastModified": 1677844186,
@@ -678,6 +699,7 @@
         "git-toprepo": "git-toprepo",
         "home-manager": "home-manager",
         "nh": "nh",
+        "nix-darwin": "nix-darwin",
         "nix-index-database": "nix-index-database",
         "nixgl": "nixgl",
         "nixneovimplugins": "nixneovimplugins",
