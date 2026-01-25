@@ -46,12 +46,14 @@ in
     nixpkgs.overlays = [
       inputs.git-toprepo.overlays.default
     ];
-    home.packages = with pkgs; [
-      git-review
-      git-toprepo-stamped
-      gerrit-cli
-      git-absorb
-    ];
+    home.packages =
+      with pkgs;
+      [
+        git-review
+        gerrit-cli
+        git-absorb
+      ]
+      ++ (if pkgs.stdenv.isLinux then [ git-toprepo-stamped ] else [ ]);
     programs = {
       difftastic.enable = true;
       gh.enable = true;

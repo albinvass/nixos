@@ -25,32 +25,34 @@ in
       withNodeJs = true;
       withPython3 = true;
       withRuby = true;
-      extraPackages = with pkgs; [
-        bacon
-        bacon-ls
-        cargo
-        delve
-        git
-        go-tools
-        gopls
-        helm-ls
-        llvmPackages.clang-unwrapped
-        lua-language-server
-        marksman
-        nixd
-        nodePackages.bash-language-server
-        pyright
-        ripgrep
-        rr
-        shellcheck
-        sqls
-        starpls
-        terraform-ls
-        tree-sitter
-        vscode-extensions.ms-vscode.cpptools
-        vscode-langservers-extracted
-        yaml-language-server
-      ];
+      extraPackages =
+        with pkgs;
+        [
+          bacon
+          bacon-ls
+          cargo
+          delve
+          git
+          go-tools
+          gopls
+          helm-ls
+          llvmPackages.clang-unwrapped
+          lua-language-server
+          marksman
+          nixd
+          nodePackages.bash-language-server
+          pyright
+          ripgrep
+          shellcheck
+          sqls
+          starpls
+          terraform-ls
+          tree-sitter
+          vscode-extensions.ms-vscode.cpptools
+          vscode-langservers-extracted
+          yaml-language-server
+        ]
+        ++ (if pkgs.stdenv.isLinux then [ rr ] else [ ]);
 
       extraPython3Packages = (
         ps: with ps; [

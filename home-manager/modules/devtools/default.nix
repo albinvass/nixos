@@ -14,6 +14,13 @@ in
   ];
   options.albinvass.devtools = {
     enable = lib.mkEnableOption "Enable devtools";
+    tmux = {
+      default_shell = lib.mkOption {
+        type = lib.types.str;
+        default = "${config.programs.fish.package}/bin/fish";
+        description = "Default shell for tmux";
+      };
+    };
   };
   config = lib.mkIf cfg.enable {
     albinvass.fish.enable = true;
@@ -39,7 +46,11 @@ in
     };
 
     home.shellAliases = {
-      "nh-switch" = if config.submoduleSupport.enable then "nh os switch" else "nh home switch";
+      "nh-switch" =
+        if pkgs.stdenv.isLinux then
+          (if config.submoduleSupport.enable then "nh os switch" else "nh home switch")
+        else
+          "nh darwin switch";
       "cd" = "z";
     };
 
@@ -212,8 +223,7 @@ in
           set -g @continuum-restore 'on'
           set -g @continuum-save-interval '5'
 
-          set -g default-shell ~/.nix-profile/bin/fish
-
+          set -g default-shell "${cfg.tmux.default_shell}"
         '';
       };
       zoxide = {
@@ -244,7 +254,6 @@ in
       in
       with pkgs;
       [
-        acpi
         archivemount
         atool
         bazelIsBazelisk
@@ -267,7 +276,6 @@ in
         lsof
         nh
         openssl
-        parted
         python311
         restic
         rsync
@@ -285,6 +293,15 @@ in
         watchexec
         whois
         yq
-      ];
+      ]
+      ++ (
+        if pkgs.stdenv.isLinux then
+          [
+            acpi
+            parted
+          ]
+        else
+          [ ]
+      );
   };
 }

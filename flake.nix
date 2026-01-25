@@ -89,7 +89,13 @@
         };
       };
       darwinConfigurations."Albins-MacBook-Air" = inputs.nix-darwin.lib.darwinSystem {
-        modules = [ ./nix-darwin/configuration.nix ];
+        modules = [
+          inputs.home-manager.darwinModules.home-manager
+          ./nix-darwin/configuration.nix
+        ];
+        specialArgs = {
+          inherit inputs;
+        };
       };
       homeConfigurations =
         let
