@@ -58,13 +58,22 @@
   outputs =
     { self, nixpkgs, ... }@inputs:
     {
-      formatter.x86_64-linux =
-        let
-          pkgs = import nixpkgs {
-            system = "x86_64-linux";
-          };
-        in
-        pkgs.nixfmt-tree;
+      formatter = {
+        x86_64-linux =
+          let
+            pkgs = import nixpkgs {
+              system = "x86_64-linux";
+            };
+          in
+          pkgs.nixfmt-tree;
+        aarch64-darwin =
+          let
+            pkgs = import nixpkgs {
+              system = "aarch64-darwin";
+            };
+          in
+          pkgs.nixfmt-tree;
+      };
       overlays.default = {
 
       };
@@ -85,8 +94,7 @@
       homeConfigurations =
         let
           mkHomeManagerBase =
-            system:
-            modules:
+            system: modules:
             inputs.home-manager.lib.homeManagerConfiguration {
               pkgs = import nixpkgs {
                 inherit system;
@@ -97,25 +105,34 @@
               };
               modules = [
                 ./home-manager/modules
-              ] ++ modules;
+              ]
+              ++ modules;
               extraSpecialArgs = {
                 inherit inputs;
               };
             };
         in
         {
-          "avass@desktop" = (mkHomeManagerBase "x86_64-linux" [
+          "avass@desktop" = (
+            mkHomeManagerBase "x86_64-linux" [
               ./home-manager/homes/desktop/home.nix
-          ]);
-          "avass@steamdeck" = (mkHomeManagerBase "x86_64-linux" [
+            ]
+          );
+          "avass@steamdeck" = (
+            mkHomeManagerBase "x86_64-linux" [
               ./home-manager/homes/steamdeck/home.nix
-          ]);
-          "avass@5CG4420JDB" = (mkHomeManagerBase "x86_64-linux" [
+            ]
+          );
+          "avass@5CG4420JDB" = (
+            mkHomeManagerBase "x86_64-linux" [
               ./home-manager/homes/vcc/home.nix
-          ]);
-          "albin-vass@framework" = (mkHomeManagerBase "x86_64-linux" [
+            ]
+          );
+          "albin-vass@framework" = (
+            mkHomeManagerBase "x86_64-linux" [
               ./home-manager/homes/framework/home.nix
-          ]);
+            ]
+          );
         };
       lib = import ./lib { inherit (nixpkgs) lib; };
     };

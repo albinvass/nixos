@@ -18,7 +18,7 @@ in
         source = config.lib.file.mkOutOfStoreSymlink "${config.albinvass.gitDirectory}/home-manager/modules/fish/functions";
       };
       "${config.xdg.configHome}/fish/completions/bazel.fish" = {
-       source = config.lib.file.mkOutOfStoreSymlink "${config.albinvass.gitDirectory}/home-manager/modules/fish/completions/bazel.fish";
+        source = config.lib.file.mkOutOfStoreSymlink "${config.albinvass.gitDirectory}/home-manager/modules/fish/completions/bazel.fish";
       };
     };
     home.sessionVariables = {
@@ -61,4 +61,3 @@ in
     };
   };
 }
-

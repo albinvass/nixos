@@ -6,7 +6,8 @@
   ...
 }:
 let
-  cfg = config.albinvass.git; pygerrit2 =
+  cfg = config.albinvass.git;
+  pygerrit2 =
     with pkgs;
     python3Packages.buildPythonPackage {
       name = "pygerrit2";

@@ -19,7 +19,6 @@
     defaultWrapper = "mesa";
   };
 
-
   albinvass = {
     chats.enable = true;
     devtools.enable = true;
