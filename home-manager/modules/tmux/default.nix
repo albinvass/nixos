@@ -1,8 +1,13 @@
-  {config, pkgs, lib, ...}:
-  let
-    cfg = config.albinvass.tmux;
-  in
-  {
+{
+  config,
+  pkgs,
+  lib,
+  ...
+}:
+let
+  cfg = config.albinvass.tmux;
+in
+{
   options.albinvass.tmux = {
     enable = lib.mkEnableOption "Enable devtools";
     tmux = {
