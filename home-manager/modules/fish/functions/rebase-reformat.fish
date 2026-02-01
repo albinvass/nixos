@@ -1,7 +1,7 @@
 #!/usr/bin/env fish
 
 set revision $argv[1]
-set reformat_exec $argv[2]
+set reformat_exec $argv[2..-1]
 
 git rebase $revision \
   --exec "\
