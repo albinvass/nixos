@@ -21,9 +21,4 @@
       default = "${config.home.homeDirectory}/git/github/albinvass/nixos";
     };
   };
-  config = {
-    nixpkgs.overlays = [
-      inputs.nixgl.overlay
-    ];
-  };
 }

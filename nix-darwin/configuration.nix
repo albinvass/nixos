@@ -17,6 +17,8 @@
     config.allowUnfree = true;
     overlays = [
       inputs.bacon-ls.overlay."aarch64-darwin"
+      inputs.git-toprepo.overlays.default
+      inputs.nixneovimplugins.overlays.default
     ];
   };
   users.users."albinvass".home = "/Users/albinvass";

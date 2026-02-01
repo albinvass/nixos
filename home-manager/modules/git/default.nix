@@ -43,9 +43,6 @@ in
     enable = lib.mkEnableOption "Enable git configuration";
   };
   config = lib.mkIf cfg.enable {
-    nixpkgs.overlays = [
-      inputs.git-toprepo.overlays.default
-    ];
     home.packages =
       with pkgs;
       [
