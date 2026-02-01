@@ -22,10 +22,6 @@ in
     albinvass.neovim.enable = true;
     albinvass.tmux.enable = true;
 
-    nixpkgs.overlays = [
-      inputs.nh.overlays.default
-    ];
-
     home.file = {
       tools = {
         source = config.lib.file.mkOutOfStoreSymlink "${config.albinvass.gitDirectory}/tools";

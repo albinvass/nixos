@@ -15,7 +15,9 @@
   nixpkgs = {
     hostPlatform = "aarch64-darwin";
     config.allowUnfree = true;
-    overlays = [ inputs.bacon-ls.overlay."aarch64-darwin" ];
+    overlays = [
+      inputs.bacon-ls.overlay."aarch64-darwin"
+    ];
   };
   users.users."albinvass".home = "/Users/albinvass";
   home-manager = {
