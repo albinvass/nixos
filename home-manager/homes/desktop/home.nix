@@ -10,7 +10,7 @@
     stateVersion = "24.11";
   };
   targets.genericLinux.nixGL = {
-    packages = inputs.nixgl.packages;
+    inherit (inputs.nixgl) packages;
     defaultWrapper = "mesa";
     vulkan.enable = true;
   };

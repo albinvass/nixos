@@ -54,11 +54,9 @@ in
         ]
         ++ (if pkgs.stdenv.isLinux then [ rr ] else [ ]);
 
-      extraPython3Packages = (
-        ps: with ps; [
+      extraPython3Packages = ps: with ps; [
           debugpy
-        ]
-      );
+        ];
 
       plugins = with pkgs.vimPlugins; [
         catppuccin-nvim

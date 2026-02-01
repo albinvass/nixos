@@ -119,26 +119,18 @@
             };
         in
         {
-          "avass@desktop" = (
-            mkHomeManagerBase "x86_64-linux" [
+          "avass@desktop" = mkHomeManagerBase "x86_64-linux" [
               ./home-manager/homes/desktop/home.nix
-            ]
-          );
-          "avass@steamdeck" = (
-            mkHomeManagerBase "x86_64-linux" [
+            ];
+          "avass@steamdeck" = mkHomeManagerBase "x86_64-linux" [
               ./home-manager/homes/steamdeck/home.nix
-            ]
-          );
-          "avass@5CG4420JDB" = (
-            mkHomeManagerBase "x86_64-linux" [
+            ];
+          "avass@5CG4420JDB" = mkHomeManagerBase "x86_64-linux" [
               ./home-manager/homes/vcc/home.nix
-            ]
-          );
-          "albin-vass@framework" = (
-            mkHomeManagerBase "x86_64-linux" [
+            ];
+          "albin-vass@framework" = mkHomeManagerBase "x86_64-linux" [
               ./home-manager/homes/framework/home.nix
-            ]
-          );
+            ];
         };
       lib = import ./lib { inherit (nixpkgs) lib; };
     };
