@@ -28,6 +28,9 @@
   albinvass = {
     chats.enable = true;
     devtools.enable = true;
-    wezterm.enable = true;
+    wezterm = {
+      enable = true;
+      font_size = 8;
+    };
   };
 }
