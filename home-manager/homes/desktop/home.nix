@@ -21,6 +21,7 @@
     wezterm = {
       enable = true;
       enable_wayland = true;
+      font_size = 10;
     };
   };
 }
