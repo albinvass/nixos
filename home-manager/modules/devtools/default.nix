@@ -188,7 +188,7 @@ in
         lsof
         nh
         openssl
-        python311
+        uv
         restic
         rsync
         rustup
