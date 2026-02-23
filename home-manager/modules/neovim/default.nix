@@ -70,11 +70,6 @@ in
         luasnip
         markdown-preview-nvim
         nvim-cmp
-        nvim-dap
-        nvim-dap-go
-        nvim-dap-python
-        nvim-dap-rr
-        nvim-dap-ui
         nvim-lspconfig
         nvim-surround
         nvim-treesitter-textobjects
