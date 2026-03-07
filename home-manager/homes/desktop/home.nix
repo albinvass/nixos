@@ -8,6 +8,7 @@
     username = "avass";
     homeDirectory = "/home/avass";
     stateVersion = "24.11";
+    sessionPath = [ "$HOME/.local/bin" ];
   };
   targets.genericLinux.nixGL = {
     inherit (inputs.nixgl) packages;
