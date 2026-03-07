@@ -29,6 +29,7 @@ in
           cpu
           resurrect
           continuum
+          pkgs.fish
         ];
       };
     };
