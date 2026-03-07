@@ -39,7 +39,7 @@ in
         # to fail to render color
         # https://github.com/tmux/tmux/commit/55d660a548cbeb8cb3b6975cc67fa1b0b031a4e8
         tmux = pkgs.tmux.overrideAttrs (old: {
-          version = "git";
+          version = "next-3.7";
           src = pkgs.fetchFromGitHub {
             owner = "tmux";
             repo = "tmux";
