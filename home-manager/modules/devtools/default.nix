@@ -145,7 +145,7 @@ in
     };
 
     home.sessionVariables = {
-      NH_FLAKE = pkgs.lib.mkDefault config.albinvass.gitDirectory;
+      NH_FLAKE = lib.mkDefault config.albinvass.gitDirectory;
     };
 
     home.packages =

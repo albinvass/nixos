@@ -9,7 +9,7 @@ let
 in
 {
   options.albinvass.tmux = {
-    enable = lib.mkEnableOption "Enable devtools";
+    enable = lib.mkEnableOption "Enable tmux";
   };
   config = lib.mkIf cfg.enable {
     home.file."${config.xdg.configHome}/tmux/".source =
@@ -29,7 +29,6 @@ in
           cpu
           resurrect
           continuum
-          pkgs.fish
         ];
       };
     };

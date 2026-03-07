@@ -74,9 +74,6 @@
           in
           pkgs.nixfmt-tree;
       };
-      overlays.default = {
-
-      };
       nixosConfigurations = {
         "dellxps" = nixpkgs.lib.nixosSystem {
           system = "x86_64-linux";
@@ -135,6 +132,5 @@
             ./home-manager/homes/framework/home.nix
           ];
         };
-      lib = import ./lib { inherit (nixpkgs) lib; };
     };
 }
