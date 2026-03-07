@@ -170,8 +170,6 @@ in
         atool
         bazelIsBazelisk
         buildozer
-        claude-code
-        copilot-cli
         opencode
         cloud-utils
         devenv
