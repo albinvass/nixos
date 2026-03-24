@@ -81,7 +81,10 @@ in
           };
         };
       };
-      mergiraf.enable = true;
+      mergiraf = {
+        enable = true;
+        enableGitIntegration = true;
+      };
     };
   };
 }
