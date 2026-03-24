@@ -125,6 +125,9 @@ in
         };
         includes = [ "~/.ssh/local_config" ];
       };
+      television = {
+        enable = true;
+      };
       yazi = {
         enable = true;
         enableFishIntegration = false;
