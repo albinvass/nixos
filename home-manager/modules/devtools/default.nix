@@ -134,7 +134,7 @@ in
       yazi = {
         enable = true;
         enableFishIntegration = false;
-        programs.yazi.shellWrapperName = "y";
+        shellWrapperName = "y";
         theme =
           builtins.fromTOML (
             builtins.readFile "${inputs.catppuccin-yazi}/themes/mocha/catppuccin-mocha-blue.toml"
