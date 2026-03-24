@@ -127,7 +127,6 @@ in
       };
       television = {
         enable = true;
-        enableFishIntegration = false;
       };
       fd = {
         enable = true;
