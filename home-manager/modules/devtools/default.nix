@@ -125,9 +125,6 @@ in
         };
         includes = [ "~/.ssh/local_config" ];
       };
-      television = {
-        enable = true;
-      };
       fd = {
         enable = true;
       };
