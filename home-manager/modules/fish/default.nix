@@ -44,7 +44,7 @@ in
       };
       fish = {
         enable = true;
-        shellAbbrs = {
+        shellAliases = {
           gau = "git add --update";
           gd = "git diff";
           "gcn!" = "git commit -v --no-edit --amend";
