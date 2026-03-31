@@ -195,6 +195,7 @@ in
         rsync
         rustup
         s
+        sesh
         shellcheck
         sops
         ssh-to-age
