@@ -189,6 +189,7 @@ in
         libarchive
         lsof
         nh
+        openssh
         openssl
         uv
         restic
