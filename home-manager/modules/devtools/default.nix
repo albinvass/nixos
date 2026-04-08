@@ -75,6 +75,10 @@ in
       awscli.enable = true;
       fzf = {
         enable = true;
+        enableFishIntegration = false;
+      };
+      television = {
+        enable = true;
         enableFishIntegration = config.albinvass.fish.enable;
       };
       ripgrep.enable = true;
