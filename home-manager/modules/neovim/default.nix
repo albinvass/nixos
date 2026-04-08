@@ -37,7 +37,7 @@ in
           lua-language-server
           marksman
           nixd
-          nodePackages.bash-language-server
+          bash-language-server
           pyright
           ripgrep
           shellcheck
