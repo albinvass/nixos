@@ -28,7 +28,28 @@ config.keys = {
   },
 }
 
-config.default_prog = { options.default_prog }
+-- Attach to an existing tmux session if available, otherwise create a new one
+-- Never attaches to the "scratch" session
+wezterm.on('gui-startup', function(cmd)
+  local args = cmd and cmd.args or nil
+  if args == nil then
+    local success, stdout, _ = wezterm.run_child_process({
+      options.default_prog, 'list-sessions', '-F', '#{session_name}'
+    })
+    if success then
+      for name in stdout:gmatch('[^\n]+') do
+        if name ~= 'scratch' then
+          args = { options.default_prog, 'attach', '-t', name }
+          break
+        end
+      end
+    end
+    if args == nil then
+      args = { options.default_prog }
+    end
+  end
+  local tab, pane, window = wezterm.mux.spawn_window({ args = args })
+end)
 
 
 config.enable_wayland = options.enable_wayland
