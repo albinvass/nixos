@@ -15,6 +15,9 @@ in
   config = lib.mkIf cfg.enable {
     home.file."${config.xdg.configHome}/nvim".source =
       config.lib.file.mkOutOfStoreSymlink "${config.albinvass.gitDirectory}/home-manager/modules/neovim/nvim";
+    # hack needed because home-manager broke my config. see:
+    # https://github.com/nix-community/home-manager/commit/5786e425304ea2788a1cdc2533dd4c53583591bd
+    xdg.configFile."nvim/init.lua".enable = false;
     programs.neovim = {
       enable = true;
       defaultEditor = true;
