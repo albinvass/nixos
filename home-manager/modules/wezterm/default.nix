@@ -24,10 +24,10 @@ in
   };
   config = lib.mkIf cfg.enable {
     home.packages = with pkgs; [ nerd-fonts.fira-code ];
-    home.file."${config.xdg.configHome}/wezterm/wezterm.lua" = {
+    xdg.configFile."wezterm/wezterm.lua" = {
       source = config.lib.file.mkOutOfStoreSymlink "${config.albinvass.gitDirectory}/home-manager/modules/wezterm/config/wezterm.lua";
     };
-    home.file."${config.xdg.configHome}/wezterm/options.lua" = {
+    xdg.configFile."wezterm/options.lua" = {
       text = with cfg; /* lua */ ''
         local options = {
           enable_wayland = ${if enable_wayland then "true" else "false"},
