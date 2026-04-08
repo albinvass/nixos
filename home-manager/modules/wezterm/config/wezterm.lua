@@ -21,6 +21,11 @@ config.keys = {
     mods = 'SUPER',
     action = wezterm.action.DisableDefaultAssignment,
   },
+  {
+    key = 'w',
+    mods = 'SUPER',
+    action = wezterm.action.DisableDefaultAssignment,
+  },
 }
 
 config.default_prog = { options.default_prog }
