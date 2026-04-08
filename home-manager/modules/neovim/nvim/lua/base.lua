@@ -10,11 +10,23 @@ vim.o.colorcolumn = "80"
 vim.o.mouse = nil
 vim.g.mapleader = " "
 vim.g.maplocalleader = ","
---vim.opt.indent = true
-vim.bo.tabstop = 2
-vim.bo.shiftwidth = 2
-vim.bo.expandtab = true
-vim.bo.softtabstop = 2
+vim.api.nvim_create_autocmd('FileType', {
+  callback = function()
+    vim.bo.tabstop = 2
+    vim.bo.shiftwidth = 2
+    vim.bo.expandtab = true
+    vim.bo.softtabstop = 2
+    vim.treesitter.start()
+  end,
+})
+vim.api.nvim_create_autocmd('FileType', {
+  pattern = { 'bzl', 'c', 'cpp', 'dockerfile', 'go', 'python' },
+  callback = function()
+    vim.bo.tabstop = 4
+    vim.bo.shiftwidth = 4
+    vim.bo.softtabstop = 4
+  end,
+})
 
 vim.cmd 'highlight Normal guibg=NONE ctermbg=NONE'
 
