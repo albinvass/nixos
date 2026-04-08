@@ -87,6 +87,7 @@ in
         enable = true;
         config = {
           theme = "Catppuccin Mocha";
+          paging = "always";
         };
         themes = {
           "Catppuccin Mocha" = {
