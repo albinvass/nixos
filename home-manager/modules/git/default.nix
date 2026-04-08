@@ -59,9 +59,11 @@ in
         enable = true;
         settings = {
           alias = {
-            dl = "-c diff.external=difft log --ext-diff";
-            ds = "-c diff.external=difft show --ext-diff";
-            dft = "-c diff.external=difft diff --ext-diff";
+            # -+F overrides the -F (quit-if-one-screen) flag set by the LESS env var,
+            # preventing ctrl-d from closing the shell on short diffs
+            dl = "-c diff.external=difft -c core.pager='less -+F -R' log --ext-diff";
+            ds = "-c diff.external=difft -c core.pager='less -+F -R' show --ext-diff";
+            dft = "-c diff.external=difft -c core.pager='less -+F -R' diff --ext-diff";
           };
           branch.sort = "-committerdate";
           column.ui = "auto";
