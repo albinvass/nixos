@@ -21,6 +21,7 @@ in
       default = "${config.programs.tmux.package}/bin/tmux";
       description = "Default program for wezterm";
     };
+    fullscreen = lib.mkEnableOption "Start wezterm in fullscreen";
   };
   config = lib.mkIf cfg.enable {
     home.packages = with pkgs; [ nerd-fonts.fira-code ];
@@ -33,6 +34,7 @@ in
           enable_wayland = ${if enable_wayland then "true" else "false"},
           font_size = ${toString font_size},
           default_prog =  "${default_prog}",
+          fullscreen = ${if cfg.fullscreen then "true" else "false"},
         }
 
         return options

@@ -20,6 +20,7 @@
     wezterm = {
       enable = true;
       enable_wayland = false;
+      fullscreen = true;
       default_prog =
         let
           tmuxWrapper = pkgs.writeShellScript "tmux-wrapper" ''

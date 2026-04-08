@@ -49,6 +49,9 @@ wezterm.on('gui-startup', function(cmd)
     end
   end
   local tab, pane, window = wezterm.mux.spawn_window({ args = args })
+  if options.fullscreen then
+    window:gui_window():toggle_fullscreen()
+  end
 end)
 
 
