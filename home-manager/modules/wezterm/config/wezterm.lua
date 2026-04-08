@@ -45,7 +45,7 @@ wezterm.on('gui-startup', function(cmd)
       end
     end
     if args == nil then
-      args = { options.default_prog }
+      args = { options.default_prog, 'new-session', '-s', 'main' }
     end
   end
   local tab, pane, window = wezterm.mux.spawn_window({ args = args })
