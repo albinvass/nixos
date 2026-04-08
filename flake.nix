@@ -1,7 +1,7 @@
 {
   inputs = {
     bacon-ls = {
-      url = "github:crisidev/bacon-ls";
+      url = "github:crisidev/bacon-ls/db451d8a55cc0721f000a0ee5e872b43c1457d8f";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     catppuccin-bat = {

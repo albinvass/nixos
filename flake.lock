@@ -9,16 +9,17 @@
         ]
       },
       "locked": {
-        "lastModified": 1775034239,
-        "narHash": "sha256-TTr0qyUAfTsd/WJEbu6h1MYS7dpWwa58hBZFGm0ehXQ=",
+        "lastModified": 1769933843,
+        "narHash": "sha256-Bcuviq+HqyDIKHFRQEIqi/uwoZfVellZDIGUZccgYxs=",
         "owner": "crisidev",
         "repo": "bacon-ls",
-        "rev": "4e7eedbccc4d8fdbe48c7e8ad8822391bb7d0050",
+        "rev": "db451d8a55cc0721f000a0ee5e872b43c1457d8f",
         "type": "github"
       },
       "original": {
         "owner": "crisidev",
         "repo": "bacon-ls",
+        "rev": "db451d8a55cc0721f000a0ee5e872b43c1457d8f",
         "type": "github"
       }
     },
