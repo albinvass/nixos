@@ -12,9 +12,9 @@ in
     enable = lib.mkEnableOption "Enable tmux";
   };
   config = lib.mkIf cfg.enable {
-    xdg.configFile."tmux/".source =
+    home.file."${config.xdg.configHome}/tmux/".source =
       config.lib.file.mkOutOfStoreSymlink "${config.albinvass.gitDirectory}/home-manager/modules/tmux/tmux";
-    xdg.configFile."albinvass/tmux/" = {
+    home.file."${config.xdg.configHome}/albinvass/tmux/" = {
       source = pkgs.symlinkJoin {
         name = "tmux-plugins";
         paths = with pkgs.tmuxPlugins; [

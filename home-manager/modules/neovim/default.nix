@@ -13,19 +13,12 @@ in
     enable = lib.mkEnableOption "Enable Neovim";
   };
   config = lib.mkIf cfg.enable {
-    xdg.configFile."nvim/lua".source =
-      config.lib.file.mkOutOfStoreSymlink "${config.albinvass.gitDirectory}/home-manager/modules/neovim/nvim/lua";
-    xdg.configFile."nvim/after".source =
-      config.lib.file.mkOutOfStoreSymlink "${config.albinvass.gitDirectory}/home-manager/modules/neovim/nvim/after";
-    xdg.configFile."nvim/ftdetect".source =
-      config.lib.file.mkOutOfStoreSymlink "${config.albinvass.gitDirectory}/home-manager/modules/neovim/nvim/ftdetect";
-    xdg.configFile."nvim/ftplugin".source =
-      config.lib.file.mkOutOfStoreSymlink "${config.albinvass.gitDirectory}/home-manager/modules/neovim/nvim/ftplugin";
+    home.file."${config.xdg.configHome}/nvim".source =
+      config.lib.file.mkOutOfStoreSymlink "${config.albinvass.gitDirectory}/home-manager/modules/neovim/nvim";
     programs.neovim = {
       enable = true;
       defaultEditor = true;
       vimAlias = true;
-      extraLuaConfig = builtins.readFile ./nvim/init.lua;
       withNodeJs = true;
       withPython3 = true;
       withRuby = true;
