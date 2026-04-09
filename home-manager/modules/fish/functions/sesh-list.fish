@@ -25,7 +25,7 @@ function sesh-list
 
     # Git repos from zoxide
     for d in (zoxide query -l)
-        if test -d "$d/.git"
+        if test -e "$d/.git"
             echo $d
         end
     end
