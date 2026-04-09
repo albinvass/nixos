@@ -56,6 +56,8 @@ in
         };
         shellInit = /* fish */ ''
           set -g fish_key_bindings fish_vi_key_bindings
+          bind ctrl-o git-worktree-picker
+          bind -M insert ctrl-o git-worktree-picker
         '';
       };
     };
