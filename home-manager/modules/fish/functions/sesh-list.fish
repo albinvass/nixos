@@ -4,7 +4,7 @@ function sesh-list
     set -l tmux_sessions
 
     # Tmux sessions from sesh (with icons, no zoxide)
-    for line in (sesh list -itd | grep -v scratch)
+    for line in (sesh list -it | grep -v scratch)
         set -l name (string split ' ' -- $line)[-1]
         if test "$name" = "$current"
             set current_line "$line (current)"
