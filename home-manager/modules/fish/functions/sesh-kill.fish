@@ -1,6 +1,6 @@
 function sesh-kill
     set -l current (tmux display-message -p '#S')
-    set -l sessions (tv --source-command "sesh list -it | grep -v scratch" --source-output "{split: :1}" --no-preview --ansi --no-sort)
+    set -l sessions (tv --source-command "sesh list -it | grep -v scratch" --source-output "{split: :1}" --preview-command "fish -c 'sesh-preview {}'" --ansi --no-sort)
     if test -z "$sessions"
         return
     end

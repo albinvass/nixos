@@ -1,5 +1,5 @@
 function sesh-connect-picker
-    set -l selection (tv --source-command "fish -c sesh-list" --no-preview --ansi --no-sort)
+    set -l selection (tv --source-command "fish -c sesh-list" --preview-command "fish -c 'sesh-preview \"{}\"'" --ansi --no-sort)
     if test -n "$selection"
         # Remove "(current)" suffix if present
         set selection (string replace -r '\s*\(current\)$' '' -- $selection)
