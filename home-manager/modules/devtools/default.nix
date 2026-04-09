@@ -202,6 +202,7 @@ in
         rustup
         s
         sesh
+        television
         shellcheck
         sops
         ssh-to-age
