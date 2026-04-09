@@ -1,10 +1,14 @@
 function sesh-kill
     set -l current (tmux display-message -p '#S')
-    set -l session (tv --source-command "sesh list -it | grep -v scratch" --source-output "{split: :1}" --no-preview --ansi --no-sort)
-    if test -n "$session"
-        if test "$session" = "$current"
-            tmux switch-client -n
-        end
-        tmux kill-session -t $session
+    set -l sessions (tv --source-command "sesh list -it | grep -v scratch" --source-output "{split: :1}" --no-preview --ansi --no-sort)
+    if test -z "$sessions"
+        return
+    end
+    # If killing the current session, switch away first
+    if contains -- "$current" $sessions
+        tmux switch-client -n
+    end
+    for session in $sessions
+        tmux kill-session -t "$session"
     end
 end
