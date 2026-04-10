@@ -11,7 +11,8 @@ vim.o.mouse = nil
 vim.g.mapleader = " "
 vim.g.maplocalleader = ","
 vim.api.nvim_create_autocmd('FileType', {
-  callback = function()
+  callback = function(args)
+    if args.match == 'yazi' then return end
     vim.bo.tabstop = 2
     vim.bo.shiftwidth = 2
     vim.bo.expandtab = true
