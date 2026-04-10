@@ -10,22 +10,34 @@ vim.o.colorcolumn = "80"
 vim.o.mouse = nil
 vim.g.mapleader = " "
 vim.g.maplocalleader = ","
+local filetype_config = {
+  bash       = {},
+  hcl        = {},
+  helm       = {},
+  json       = {},
+  lua        = {},
+  markdown   = {},
+  nix        = {},
+  norg       = {},
+  terraform  = {},
+  yaml       = {},
+  bzl        = { indent = 4 },
+  c          = { indent = 4 },
+  cpp        = { indent = 4 },
+  dockerfile = { indent = 4 },
+  go         = { indent = 4 },
+  python     = { indent = 4 },
+}
 vim.api.nvim_create_autocmd('FileType', {
+  pattern = vim.tbl_keys(filetype_config),
   callback = function(args)
-    if args.match == 'yazi' then return end
-    vim.bo.tabstop = 2
-    vim.bo.shiftwidth = 2
+    local config = filetype_config[args.match]
+    local indent = config.indent or 2
+    vim.bo.tabstop = indent
+    vim.bo.shiftwidth = indent
+    vim.bo.softtabstop = indent
     vim.bo.expandtab = true
-    vim.bo.softtabstop = 2
     vim.treesitter.start()
-  end,
-})
-vim.api.nvim_create_autocmd('FileType', {
-  pattern = { 'bzl', 'c', 'cpp', 'dockerfile', 'go', 'python' },
-  callback = function()
-    vim.bo.tabstop = 4
-    vim.bo.shiftwidth = 4
-    vim.bo.softtabstop = 4
   end,
 })
 
