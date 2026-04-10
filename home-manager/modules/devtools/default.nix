@@ -215,6 +215,8 @@ in
         watchexec
         whois
         yq
+        xz
+        lld
       ]
       ++ (
         if pkgs.stdenv.isLinux then
