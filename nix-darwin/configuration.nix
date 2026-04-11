@@ -11,6 +11,19 @@
   # https://www.reddit.com/r/NixOS/comments/1keumfe/comment/mqreihz/?utm_source=share&utm_medium=web3x&utm_name=web3xcss&utm_term=1&utm_content=share_button
   programs.fish.enable = true;
 
+  nix-homebrew = {
+    enable = true;
+    enableRosetta = false;
+    user = "albinvass";
+    autoMigrate = true;
+    mutableTaps = false;
+    taps = {
+      "homebrew/homebrew-core" = inputs.homebrew-core;
+      "homebrew/homebrew-cask" = inputs.homebrew-cask;
+      "homebrew/homebrew-bundle" = inputs.homebrew-bundle;
+    };
+  };
+
   # The platform the configuration will be used on.
   nixpkgs = {
     hostPlatform = "aarch64-darwin";
