@@ -6,6 +6,7 @@
   # Used for backwards compatibility, please read the changelog before changing.
   # $ darwin-rebuild changelog
   system.stateVersion = 6;
+  system.primaryUser = "albinvass";
 
   # Apparently needed for some dumb reason:
   # https://www.reddit.com/r/NixOS/comments/1keumfe/comment/mqreihz/?utm_source=share&utm_medium=web3x&utm_name=web3xcss&utm_term=1&utm_content=share_button
@@ -22,6 +23,24 @@
       "homebrew/homebrew-cask" = inputs.homebrew-cask;
       "homebrew/homebrew-bundle" = inputs.homebrew-bundle;
     };
+  };
+
+  homebrew = {
+    enable = true;
+    onActivation = {
+      autoUpdate = false;
+      upgrade = true;
+      cleanup = "zap";
+    };
+    # Must match the taps declared in `nix-homebrew.taps` above, otherwise
+    # `brew bundle --cleanup` tries to untap them and fails because the tap
+    # directories are read-only symlinks into the nix store.
+    taps = [
+      "homebrew/core"
+      "homebrew/cask"
+      "homebrew/bundle"
+    ];
+    brews = [ "qemu" ];
   };
 
   # The platform the configuration will be used on.
