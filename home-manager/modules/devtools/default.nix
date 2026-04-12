@@ -179,7 +179,6 @@ in
         atool
         bazelIsBazelisk
         buildozer
-        opencode
         cloud-utils
         devenv
         dig

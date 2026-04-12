@@ -78,7 +78,6 @@ in
         nvim-treesitter-textobjects
         nvim-treesitter.withAllGrammars
         nvim-web-devicons
-        opencode-nvim
         plenary-nvim
         snacks-nvim
         telescope-fzf-native-nvim
