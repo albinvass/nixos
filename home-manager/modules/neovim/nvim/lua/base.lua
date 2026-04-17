@@ -14,6 +14,7 @@ local filetype_config = {
   bash       = {},
   hcl        = {},
   helm       = {},
+  javascript = {},
   json       = {},
   lua        = {},
   markdown   = {},

@@ -4,7 +4,8 @@ require('nvim-treesitter.config').setup({
     enable = true
   },
   indent = {
-    enable = true
+    enable = true,
+    disable = { "yaml" }
   },
   incremental_selection = {
     enable = true,
