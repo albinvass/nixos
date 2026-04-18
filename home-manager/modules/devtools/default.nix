@@ -73,6 +73,7 @@ in
       };
       nix-index-database.comma.enable = true;
       awscli.enable = true;
+      obsidian.enable = true;
       fzf = {
         enable = true;
         enableFishIntegration = false;
