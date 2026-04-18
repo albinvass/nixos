@@ -539,6 +539,19 @@ function extractWikiLinks(document) {
   );
 }
 
+function extractSectionWikiLinks(document, heading) {
+  try {
+    const { lines, startLine, endLine } = getHeadingRange(document, heading);
+    return extractWikiLinks(lines.slice(startLine + 1, endLine).join("\n"));
+  } catch (error) {
+    if (error.message === `Heading not found: ${heading}`) {
+      return [];
+    }
+
+    throw error;
+  }
+}
+
 function notePathToLinkTarget(notePath) {
   return notePath.replace(/\.md$/, "");
 }
@@ -568,6 +581,32 @@ function findKnowledgeNoteByTitle(vaultPath, title, folder) {
   }
 
   return null;
+}
+
+function findVaultNotesByTitle(vaultPath, title) {
+  const normalizedTitle = String(title || "").trim().toLowerCase();
+
+  if (!normalizedTitle) {
+    throw new Error("title is required.");
+  }
+
+  return listMarkdownFiles(vaultPath)
+    .map((filePath) => path.relative(vaultPath, filePath))
+    .filter((relativePath) => path.basename(relativePath, ".md").trim().toLowerCase() === normalizedTitle);
+}
+
+function resolveExistingNotePathByTitle(vaultPath, title) {
+  const matches = findVaultNotesByTitle(vaultPath, title);
+
+  if (matches.length === 0) {
+    throw new Error(`Related note not found: ${title}`);
+  }
+
+  if (matches.length > 1) {
+    throw new Error(`Related note title is ambiguous: ${title} (${matches.join(", ")})`);
+  }
+
+  return matches[0];
 }
 
 function getKnowledgeNotePath(vaultPath, title, folder) {
@@ -831,9 +870,11 @@ const TOOL_HANDLERS = {
     const notePath = getKnowledgeNotePath(vaultPath, args.title, folder);
     const noteFile = resolveNotePath(vaultPath, notePath);
     const created = !fs.existsSync(noteFile);
-    const relatedPaths = uniqueStrings(args.related || []).map((title) => getKnowledgeNotePath(vaultPath, title, folder));
+    const relatedPaths = uniqueStrings(args.related || []).map((title) => resolveExistingNotePathByTitle(vaultPath, title));
     const relatedLinks = formatWikiLinks(relatedPaths);
-    const existingLinks = created ? [] : formatWikiLinks(extractWikiLinks(fs.readFileSync(noteFile, "utf8")));
+    const existingLinks = created
+      ? []
+      : formatWikiLinks(extractSectionWikiLinks(fs.readFileSync(noteFile, "utf8"), "Related"));
     const mergedLinks = uniqueStrings([...existingLinks, ...relatedLinks]);
     const content = formatKnowledgeNote({
       title: args.title.trim(),
@@ -989,50 +1030,75 @@ function handleRequest(message) {
   });
 }
 
-let buffer = Buffer.alloc(0);
-const keepAlive = setInterval(() => {}, 60_000);
+function startServer() {
+  let buffer = Buffer.alloc(0);
+  const keepAlive = setInterval(() => {}, 60_000);
 
-process.stdin.resume();
-process.stdin.on("end", () => {
-  debugLog("stdin closed");
-  clearInterval(keepAlive);
-});
-process.on("SIGTERM", () => {
-  clearInterval(keepAlive);
-  process.exit(0);
-});
+  process.stdin.resume();
+  process.stdin.on("end", () => {
+    debugLog("stdin closed");
+    clearInterval(keepAlive);
+  });
+  process.on("SIGTERM", () => {
+    clearInterval(keepAlive);
+    process.exit(0);
+  });
 
-process.stdin.on("data", (chunk) => {
-  debugLog(`raw chunk: ${JSON.stringify(chunk.toString("utf8"))}`);
-  buffer = Buffer.concat([buffer, chunk]);
+  process.stdin.on("data", (chunk) => {
+    debugLog(`raw chunk: ${JSON.stringify(chunk.toString("utf8"))}`);
+    buffer = Buffer.concat([buffer, chunk]);
 
-  while (true) {
-    const headerEnd = buffer.indexOf("\r\n\r\n");
-    if (headerEnd !== -1) {
-      const headerText = buffer.slice(0, headerEnd).toString("utf8");
-      const contentLengthHeader = headerText
-        .split("\r\n")
-        .find((header) => header.toLowerCase().startsWith("content-length:"));
+    while (true) {
+      const headerEnd = buffer.indexOf("\r\n\r\n");
+      if (headerEnd !== -1) {
+        const headerText = buffer.slice(0, headerEnd).toString("utf8");
+        const contentLengthHeader = headerText
+          .split("\r\n")
+          .find((header) => header.toLowerCase().startsWith("content-length:"));
 
-      if (!contentLengthHeader) {
-        writeMessage({
-          jsonrpc: "2.0",
-          error: makeError(-32700, "Missing Content-Length header."),
-        });
-        buffer = Buffer.alloc(0);
+        if (!contentLengthHeader) {
+          writeMessage({
+            jsonrpc: "2.0",
+            error: makeError(-32700, "Missing Content-Length header."),
+          });
+          buffer = Buffer.alloc(0);
+          return;
+        }
+
+        const contentLength = Number.parseInt(contentLengthHeader.split(":")[1].trim(), 10);
+        const messageStart = headerEnd + 4;
+        const messageEnd = messageStart + contentLength;
+
+        if (buffer.length < messageEnd) {
+          return;
+        }
+
+        const payload = buffer.slice(messageStart, messageEnd).toString("utf8");
+        buffer = buffer.slice(messageEnd);
+
+        try {
+          handleRequest(JSON.parse(payload));
+        } catch (error) {
+          writeMessage({
+            jsonrpc: "2.0",
+            error: makeError(-32700, `Invalid JSON payload: ${error.message}`),
+          });
+        }
+
+        continue;
+      }
+
+      const newlineIndex = buffer.indexOf("\n");
+      if (newlineIndex === -1) {
         return;
       }
 
-      const contentLength = Number.parseInt(contentLengthHeader.split(":")[1].trim(), 10);
-      const messageStart = headerEnd + 4;
-      const messageEnd = messageStart + contentLength;
+      const payload = buffer.slice(0, newlineIndex).toString("utf8").trim();
+      buffer = buffer.slice(newlineIndex + 1);
 
-      if (buffer.length < messageEnd) {
-        return;
+      if (payload.length === 0) {
+        continue;
       }
-
-      const payload = buffer.slice(messageStart, messageEnd).toString("utf8");
-      buffer = buffer.slice(messageEnd);
 
       try {
         handleRequest(JSON.parse(payload));
@@ -1042,29 +1108,21 @@ process.stdin.on("data", (chunk) => {
           error: makeError(-32700, `Invalid JSON payload: ${error.message}`),
         });
       }
-
-      continue;
     }
+  });
+}
 
-    const newlineIndex = buffer.indexOf("\n");
-    if (newlineIndex === -1) {
-      return;
-    }
+module.exports = {
+  TOOL_HANDLERS,
+  extractSectionWikiLinks,
+  findVaultNotesByTitle,
+  getHeadingRange,
+  getKnowledgeNotePath,
+  patchHeadingSection,
+  resolveExistingNotePathByTitle,
+  startServer,
+};
 
-    const payload = buffer.slice(0, newlineIndex).toString("utf8").trim();
-    buffer = buffer.slice(newlineIndex + 1);
-
-    if (payload.length === 0) {
-      continue;
-    }
-
-    try {
-      handleRequest(JSON.parse(payload));
-    } catch (error) {
-      writeMessage({
-        jsonrpc: "2.0",
-        error: makeError(-32700, `Invalid JSON payload: ${error.message}`),
-      });
-    }
-  }
-});
+if (require.main === module) {
+  startServer();
+}
