@@ -3,13 +3,16 @@ const assert = require("node:assert/strict");
 const fs = require("node:fs");
 const os = require("node:os");
 const path = require("node:path");
+const { setTimeout: delay } = require("node:timers/promises");
 
 const {
   TOOL_HANDLERS,
   listMarkdownFiles,
   parseSyncedVaultsOutput,
   patchHeadingSection,
+  resetVaultCaches,
   resolveNotePath,
+  searchMarkdownFiles,
 } = require("./obsidian-mcp.js");
 
 function withVault(setup, run) {
@@ -21,6 +24,29 @@ function withVault(setup, run) {
     setup(vaultPath);
     return run(vaultPath);
   } finally {
+    resetVaultCaches();
+
+    if (previousVaultPath === undefined) {
+      delete process.env.OBSIDIAN_VAULT_PATH;
+    } else {
+      process.env.OBSIDIAN_VAULT_PATH = previousVaultPath;
+    }
+
+    fs.rmSync(vaultPath, { recursive: true, force: true });
+  }
+}
+
+async function withVaultAsync(setup, run) {
+  const vaultPath = fs.mkdtempSync(path.join(os.tmpdir(), "obsidian-mcp-"));
+  const previousVaultPath = process.env.OBSIDIAN_VAULT_PATH;
+  process.env.OBSIDIAN_VAULT_PATH = vaultPath;
+
+  try {
+    await setup(vaultPath);
+    return await run(vaultPath);
+  } finally {
+    resetVaultCaches();
+
     if (previousVaultPath === undefined) {
       delete process.env.OBSIDIAN_VAULT_PATH;
     } else {
@@ -39,6 +65,21 @@ function writeNote(vaultPath, relativePath, content) {
 
 function parseToolResult(result) {
   return JSON.parse(result.content[0].text);
+}
+
+async function waitFor(assertion, timeoutMs = 1_000) {
+  const startedAt = Date.now();
+
+  while (true) {
+    try {
+      return assertion();
+    } catch (error) {
+      if (Date.now() - startedAt >= timeoutMs) {
+        throw error;
+      }
+      await delay(25);
+    }
+  }
 }
 
 test("upsert links to an existing related note outside the capture folder", () => {
@@ -212,6 +253,155 @@ test("listMarkdownFiles skips hidden directories and node_modules", () => {
     (vaultPath) => {
       const files = listMarkdownFiles(vaultPath).map((filePath) => path.relative(vaultPath, filePath));
       assert.deepEqual(files, ["notes/kept.md", "visible.md"]);
+    },
+  );
+});
+
+test("searchMarkdownFiles finds case-insensitive matches and skips hidden notes", () => {
+  withVault(
+    (vaultPath) => {
+      writeNote(vaultPath, "visible.md", "Alpha\nmatch me\n");
+      writeNote(vaultPath, ".obsidian/hidden.md", "match me\n");
+      writeNote(vaultPath, "nested/other.md", "MATCH ME\n");
+    },
+    (vaultPath) => {
+      const matches = searchMarkdownFiles(vaultPath, "match me", false, 10)
+        .sort((left, right) => left.note_path.localeCompare(right.note_path));
+      assert.deepEqual(matches, [
+        { note_path: "nested/other.md", line: 1, text: "MATCH ME" },
+        { note_path: "visible.md", line: 2, text: "match me" },
+      ]);
+    },
+  );
+});
+
+test("searchMarkdownFiles respects case sensitivity and limit", () => {
+  withVault(
+    (vaultPath) => {
+      writeNote(vaultPath, "one.md", "Match me\nmatch me\n");
+      writeNote(vaultPath, "two.md", "match me\n");
+    },
+    (vaultPath) => {
+      assert.deepEqual(searchMarkdownFiles(vaultPath, "Match me", true, 10), [
+        { note_path: "one.md", line: 1, text: "Match me" },
+      ]);
+
+      assert.deepEqual(searchMarkdownFiles(vaultPath, "match me", false, 2), [
+        { note_path: "one.md", line: 1, text: "Match me" },
+        { note_path: "one.md", line: 2, text: "match me" },
+      ]);
+    },
+  );
+});
+
+test("list notes cache is invalidated after creating a note", () => {
+  withVault(
+    (vaultPath) => {
+      writeNote(vaultPath, "one.md", "# One\n");
+    },
+    () => {
+      const initial = parseToolResult(TOOL_HANDLERS.obsidian_list_notes({}));
+      assert.deepEqual(initial.notes, ["one.md"]);
+
+      TOOL_HANDLERS.obsidian_create_note({
+        note_path: "two.md",
+        content: "# Two\n",
+      });
+
+      const updated = parseToolResult(TOOL_HANDLERS.obsidian_list_notes({}));
+      assert.deepEqual(updated.notes, ["one.md", "two.md"]);
+    },
+  );
+});
+
+test("search tool sees appended content after cache invalidation", () => {
+  withVault(
+    (vaultPath) => {
+      writeNote(vaultPath, "note.md", "# Note\n");
+    },
+    () => {
+      assert.deepEqual(parseToolResult(TOOL_HANDLERS.obsidian_search_notes({ query: "later text" })).matches, []);
+
+      TOOL_HANDLERS.obsidian_append_note({
+        note_path: "note.md",
+        content: "later text\n",
+      });
+
+      assert.deepEqual(parseToolResult(TOOL_HANDLERS.obsidian_search_notes({ query: "later text" })).matches, [
+        { note_path: "note.md", line: 2, text: "later text" },
+      ]);
+    },
+  );
+});
+
+test("search tool sees patched heading content after cache invalidation", () => {
+  withVault(
+    (vaultPath) => {
+      writeNote(vaultPath, "note.md", ["# Note", "", "## Related", "- [[One]]", ""].join("\n"));
+    },
+    () => {
+      assert.deepEqual(parseToolResult(TOOL_HANDLERS.obsidian_search_notes({ query: "patched link" })).matches, []);
+
+      TOOL_HANDLERS.obsidian_patch_heading({
+        note_path: "note.md",
+        heading: "Related",
+        operation: "append",
+        content: "- [[patched link]]",
+      });
+
+      assert.deepEqual(parseToolResult(TOOL_HANDLERS.obsidian_search_notes({ query: "patched link" })).matches, [
+        { note_path: "note.md", line: 5, text: "- [[patched link]]" },
+      ]);
+    },
+  );
+});
+
+test("list notes cache is invalidated after upsert creates a note", () => {
+  withVault(
+    () => {},
+    () => {
+      assert.deepEqual(parseToolResult(TOOL_HANDLERS.obsidian_list_notes({})).notes, []);
+
+      const result = parseToolResult(
+        TOOL_HANDLERS.obsidian_upsert_knowledge_note({
+          title: "Captured Cache Test",
+          summary: "Summary",
+          details: "Details",
+        }),
+      );
+
+      assert.equal(result.note_path, "Captured/Captured Cache Test.md");
+      assert.deepEqual(parseToolResult(TOOL_HANDLERS.obsidian_list_notes({})).notes, [
+        "Captured/Captured Cache Test.md",
+      ]);
+    },
+  );
+});
+
+test("list notes cache refreshes after an external vault change", async () => {
+  await withVaultAsync(
+    (vaultPath) => {
+      writeNote(vaultPath, "one.md", "# One\n");
+    },
+    async (vaultPath) => {
+      const previousTtl = process.env.OBSIDIAN_MCP_CACHE_TTL_MS;
+      process.env.OBSIDIAN_MCP_CACHE_TTL_MS = "50";
+
+      try {
+        assert.deepEqual(parseToolResult(TOOL_HANDLERS.obsidian_list_notes({})).notes, ["one.md"]);
+
+        writeNote(vaultPath, "two.md", "# Two\n");
+
+        await waitFor(() => {
+          assert.deepEqual(parseToolResult(TOOL_HANDLERS.obsidian_list_notes({})).notes, ["one.md", "two.md"]);
+        });
+      } finally {
+        if (previousTtl === undefined) {
+          delete process.env.OBSIDIAN_MCP_CACHE_TTL_MS;
+        } else {
+          process.env.OBSIDIAN_MCP_CACHE_TTL_MS = previousTtl;
+        }
+      }
     },
   );
 });

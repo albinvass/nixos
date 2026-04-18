@@ -6,6 +6,10 @@ const path = require("path");
 const { spawnSync } = require("child_process");
 
 const debugLogPath = process.env.OBSIDIAN_MCP_DEBUG_LOG;
+const DEFAULT_CACHE_TTL_MS = 2_000;
+let cachedVaultConfigKey = null;
+let cachedVaultPath = null;
+const vaultIndexCache = new Map();
 
 function debugLog(line) {
   if (!debugLogPath) {
@@ -264,19 +268,33 @@ function expandHome(inputPath) {
 }
 
 function getVaultPath() {
+  const configKey = JSON.stringify({
+    vaultPath: process.env.OBSIDIAN_VAULT_PATH || null,
+    vaultName: process.env.OBSIDIAN_VAULT_NAME || null,
+  });
+
+  if (cachedVaultConfigKey === configKey && cachedVaultPath) {
+    return cachedVaultPath;
+  }
+
   const rawVaultPath = process.env.OBSIDIAN_VAULT_PATH;
+  let resolvedVaultPath;
 
   if (rawVaultPath) {
-    return validateVaultPath(rawVaultPath);
+    resolvedVaultPath = validateVaultPath(rawVaultPath);
+  } else {
+    const vaultName = process.env.OBSIDIAN_VAULT_NAME;
+
+    if (vaultName) {
+      resolvedVaultPath = resolveVaultPathFromName(vaultName);
+    } else {
+      resolvedVaultPath = getActiveVaultPath();
+    }
   }
 
-  const vaultName = process.env.OBSIDIAN_VAULT_NAME;
-
-  if (vaultName) {
-    return resolveVaultPathFromName(vaultName);
-  }
-
-  return getActiveVaultPath();
+  cachedVaultConfigKey = configKey;
+  cachedVaultPath = resolvedVaultPath;
+  return resolvedVaultPath;
 }
 
 function validateVaultPath(rawVaultPath) {
@@ -395,6 +413,121 @@ function listMarkdownFiles(rootPath) {
 
   results.sort((left, right) => left.localeCompare(right));
   return results;
+}
+
+function getCacheTtlMs() {
+  const parsed = Number.parseInt(process.env.OBSIDIAN_MCP_CACHE_TTL_MS || "", 10);
+  return Number.isFinite(parsed) && parsed >= 0 ? parsed : DEFAULT_CACHE_TTL_MS;
+}
+
+function closeVaultWatchers(entry) {
+  for (const watcher of entry?.watchers || []) {
+    watcher.close();
+  }
+}
+
+function getWatchedDirectories(vaultPath, markdownFiles) {
+  const directories = new Set([vaultPath]);
+
+  for (const filePath of markdownFiles) {
+    let current = path.dirname(filePath);
+    while (current.startsWith(vaultPath)) {
+      directories.add(current);
+      if (current === vaultPath) {
+        break;
+      }
+      current = path.dirname(current);
+    }
+  }
+
+  return [...directories].sort((left, right) => left.localeCompare(right));
+}
+
+function markVaultIndexStale(vaultPath) {
+  const entry = vaultIndexCache.get(vaultPath);
+  if (entry) {
+    entry.stale = true;
+  }
+}
+
+function createVaultWatchers(vaultPath, markdownFiles) {
+  const watchers = [];
+
+  for (const directory of getWatchedDirectories(vaultPath, markdownFiles)) {
+    try {
+      const watcher = fs.watch(directory, () => {
+        markVaultIndexStale(vaultPath);
+      });
+      watcher.on("error", () => {
+        markVaultIndexStale(vaultPath);
+      });
+      watchers.push(watcher);
+    } catch (error) {
+      debugLog(`watch setup failed for ${directory}: ${error.message}`);
+      markVaultIndexStale(vaultPath);
+    }
+  }
+
+  return watchers;
+}
+
+function buildVaultIndex(vaultPath) {
+  const markdownFiles = listMarkdownFiles(vaultPath);
+  const titleToPaths = new Map();
+
+  for (const filePath of markdownFiles) {
+    const relativePath = path.relative(vaultPath, filePath);
+    const title = path.basename(relativePath, ".md").trim().toLowerCase();
+
+    if (!titleToPaths.has(title)) {
+      titleToPaths.set(title, []);
+    }
+
+    titleToPaths.get(title).push(relativePath);
+  }
+
+  return {
+    markdownFiles,
+    titleToPaths,
+    builtAt: Date.now(),
+    stale: false,
+    watchers: createVaultWatchers(vaultPath, markdownFiles),
+  };
+}
+
+function getVaultIndex(vaultPath) {
+  const cachedEntry = vaultIndexCache.get(vaultPath);
+  if (cachedEntry) {
+    const expired = Date.now() - cachedEntry.builtAt > getCacheTtlMs();
+    if (!cachedEntry.stale && !expired) {
+      return cachedEntry;
+    }
+
+    closeVaultWatchers(cachedEntry);
+  }
+
+  if (!vaultIndexCache.has(vaultPath) || cachedEntry) {
+    vaultIndexCache.set(vaultPath, buildVaultIndex(vaultPath));
+  }
+
+  return vaultIndexCache.get(vaultPath);
+}
+
+function invalidateVaultIndex(vaultPath) {
+  const entry = vaultIndexCache.get(vaultPath);
+  closeVaultWatchers(entry);
+  vaultIndexCache.delete(vaultPath);
+}
+
+function resetVaultCaches() {
+  cachedVaultConfigKey = null;
+  cachedVaultPath = null;
+
+  for (const entry of vaultIndexCache.values()) {
+    closeVaultWatchers(entry);
+  }
+
+  vaultIndexCache.clear();
 }
 
 function textResult(value) {
@@ -593,16 +726,87 @@ function findKnowledgeNoteByTitle(vaultPath, title, folder, markdownFiles = list
   return null;
 }
 
-function findVaultNotesByTitle(vaultPath, title, markdownFiles = listMarkdownFiles(vaultPath)) {
+function findVaultNotesByTitle(vaultPath, title, markdownFiles) {
   const normalizedTitle = String(title || "").trim().toLowerCase();
 
   if (!normalizedTitle) {
     throw new Error("title is required.");
   }
 
+  if (markdownFiles === undefined) {
+    return [...(getVaultIndex(vaultPath).titleToPaths.get(normalizedTitle) || [])];
+  }
+
   return markdownFiles
     .map((filePath) => path.relative(vaultPath, filePath))
     .filter((relativePath) => path.basename(relativePath, ".md").trim().toLowerCase() === normalizedTitle);
+}
+
+function searchMarkdownFiles(vaultPath, query, caseSensitive, limit) {
+  const args = [
+    "-n",
+    "-H",
+    "-F",
+    "--color",
+    "never",
+    "--glob",
+    "*.md",
+    "--glob",
+    "!node_modules/**",
+  ];
+
+  if (!caseSensitive) {
+    args.push("-i");
+  }
+
+  args.push(query, ".");
+
+  const result = spawnSync("rg", args, {
+    cwd: vaultPath,
+    encoding: "utf8",
+  });
+
+  if (result.error && result.error.code === "ENOENT") {
+    throw new Error("ripgrep (`rg`) is required for obsidian_search_notes.");
+  }
+
+  if (![0, 1].includes(result.status)) {
+    const stderr = (result.stderr || "").trim();
+    const stdout = (result.stdout || "").trim();
+    throw new Error(stderr || stdout || `rg search failed with exit code ${result.status}`);
+  }
+
+  return String(result.stdout || "")
+    .split("\n")
+    .filter(Boolean)
+    .map((line) => {
+      const match = /^(.*?):(\d+):(.*)$/.exec(line);
+      if (!match) {
+        return null;
+      }
+
+      const notePath = match[1].replace(/^\.\//, "");
+      const pathParts = notePath.split(/[\\/]+/).filter(Boolean);
+      if (pathParts.some((part) => part.startsWith("."))) {
+        return null;
+      }
+
+      return {
+        note_path: notePath,
+        line: Number(match[2]),
+        text: match[3],
+      };
+    })
+    .filter(Boolean)
+    .sort((left, right) => {
+      const pathComparison = left.note_path.localeCompare(right.note_path);
+      if (pathComparison !== 0) {
+        return pathComparison;
+      }
+
+      return left.line - right.line;
+    })
+    .slice(0, limit);
 }
 
 function resolveExistingNotePathByTitle(vaultPath, title, markdownFiles = listMarkdownFiles(vaultPath)) {
@@ -814,7 +1018,7 @@ const TOOL_HANDLERS = {
     const vaultPath = getVaultPath();
     const prefix = args.prefix || "";
     const limit = args.limit || 200;
-    const notes = listMarkdownFiles(vaultPath)
+    const notes = getVaultIndex(vaultPath).markdownFiles
       .map((filePath) => path.relative(vaultPath, filePath))
       .filter((relativePath) => relativePath.startsWith(prefix))
       .slice(0, limit);
@@ -841,31 +1045,7 @@ const TOOL_HANDLERS = {
     const vaultPath = getVaultPath();
     const query = args.query;
     const limit = args.limit || 50;
-    const matches = [];
-    const searchQuery = args.case_sensitive ? query : query.toLowerCase();
-
-    for (const filePath of listMarkdownFiles(vaultPath)) {
-      const relativePath = path.relative(vaultPath, filePath);
-      const content = fs.readFileSync(filePath, "utf8");
-      const lines = content.split("\n");
-
-      for (let index = 0; index < lines.length; index += 1) {
-        const haystack = args.case_sensitive ? lines[index] : lines[index].toLowerCase();
-        if (!haystack.includes(searchQuery)) {
-          continue;
-        }
-
-        matches.push({
-          note_path: relativePath,
-          line: index + 1,
-          text: lines[index],
-        });
-
-        if (matches.length >= limit) {
-          return textResult({ vault_path: vaultPath, query, matches, returned: matches.length });
-        }
-      }
-    }
+    const matches = searchMarkdownFiles(vaultPath, query, args.case_sensitive, limit);
 
     return textResult({ vault_path: vaultPath, query, matches, returned: matches.length });
   },
@@ -880,6 +1060,7 @@ const TOOL_HANDLERS = {
 
     fs.mkdirSync(path.dirname(noteFile), { recursive: true });
     fs.writeFileSync(noteFile, args.content, "utf8");
+    invalidateVaultIndex(vaultPath);
 
     return textResult({ vault_path: vaultPath, note_path: args.note_path, updated: true });
   },
@@ -893,6 +1074,7 @@ const TOOL_HANDLERS = {
     }
 
     fs.appendFileSync(noteFile, args.content, "utf8");
+    invalidateVaultIndex(vaultPath);
 
     return textResult({ vault_path: vaultPath, note_path: args.note_path, updated: true });
   },
@@ -908,6 +1090,7 @@ const TOOL_HANDLERS = {
     const document = fs.readFileSync(noteFile, "utf8");
     const updated = patchHeadingSection(document, args.heading, args.operation, args.content);
     fs.writeFileSync(noteFile, updated, "utf8");
+    invalidateVaultIndex(vaultPath);
 
     return textResult({
       vault_path: vaultPath,
@@ -945,16 +1128,17 @@ const TOOL_HANDLERS = {
   obsidian_upsert_knowledge_note(args) {
     const vaultPath = getVaultPath();
     const folder = normalizeKnowledgeFolder(args.folder);
-    const markdownFiles = listMarkdownFiles(vaultPath);
+    const { markdownFiles } = getVaultIndex(vaultPath);
     const notePath = getKnowledgeNotePath(vaultPath, args.title, folder, markdownFiles);
     const noteFile = resolveNotePath(vaultPath, notePath);
     assertKnowledgeNotePathDoesNotCollide(vaultPath, notePath, args.title);
     const created = !fs.existsSync(noteFile);
+    const existingContent = created ? null : fs.readFileSync(noteFile, "utf8");
     const relatedPaths = uniqueStrings(args.related || []).map((title) => resolveExistingNotePathByTitle(vaultPath, title, markdownFiles));
     const relatedLinks = formatWikiLinks(relatedPaths);
     const existingLinks = created
       ? []
-      : formatWikiLinks(extractSectionWikiLinks(fs.readFileSync(noteFile, "utf8"), "Related"));
+      : formatWikiLinks(extractSectionWikiLinks(existingContent, "Related"));
     const mergedLinks = uniqueStrings([...existingLinks, ...relatedLinks]);
     const content = formatKnowledgeNote({
       title: args.title.trim(),
@@ -967,6 +1151,7 @@ const TOOL_HANDLERS = {
 
     fs.mkdirSync(path.dirname(noteFile), { recursive: true });
     fs.writeFileSync(noteFile, content, "utf8");
+    invalidateVaultIndex(vaultPath);
 
     const updatedRelatedNotes = [];
     if (args.reciprocal_links !== false) {
@@ -984,6 +1169,10 @@ const TOOL_HANDLERS = {
           fs.writeFileSync(relatedFile, nextContent, "utf8");
           updatedRelatedNotes.push(relatedPath);
         }
+      }
+
+      if (updatedRelatedNotes.length > 0) {
+        invalidateVaultIndex(vaultPath);
       }
     }
 
@@ -1163,8 +1352,10 @@ module.exports = {
   getHeadingRange,
   getKnowledgeNotePath,
   listMarkdownFiles,
+  searchMarkdownFiles,
   parseSyncedVaultsOutput,
   patchHeadingSection,
+  resetVaultCaches,
   resolveNotePath,
   resolveExistingNotePathByTitle,
   startServer,
