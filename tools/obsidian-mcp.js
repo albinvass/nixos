@@ -299,7 +299,9 @@ function runObsidianCli(args = []) {
   });
 
   if (result.error && result.error.code === "ENOENT") {
-    throw new Error("obsidian-cli is not installed or not on PATH.");
+    throw new Error(
+      "Obsidian CLI is not installed or not enabled. Enable the command-line interface in Obsidian settings, or set OBSIDIAN_VAULT_PATH.",
+    );
   }
 
   if (result.status !== 0) {
@@ -357,6 +359,11 @@ function resolveNotePath(vaultPath, notePath) {
     throw new Error(`Path escapes the vault root: ${notePath}`);
   }
 
+  const parts = notePath.split(/[\\/]+/).filter(Boolean);
+  if (parts.some((part) => part !== "." && part !== ".." && part.startsWith("."))) {
+    throw new Error(`Hidden note paths are not allowed: ${notePath}`);
+  }
+
   return resolved;
 }
 
@@ -369,7 +376,7 @@ function listMarkdownFiles(rootPath) {
     const entries = fs.readdirSync(current, { withFileTypes: true });
 
     for (const entry of entries) {
-      if (entry.name === ".obsidian") {
+      if (entry.name.startsWith(".") || entry.name === "node_modules") {
         continue;
       }
 
@@ -524,12 +531,15 @@ function yamlQuote(value) {
 
 function formatYamlList(key, values) {
   const items = uniqueStrings(values);
-
-  if (items.length === 0) {
-    return `${key}: []`;
-  }
-
   return `${key}:\n${items.map((item) => `  - ${yamlQuote(item)}`).join("\n")}`;
+}
+
+function getLocalDateString() {
+  const now = new Date();
+  const year = now.getFullYear();
+  const month = String(now.getMonth() + 1).padStart(2, "0");
+  const day = String(now.getDate()).padStart(2, "0");
+  return `${year}-${month}-${day}`;
 }
 
 function extractWikiLinks(document) {
@@ -560,7 +570,7 @@ function formatWikiLinks(paths) {
   return uniqueStrings(paths).map((notePath) => `[[${notePathToLinkTarget(notePath)}]]`);
 }
 
-function findKnowledgeNoteByTitle(vaultPath, title, folder) {
+function findKnowledgeNoteByTitle(vaultPath, title, folder, markdownFiles = listMarkdownFiles(vaultPath)) {
   const normalizedTitle = String(title || "").trim().toLowerCase();
   const folderPrefix = `${normalizeKnowledgeFolder(folder)}/`;
 
@@ -568,7 +578,7 @@ function findKnowledgeNoteByTitle(vaultPath, title, folder) {
     throw new Error("title is required.");
   }
 
-  for (const filePath of listMarkdownFiles(vaultPath)) {
+  for (const filePath of markdownFiles) {
     const relativePath = path.relative(vaultPath, filePath);
     if (!relativePath.startsWith(folderPrefix)) {
       continue;
@@ -583,20 +593,20 @@ function findKnowledgeNoteByTitle(vaultPath, title, folder) {
   return null;
 }
 
-function findVaultNotesByTitle(vaultPath, title) {
+function findVaultNotesByTitle(vaultPath, title, markdownFiles = listMarkdownFiles(vaultPath)) {
   const normalizedTitle = String(title || "").trim().toLowerCase();
 
   if (!normalizedTitle) {
     throw new Error("title is required.");
   }
 
-  return listMarkdownFiles(vaultPath)
+  return markdownFiles
     .map((filePath) => path.relative(vaultPath, filePath))
     .filter((relativePath) => path.basename(relativePath, ".md").trim().toLowerCase() === normalizedTitle);
 }
 
-function resolveExistingNotePathByTitle(vaultPath, title) {
-  const matches = findVaultNotesByTitle(vaultPath, title);
+function resolveExistingNotePathByTitle(vaultPath, title, markdownFiles = listMarkdownFiles(vaultPath)) {
+  const matches = findVaultNotesByTitle(vaultPath, title, markdownFiles);
 
   if (matches.length === 0) {
     throw new Error(`Related note not found: ${title}`);
@@ -609,13 +619,50 @@ function resolveExistingNotePathByTitle(vaultPath, title) {
   return matches[0];
 }
 
-function getKnowledgeNotePath(vaultPath, title, folder) {
-  const existingPath = findKnowledgeNoteByTitle(vaultPath, title, folder);
+function getKnowledgeNotePath(vaultPath, title, folder, markdownFiles = listMarkdownFiles(vaultPath)) {
+  const existingPath = findKnowledgeNoteByTitle(vaultPath, title, folder, markdownFiles);
   if (existingPath) {
     return existingPath;
   }
 
   return `${normalizeKnowledgeFolder(folder)}/${slugifyNoteTitle(title)}.md`;
+}
+
+function extractDocumentTitle(document) {
+  const frontmatterMatch = /^---\n([\s\S]*?)\n---\n?/m.exec(document);
+  if (frontmatterMatch) {
+    const titleMatch = /^title:\s*(?:"([^"]+)"|'([^']+)'|(.+))$/m.exec(frontmatterMatch[1]);
+    const title = (titleMatch?.[1] || titleMatch?.[2] || titleMatch?.[3] || "").trim();
+    if (title) {
+      return title;
+    }
+  }
+
+  const headingMatch = /^#\s+(.+)$/m.exec(document);
+  if (headingMatch) {
+    return headingMatch[1].trim();
+  }
+
+  return null;
+}
+
+function assertKnowledgeNotePathDoesNotCollide(vaultPath, notePath, title) {
+  const noteFile = resolveNotePath(vaultPath, notePath);
+  if (!fs.existsSync(noteFile)) {
+    return;
+  }
+
+  const requestedTitle = String(title || "").trim();
+  const existingTitle = extractDocumentTitle(fs.readFileSync(noteFile, "utf8"))
+    || path.basename(notePath, ".md");
+
+  if (existingTitle.toLowerCase() === requestedTitle.toLowerCase()) {
+    return;
+  }
+
+  throw new Error(
+    `Knowledge note path collision: ${notePath} already belongs to \"${existingTitle}\". Choose a different title or rename the existing note.`,
+  );
 }
 
 function ensureRelatedSection(document) {
@@ -666,11 +713,12 @@ function formatKnowledgeNote({ title, summary, details, tags, aliases, relatedLi
   const lines = [
     "---",
     "type: captured-note",
+    "agent_owned: true",
     `title: ${yamlQuote(title)}`,
     formatYamlList("aliases", aliases),
     formatYamlList("tags", ["captured", ...(tags || [])]),
     "created_by: agent",
-    `updated: ${new Date().toISOString().slice(0, 10)}`,
+    `updated: ${getLocalDateString()}`,
     "---",
     "",
     `# ${title}`,
@@ -709,6 +757,34 @@ function runObsidianHeadless(subcommand, args = []) {
   }
 
   return (result.stdout || "").trim();
+}
+
+function parseSyncedVaultsOutput(output) {
+  return String(output || "")
+    .split("\n")
+    .map((line) => line.trim())
+    .filter((line) => line.length > 0)
+    .map((line) => {
+      const tabParts = line.split("\t").map((part) => part.trim()).filter(Boolean);
+      if (tabParts.length >= 2) {
+        return {
+          name: tabParts[0],
+          path: tabParts.slice(1).join("\t"),
+          raw: line,
+        };
+      }
+
+      const spacedParts = line.split(/\s{2,}/).map((part) => part.trim()).filter(Boolean);
+      if (spacedParts.length >= 2) {
+        return {
+          name: spacedParts[0],
+          path: spacedParts.slice(1).join(" "),
+          raw: line,
+        };
+      }
+
+      return { raw: line };
+    });
 }
 
 const TOOL_HANDLERS = {
@@ -842,7 +918,7 @@ const TOOL_HANDLERS = {
     });
   },
 
-  obsidian_sync_status(args) {
+  obsidian_sync_status() {
     const vaultPath = getVaultPath();
     return textResult({
       vault_path: vaultPath,
@@ -850,7 +926,7 @@ const TOOL_HANDLERS = {
     });
   },
 
-  obsidian_sync_now(args) {
+  obsidian_sync_now() {
     const vaultPath = getVaultPath();
     return textResult({
       vault_path: vaultPath,
@@ -859,18 +935,22 @@ const TOOL_HANDLERS = {
   },
 
   obsidian_list_synced_vaults() {
+    const output = runObsidianHeadless("sync-list-local");
     return textResult({
-      output: runObsidianHeadless("sync-list-local"),
+      output,
+      vaults: parseSyncedVaultsOutput(output),
     });
   },
 
   obsidian_upsert_knowledge_note(args) {
     const vaultPath = getVaultPath();
     const folder = normalizeKnowledgeFolder(args.folder);
-    const notePath = getKnowledgeNotePath(vaultPath, args.title, folder);
+    const markdownFiles = listMarkdownFiles(vaultPath);
+    const notePath = getKnowledgeNotePath(vaultPath, args.title, folder, markdownFiles);
     const noteFile = resolveNotePath(vaultPath, notePath);
+    assertKnowledgeNotePathDoesNotCollide(vaultPath, notePath, args.title);
     const created = !fs.existsSync(noteFile);
-    const relatedPaths = uniqueStrings(args.related || []).map((title) => resolveExistingNotePathByTitle(vaultPath, title));
+    const relatedPaths = uniqueStrings(args.related || []).map((title) => resolveExistingNotePathByTitle(vaultPath, title, markdownFiles));
     const relatedLinks = formatWikiLinks(relatedPaths);
     const existingLinks = created
       ? []
@@ -999,7 +1079,10 @@ function handleRequest(message) {
       writeMessage({
         jsonrpc: "2.0",
         id: message.id,
-        error: makeError(-32602, `Unknown tool: ${toolName}`),
+        result: {
+          content: [{ type: "text", text: `Unknown tool: ${toolName}` }],
+          isError: true,
+        },
       });
       return;
     }
@@ -1049,45 +1132,6 @@ function startServer() {
     buffer = Buffer.concat([buffer, chunk]);
 
     while (true) {
-      const headerEnd = buffer.indexOf("\r\n\r\n");
-      if (headerEnd !== -1) {
-        const headerText = buffer.slice(0, headerEnd).toString("utf8");
-        const contentLengthHeader = headerText
-          .split("\r\n")
-          .find((header) => header.toLowerCase().startsWith("content-length:"));
-
-        if (!contentLengthHeader) {
-          writeMessage({
-            jsonrpc: "2.0",
-            error: makeError(-32700, "Missing Content-Length header."),
-          });
-          buffer = Buffer.alloc(0);
-          return;
-        }
-
-        const contentLength = Number.parseInt(contentLengthHeader.split(":")[1].trim(), 10);
-        const messageStart = headerEnd + 4;
-        const messageEnd = messageStart + contentLength;
-
-        if (buffer.length < messageEnd) {
-          return;
-        }
-
-        const payload = buffer.slice(messageStart, messageEnd).toString("utf8");
-        buffer = buffer.slice(messageEnd);
-
-        try {
-          handleRequest(JSON.parse(payload));
-        } catch (error) {
-          writeMessage({
-            jsonrpc: "2.0",
-            error: makeError(-32700, `Invalid JSON payload: ${error.message}`),
-          });
-        }
-
-        continue;
-      }
-
       const newlineIndex = buffer.indexOf("\n");
       if (newlineIndex === -1) {
         return;
@@ -1118,7 +1162,10 @@ module.exports = {
   findVaultNotesByTitle,
   getHeadingRange,
   getKnowledgeNotePath,
+  listMarkdownFiles,
+  parseSyncedVaultsOutput,
   patchHeadingSection,
+  resolveNotePath,
   resolveExistingNotePathByTitle,
   startServer,
 };

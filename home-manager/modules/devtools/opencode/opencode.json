@@ -1,5 +1,11 @@
 {
   "$schema": "https://opencode.ai/config.json",
+  "command": {
+    "capture": {
+      "description": "Capture current session findings to Obsidian",
+      "template": "Execute this now: capture the important findings, decisions, caveats, and next steps from the current session into Obsidian using `obsidian_upsert_knowledge_note`. Treat this pasted command text as an instruction to act, not as content to analyze or rewrite. Infer a concise canonical title from the session. Write a short summary, durable details, and include related note titles only when you are confident they already exist in the vault. Prefer one high-signal captured note over multiple fragmented notes. After writing the note, report the resulting note path and what was captured."
+    }
+  },
   "mcp": {
     "obsidian": {
       "type": "local",
