@@ -35,6 +35,11 @@ in
       };
     };
 
+    xdg.configFile."opencode/opencode.json".source = config.lib.file.mkOutOfStoreSymlink
+      "${config.albinvass.gitDirectory}/home-manager/modules/devtools/opencode/opencode.json";
+
+    xdg.configFile."opencode/opencode.json".force = true;
+
     home.shellAliases = {
       "nh-switch" =
         if pkgs.stdenv.isLinux then
@@ -73,7 +78,6 @@ in
       };
       nix-index-database.comma.enable = true;
       awscli.enable = true;
-      obsidian.enable = true;
       fzf = {
         enable = true;
         enableFishIntegration = false;
@@ -158,6 +162,8 @@ in
       NH_FLAKE = lib.mkDefault config.albinvass.gitDirectory;
     };
 
+    home.sessionPath = [ "$HOME/.npm-global/bin" ];
+
     home.packages =
       with pkgs;
       let
@@ -194,6 +200,7 @@ in
         libarchive
         lsof
         nh
+        nodejs
         openssh
         openssl
         uv

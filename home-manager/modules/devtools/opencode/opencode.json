@@ -1,0 +1,13 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "mcp": {
+    "obsidian": {
+      "type": "local",
+      "command": [
+        "node",
+        "{env:HOME}/git/github/albinvass/nixos/tools/obsidian-mcp.js"
+      ],
+      "enabled": true
+    }
+  }
+}
