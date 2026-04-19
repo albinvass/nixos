@@ -12,19 +12,17 @@ What `obsidian-headless` is used for:
 - not direct note reads or writes
 
 What the Obsidian app CLI is used for:
-- resolving the active vault when `OBSIDIAN_VAULT_PATH` is not set
 - resolving `OBSIDIAN_VAULT_NAME` to a vault path
+- resolving the active vault when `OBSIDIAN_VAULT_NAME` is not set
 - this is the `obsidian` command exposed by the Obsidian desktop app when you enable the command-line interface in Obsidian settings
 
 Setup:
 1. Install `obsidian-headless` with `npm install -g obsidian-headless`
 2. Run `ob login`
 3. Configure your local vault with `ob sync-setup --vault <vault-name> --path <vault-path>`
-4. If you want vault auto-discovery, enable the Obsidian command-line interface in the Obsidian desktop app settings so the `obsidian` command is available on `PATH`
-5. Optional: set `OBSIDIAN_VAULT_PATH` if you want a fixed vault for the MCP server and do not want to rely on the Obsidian app CLI
+4. Enable the command-line interface in the Obsidian desktop app settings so the `obsidian` command is available on `PATH`
 
 Vault resolution order:
-- `OBSIDIAN_VAULT_PATH`
 - `OBSIDIAN_VAULT_NAME`
 - active vault from the Obsidian app CLI (`obsidian`)
 
@@ -39,4 +37,4 @@ Captured note workflow:
 
 OpenCode is configured through `home-manager/modules/devtools/opencode/opencode.json` to run the local server from this repo.
 
-If vault auto-discovery is unavailable, set `OBSIDIAN_VAULT_PATH` explicitly.
+If the `obsidian` command is unavailable, the MCP will fail and tell you to enable the command-line interface in Obsidian settings.

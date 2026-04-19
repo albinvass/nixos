@@ -269,7 +269,6 @@ function expandHome(inputPath) {
 
 function getVaultPath() {
   const configKey = JSON.stringify({
-    vaultPath: process.env.OBSIDIAN_VAULT_PATH || null,
     vaultName: process.env.OBSIDIAN_VAULT_NAME || null,
   });
 
@@ -277,19 +276,13 @@ function getVaultPath() {
     return cachedVaultPath;
   }
 
-  const rawVaultPath = process.env.OBSIDIAN_VAULT_PATH;
+  const vaultName = process.env.OBSIDIAN_VAULT_NAME;
   let resolvedVaultPath;
 
-  if (rawVaultPath) {
-    resolvedVaultPath = validateVaultPath(rawVaultPath);
+  if (vaultName) {
+    resolvedVaultPath = resolveVaultPathFromName(vaultName);
   } else {
-    const vaultName = process.env.OBSIDIAN_VAULT_NAME;
-
-    if (vaultName) {
-      resolvedVaultPath = resolveVaultPathFromName(vaultName);
-    } else {
-      resolvedVaultPath = getActiveVaultPath();
-    }
+    resolvedVaultPath = getActiveVaultPath();
   }
 
   cachedVaultConfigKey = configKey;
@@ -318,7 +311,7 @@ function runObsidianCli(args = []) {
 
   if (result.error && result.error.code === "ENOENT") {
     throw new Error(
-      "Obsidian CLI is not installed or not enabled. Enable the command-line interface in Obsidian settings, or set OBSIDIAN_VAULT_PATH.",
+      "Could not find the Obsidian CLI. Enable the command-line interface in Obsidian settings so the `obsidian` command is available on PATH.",
     );
   }
 
@@ -342,18 +335,14 @@ function resolveVaultPathFromName(vaultName) {
 }
 
 function getActiveVaultPath() {
-  try {
-    const activePath = runObsidianCli(["vault", "info=path"]);
+  const activePath = runObsidianCli(["vault", "info=path"]);
 
-    if (activePath) {
-      return validateVaultPath(activePath);
-    }
-  } catch (error) {
-    debugLog(`active vault lookup failed: ${error.message}`);
+  if (activePath) {
+    return validateVaultPath(activePath);
   }
 
   throw new Error(
-    "No vault configured. Set OBSIDIAN_VAULT_PATH or open a vault in Obsidian.",
+    "Could not determine the active Obsidian vault. Open a vault in Obsidian and make sure the command-line interface is enabled in settings.",
   );
 }
 
@@ -993,10 +982,8 @@ function parseSyncedVaultsOutput(output) {
 
 const TOOL_HANDLERS = {
   obsidian_get_server_info() {
-    const configuredVaultPath = process.env.OBSIDIAN_VAULT_PATH
-      ? path.resolve(expandHome(process.env.OBSIDIAN_VAULT_PATH))
-      : null;
     let activeVaultPath = null;
+    const obsidianCliInstalled = spawnSync("obsidian", ["--help"], { encoding: "utf8" }).status === 0;
 
     try {
       activeVaultPath = runObsidianCli(["vault", "info=path"]);
@@ -1007,10 +994,10 @@ const TOOL_HANDLERS = {
     const obInstalled = spawnSync("ob", ["--help"], { encoding: "utf8" }).status === 0;
 
     return textResult({
-      configured_vault_path: configuredVaultPath,
       active_vault_path: activeVaultPath,
+      obsidian_cli_installed: obsidianCliInstalled,
       obsidian_headless_installed: obInstalled,
-      note: "This MCP only operates on the configured or active Obsidian vault.",
+      note: "This MCP only operates on the active Obsidian vault resolved through the Obsidian CLI.",
     });
   },
 

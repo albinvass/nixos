@@ -17,8 +17,33 @@ const {
 
 function withVault(setup, run) {
   const vaultPath = fs.mkdtempSync(path.join(os.tmpdir(), "obsidian-mcp-"));
-  const previousVaultPath = process.env.OBSIDIAN_VAULT_PATH;
-  process.env.OBSIDIAN_VAULT_PATH = vaultPath;
+  const cliPath = fs.mkdtempSync(path.join(os.tmpdir(), "obsidian-cli-"));
+  const previousPath = process.env.PATH;
+  const previousTestVaultPath = process.env.OBSIDIAN_TEST_VAULT_PATH;
+  process.env.OBSIDIAN_TEST_VAULT_PATH = vaultPath;
+  process.env.PATH = `${cliPath}:${previousPath || ""}`;
+  fs.writeFileSync(
+    path.join(cliPath, "obsidian"),
+    [
+      "#!/bin/sh",
+      'if [ "$1" = "--help" ]; then',
+      '  echo "obsidian help"',
+      '  exit 0',
+      "fi",
+      'if [ "$1" = "vault" ] && [ "$2" = "info=path" ]; then',
+      '  printf "%s\\n" "$OBSIDIAN_TEST_VAULT_PATH"',
+      '  exit 0',
+      "fi",
+      'if [ "$1" = "vault=$OBSIDIAN_VAULT_NAME" ] && [ "$2" = "vault" ] && [ "$3" = "info=path" ]; then',
+      '  printf "%s\\n" "$OBSIDIAN_TEST_VAULT_PATH"',
+      '  exit 0',
+      "fi",
+      'echo "unsupported args" >&2',
+      "exit 1",
+      "",
+    ].join("\n"),
+    { mode: 0o755 },
+  );
 
   try {
     setup(vaultPath);
@@ -26,20 +51,48 @@ function withVault(setup, run) {
   } finally {
     resetVaultCaches();
 
-    if (previousVaultPath === undefined) {
-      delete process.env.OBSIDIAN_VAULT_PATH;
+    if (previousTestVaultPath === undefined) {
+      delete process.env.OBSIDIAN_TEST_VAULT_PATH;
     } else {
-      process.env.OBSIDIAN_VAULT_PATH = previousVaultPath;
+      process.env.OBSIDIAN_TEST_VAULT_PATH = previousTestVaultPath;
     }
 
+    process.env.PATH = previousPath;
+
+    fs.rmSync(cliPath, { recursive: true, force: true });
     fs.rmSync(vaultPath, { recursive: true, force: true });
   }
 }
 
 async function withVaultAsync(setup, run) {
   const vaultPath = fs.mkdtempSync(path.join(os.tmpdir(), "obsidian-mcp-"));
-  const previousVaultPath = process.env.OBSIDIAN_VAULT_PATH;
-  process.env.OBSIDIAN_VAULT_PATH = vaultPath;
+  const cliPath = fs.mkdtempSync(path.join(os.tmpdir(), "obsidian-cli-"));
+  const previousPath = process.env.PATH;
+  const previousTestVaultPath = process.env.OBSIDIAN_TEST_VAULT_PATH;
+  process.env.OBSIDIAN_TEST_VAULT_PATH = vaultPath;
+  process.env.PATH = `${cliPath}:${previousPath || ""}`;
+  fs.writeFileSync(
+    path.join(cliPath, "obsidian"),
+    [
+      "#!/bin/sh",
+      'if [ "$1" = "--help" ]; then',
+      '  echo "obsidian help"',
+      '  exit 0',
+      "fi",
+      'if [ "$1" = "vault" ] && [ "$2" = "info=path" ]; then',
+      '  printf "%s\\n" "$OBSIDIAN_TEST_VAULT_PATH"',
+      '  exit 0',
+      "fi",
+      'if [ "$1" = "vault=$OBSIDIAN_VAULT_NAME" ] && [ "$2" = "vault" ] && [ "$3" = "info=path" ]; then',
+      '  printf "%s\\n" "$OBSIDIAN_TEST_VAULT_PATH"',
+      '  exit 0',
+      "fi",
+      'echo "unsupported args" >&2',
+      "exit 1",
+      "",
+    ].join("\n"),
+    { mode: 0o755 },
+  );
 
   try {
     await setup(vaultPath);
@@ -47,12 +100,15 @@ async function withVaultAsync(setup, run) {
   } finally {
     resetVaultCaches();
 
-    if (previousVaultPath === undefined) {
-      delete process.env.OBSIDIAN_VAULT_PATH;
+    if (previousTestVaultPath === undefined) {
+      delete process.env.OBSIDIAN_TEST_VAULT_PATH;
     } else {
-      process.env.OBSIDIAN_VAULT_PATH = previousVaultPath;
+      process.env.OBSIDIAN_TEST_VAULT_PATH = previousTestVaultPath;
     }
 
+    process.env.PATH = previousPath;
+
+    fs.rmSync(cliPath, { recursive: true, force: true });
     fs.rmSync(vaultPath, { recursive: true, force: true });
   }
 }
@@ -412,4 +468,21 @@ test("parseSyncedVaultsOutput parses tab and spaced formats", () => {
     { name: "Personal", path: "/home/me/personal", raw: "Personal  /home/me/personal" },
     { raw: "unknown" },
   ]);
+});
+
+test("tool handlers require the Obsidian CLI when no vault name is configured", () => {
+  const previousPath = process.env.PATH;
+
+  try {
+    process.env.PATH = fs.mkdtempSync(path.join(os.tmpdir(), "obsidian-empty-path-"));
+    resetVaultCaches();
+
+    assert.throws(
+      () => TOOL_HANDLERS.obsidian_list_notes({}),
+      /Could not find the Obsidian CLI\. Enable the command-line interface in Obsidian settings so the `obsidian` command is available on PATH\./,
+    );
+  } finally {
+    process.env.PATH = previousPath;
+    resetVaultCaches();
+  }
 });
