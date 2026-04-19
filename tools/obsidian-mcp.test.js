@@ -7,11 +7,14 @@ const { setTimeout: delay } = require("node:timers/promises");
 
 const {
   TOOL_HANDLERS,
+  listAttachmentFiles,
   listMarkdownFiles,
   parseSyncedVaultsOutput,
   patchHeadingSection,
   resetVaultCaches,
   resolveNotePath,
+  resolveSourceAttachmentPath,
+  resolveVaultPath,
   searchMarkdownFiles,
 } = require("./obsidian-mcp.js");
 
@@ -117,6 +120,24 @@ function writeNote(vaultPath, relativePath, content) {
   const noteFile = path.join(vaultPath, relativePath);
   fs.mkdirSync(path.dirname(noteFile), { recursive: true });
   fs.writeFileSync(noteFile, content, "utf8");
+}
+
+function writeAttachment(vaultPath, relativePath, content) {
+  const attachmentFile = path.join(vaultPath, relativePath);
+  fs.mkdirSync(path.dirname(attachmentFile), { recursive: true });
+  fs.writeFileSync(attachmentFile, content);
+}
+
+function withTempFile(content, run) {
+  const tempDir = fs.mkdtempSync(path.join(os.tmpdir(), "obsidian-attachment-source-"));
+  const sourcePath = path.join(tempDir, "source.bin");
+  fs.writeFileSync(sourcePath, content);
+
+  try {
+    return run(sourcePath);
+  } finally {
+    fs.rmSync(tempDir, { recursive: true, force: true });
+  }
 }
 
 function parseToolResult(result) {
@@ -289,12 +310,27 @@ test("patchHeadingSection throws when the heading is missing", () => {
 });
 
 test("resolveNotePath rejects absolute, escaping, and non-markdown paths", () => {
-  const vaultPath = "/tmp/vault";
+  withVault(
+    () => {},
+    (vaultPath) => {
+      assert.throws(() => resolveNotePath(vaultPath, "/tmp/file.md"), /must be relative/);
+      assert.throws(() => resolveNotePath(vaultPath, "../file.md"), /escapes the vault root/);
+      assert.throws(() => resolveNotePath(vaultPath, ".obsidian/file.md"), /Hidden note paths are not allowed/);
+      assert.throws(() => resolveNotePath(vaultPath, "note.txt"), /must end with \.md/);
+    },
+  );
+});
 
-  assert.throws(() => resolveNotePath(vaultPath, "/tmp/file.md"), /must be relative/);
-  assert.throws(() => resolveNotePath(vaultPath, "../file.md"), /escapes the vault root/);
-  assert.throws(() => resolveNotePath(vaultPath, ".obsidian/file.md"), /Hidden note paths are not allowed/);
-  assert.throws(() => resolveNotePath(vaultPath, "note.txt"), /must end with \.md/);
+test("resolveVaultPath rejects empty, absolute, escaping, and null-byte paths", () => {
+  withVault(
+    () => {},
+    (vaultPath) => {
+      assert.throws(() => resolveVaultPath(vaultPath, ""), /vault_path is required/);
+      assert.throws(() => resolveVaultPath(vaultPath, "/tmp/file.pdf"), /must be relative/);
+      assert.throws(() => resolveVaultPath(vaultPath, "../file.pdf"), /escapes the vault root/);
+      assert.throws(() => resolveVaultPath(vaultPath, `bad\0file.pdf`), /must not contain null bytes/);
+    },
+  );
 });
 
 test("listMarkdownFiles skips hidden directories and node_modules", () => {
@@ -311,6 +347,36 @@ test("listMarkdownFiles skips hidden directories and node_modules", () => {
       assert.deepEqual(files, ["notes/kept.md", "visible.md"]);
     },
   );
+});
+
+test("listAttachmentFiles skips markdown files and dotfolders", () => {
+  withVault(
+    (vaultPath) => {
+      writeAttachment(vaultPath, "files/paper.pdf", Buffer.from("pdf"));
+      writeAttachment(vaultPath, "files/image.png", Buffer.from("png"));
+      writeNote(vaultPath, "files/summary.md", "# Summary\n");
+      writeAttachment(vaultPath, ".obsidian/workspace.json", Buffer.from("{}"));
+      writeAttachment(vaultPath, ".trash/deleted.pdf", Buffer.from("pdf"));
+    },
+    (vaultPath) => {
+      const files = listAttachmentFiles(vaultPath).map((filePath) => path.relative(vaultPath, filePath));
+      assert.deepEqual(files, ["files/image.png", "files/paper.pdf"]);
+    },
+  );
+});
+
+test("resolveSourceAttachmentPath rejects missing, invalid, and oversized sources", () => {
+  assert.throws(() => resolveSourceAttachmentPath(""), /source_path is required/);
+  assert.throws(() => resolveSourceAttachmentPath(`bad\0file`), /must not contain null bytes/);
+  assert.throws(() => resolveSourceAttachmentPath("/tmp/does-not-exist.pdf"), /Source file does not exist/);
+
+  withTempFile(Buffer.from("abcd"), (sourcePath) => {
+    assert.deepEqual(resolveSourceAttachmentPath(sourcePath, 10), {
+      resolvedSourcePath: sourcePath,
+      bytes: 4,
+    });
+    assert.throws(() => resolveSourceAttachmentPath(sourcePath, 3), /maximum size of 3 bytes/);
+  });
 });
 
 test("searchMarkdownFiles finds case-insensitive matches and skips hidden notes", () => {
@@ -366,6 +432,237 @@ test("list notes cache is invalidated after creating a note", () => {
 
       const updated = parseToolResult(TOOL_HANDLERS.obsidian_list_notes({}));
       assert.deepEqual(updated.notes, ["one.md", "two.md"]);
+    },
+  );
+});
+
+test("save attachment writes a file and creates parent directories", () => {
+  withVault(
+    () => {},
+    (vaultPath) => {
+      withTempFile(Buffer.from("%PDF-1.4\n% test\n", "utf8"), (sourcePath) => {
+        const content = fs.readFileSync(sourcePath);
+        const result = parseToolResult(
+          TOOL_HANDLERS.obsidian_save_attachment({
+            vault_path: "Science/attachments/paper.pdf",
+            source_path: sourcePath,
+          }),
+        );
+
+        assert.equal(result.attachment_path, "Science/attachments/paper.pdf");
+        assert.equal(result.bytes, content.length);
+        assert.equal(result.source_path, sourcePath);
+        assert.equal(result.resolved_path, path.join(vaultPath, "Science/attachments/paper.pdf"));
+        assert.deepEqual(fs.readFileSync(path.join(vaultPath, "Science/attachments/paper.pdf")), content);
+      });
+    },
+  );
+});
+
+test("save attachment refuses overwrite unless requested", () => {
+  withVault(
+    (vaultPath) => {
+      writeAttachment(vaultPath, "files/paper.pdf", Buffer.from("old"));
+    },
+    (vaultPath) => {
+      withTempFile(Buffer.from("new"), (sourcePath) => {
+        assert.throws(
+          () =>
+            TOOL_HANDLERS.obsidian_save_attachment({
+              vault_path: "files/paper.pdf",
+              source_path: sourcePath,
+            }),
+          /Attachment already exists: files\/paper.pdf/,
+        );
+
+        assert.equal(fs.readFileSync(path.join(vaultPath, "files/paper.pdf"), "utf8"), "old");
+      });
+    },
+  );
+});
+
+test("save attachment allows overwrite when requested", () => {
+  withVault(
+    (vaultPath) => {
+      writeAttachment(vaultPath, "files/paper.pdf", Buffer.from("old"));
+    },
+    (vaultPath) => {
+      withTempFile(Buffer.from("new"), (sourcePath) => {
+        const result = parseToolResult(
+          TOOL_HANDLERS.obsidian_save_attachment({
+            vault_path: "files/paper.pdf",
+            source_path: sourcePath,
+            overwrite: true,
+          }),
+        );
+
+        assert.equal(result.bytes, 3);
+        assert.equal(fs.readFileSync(path.join(vaultPath, "files/paper.pdf"), "utf8"), "new");
+      });
+    },
+  );
+});
+
+test("save attachment rejects traversal and symlink escapes", () => {
+  withVault(
+    (vaultPath) => {
+      const outsideDir = fs.mkdtempSync(path.join(os.tmpdir(), "obsidian-outside-"));
+      fs.symlinkSync(outsideDir, path.join(vaultPath, "escape"));
+    },
+    (vaultPath) => {
+      withTempFile(Buffer.from("payload"), (sourcePath) => {
+        assert.throws(
+          () => TOOL_HANDLERS.obsidian_save_attachment({ vault_path: "../outside.pdf", source_path: sourcePath }),
+          /escapes the vault root/,
+        );
+        assert.throws(
+          () => TOOL_HANDLERS.obsidian_save_attachment({ vault_path: "/tmp/outside.pdf", source_path: sourcePath }),
+          /must be relative/,
+        );
+        assert.throws(
+          () => TOOL_HANDLERS.obsidian_save_attachment({ vault_path: "escape/outside.pdf", source_path: sourcePath }),
+          /escapes the vault root/,
+        );
+
+        fs.rmSync(path.join(vaultPath, "escape"), { force: true });
+      });
+    },
+  );
+});
+
+test("save attachment rejects oversized and invalid source paths before writing", () => {
+  withVault(
+    () => {},
+    (vaultPath) => {
+      const previousMaxBytes = process.env.OBSIDIAN_MCP_ATTACHMENT_MAX_BYTES;
+      process.env.OBSIDIAN_MCP_ATTACHMENT_MAX_BYTES = "4";
+
+      try {
+        withTempFile(Buffer.from("12345"), (sourcePath) => {
+          assert.throws(
+            () =>
+              TOOL_HANDLERS.obsidian_save_attachment({
+                vault_path: "files/large.pdf",
+                source_path: sourcePath,
+              }),
+            /maximum size of 4 bytes/,
+          );
+        });
+        assert.throws(
+          () =>
+            TOOL_HANDLERS.obsidian_save_attachment({
+              vault_path: "files/missing.pdf",
+              source_path: "/tmp/does-not-exist.pdf",
+            }),
+          /Source file does not exist/,
+        );
+        assert.equal(fs.existsSync(path.join(vaultPath, "files/large.pdf")), false);
+        assert.equal(fs.existsSync(path.join(vaultPath, "files/missing.pdf")), false);
+      } finally {
+        if (previousMaxBytes === undefined) {
+          delete process.env.OBSIDIAN_MCP_ATTACHMENT_MAX_BYTES;
+        } else {
+          process.env.OBSIDIAN_MCP_ATTACHMENT_MAX_BYTES = previousMaxBytes;
+        }
+      }
+    },
+  );
+});
+
+test("list attachments supports prefix and excludes markdown and dotfolders", () => {
+  withVault(
+    (vaultPath) => {
+      writeAttachment(vaultPath, "Science/attachments/paper.pdf", Buffer.from("pdf"));
+      writeAttachment(vaultPath, "Science/attachments/figure.png", Buffer.from("png"));
+      writeAttachment(vaultPath, "Media/audio.mp3", Buffer.from("mp3"));
+      writeNote(vaultPath, "Science/attachments/paper.md", "# Paper\n");
+      writeAttachment(vaultPath, ".trash/old.pdf", Buffer.from("old"));
+    },
+    () => {
+      assert.deepEqual(parseToolResult(TOOL_HANDLERS.obsidian_list_attachments({})).attachments, [
+        "Media/audio.mp3",
+        "Science/attachments/figure.png",
+        "Science/attachments/paper.pdf",
+      ]);
+      assert.deepEqual(
+        parseToolResult(TOOL_HANDLERS.obsidian_list_attachments({ prefix: "Science/attachments/", limit: 2 })).attachments,
+        ["Science/attachments/figure.png", "Science/attachments/paper.pdf"],
+      );
+    },
+  );
+});
+
+test("delete attachment refuses markdown files", () => {
+  withVault(
+    (vaultPath) => {
+      writeNote(vaultPath, "note.md", "# Note\n");
+    },
+    () => {
+      assert.throws(
+        () => TOOL_HANDLERS.obsidian_delete_attachment({ vault_path: "note.md" }),
+        /Refusing to delete markdown note with attachment tool: note.md/,
+      );
+    },
+  );
+});
+
+test("delete attachment rejects missing files", () => {
+  withVault(
+    () => {},
+    () => {
+      assert.throws(
+        () => TOOL_HANDLERS.obsidian_delete_attachment({ vault_path: "files/missing.pdf" }),
+        /Attachment does not exist: files\/missing.pdf/,
+      );
+    },
+  );
+});
+
+test("delete attachment removes the file and returns byte count", () => {
+  withVault(
+    (vaultPath) => {
+      writeAttachment(vaultPath, "files/paper.pdf", Buffer.from("payload"));
+    },
+    (vaultPath) => {
+      const result = parseToolResult(TOOL_HANDLERS.obsidian_delete_attachment({ vault_path: "files/paper.pdf" }));
+      assert.equal(result.bytes, 7);
+      assert.equal(result.attachment_path, "files/paper.pdf");
+      assert.equal(fs.existsSync(path.join(vaultPath, "files/paper.pdf")), false);
+    },
+  );
+});
+
+test("attachment workflow smoke test saves, embeds, lists, and deletes a PDF", () => {
+  withVault(
+    () => {},
+    () => {
+      withTempFile(Buffer.from("%PDF-1.4\n1 0 obj\n<<>>\nendobj\ntrailer\n<<>>\n%%EOF\n", "utf8"), (sourcePath) => {
+        const pdfBytes = fs.readFileSync(sourcePath);
+
+        const saved = parseToolResult(
+          TOOL_HANDLERS.obsidian_save_attachment({
+            vault_path: "Science/attachments/paper.pdf",
+            source_path: sourcePath,
+          }),
+        );
+        assert.equal(saved.bytes, pdfBytes.length);
+
+        assert.deepEqual(parseToolResult(TOOL_HANDLERS.obsidian_list_attachments({ prefix: "Science/" })).attachments, [
+          "Science/attachments/paper.pdf",
+        ]);
+
+        TOOL_HANDLERS.obsidian_create_note({
+          note_path: "Science/paper.md",
+          content: "# Paper\n\n![[attachments/paper.pdf]]\n",
+        });
+
+        const note = parseToolResult(TOOL_HANDLERS.obsidian_read_note({ note_path: "Science/paper.md" }));
+        assert.match(note.content, /!\[\[attachments\/paper.pdf\]\]/);
+
+        const deleted = parseToolResult(TOOL_HANDLERS.obsidian_delete_attachment({ vault_path: "Science/attachments/paper.pdf" }));
+        assert.equal(deleted.bytes, pdfBytes.length);
+        assert.deepEqual(parseToolResult(TOOL_HANDLERS.obsidian_list_attachments({ prefix: "Science/" })).attachments, []);
+      });
     },
   );
 });

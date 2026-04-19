@@ -4,6 +4,7 @@ This repo ships a local MCP server at `tools/obsidian-mcp.js`.
 
 What it does:
 - reads and writes notes directly from the current Obsidian vault
+- can copy, list, and delete binary attachments in the vault from local file paths for inline embeds such as `![[paper.pdf]]`
 - optionally runs `ob sync` and `ob sync-status` when `obsidian-headless` is installed
 - can create or update structured captured notes with related links to existing notes
 

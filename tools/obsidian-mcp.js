@@ -7,6 +7,7 @@ const { spawnSync } = require("child_process");
 
 const debugLogPath = process.env.OBSIDIAN_MCP_DEBUG_LOG;
 const DEFAULT_CACHE_TTL_MS = 2_000;
+const DEFAULT_ATTACHMENT_MAX_BYTES = 25 * 1024 * 1024;
 let cachedVaultConfigKey = null;
 let cachedVaultPath = null;
 const vaultIndexCache = new Map();
@@ -53,6 +54,26 @@ const TOOL_DEFINITIONS = [
     },
   },
   {
+    name: "obsidian_list_attachments",
+    description: "List non-markdown files in the configured Obsidian vault, excluding hidden dotfolders such as .obsidian and .trash.",
+    inputSchema: {
+      type: "object",
+      properties: {
+        prefix: {
+          type: "string",
+          description: "Only include attachment paths whose relative path starts with this prefix.",
+        },
+        limit: {
+          type: "integer",
+          minimum: 1,
+          maximum: 1000,
+          description: "Maximum number of attachment paths to return.",
+        },
+      },
+      additionalProperties: false,
+    },
+  },
+  {
     name: "obsidian_read_note",
     description: "Read a note from the configured vault.",
     inputSchema: {
@@ -64,6 +85,29 @@ const TOOL_DEFINITIONS = [
         },
       },
       required: ["note_path"],
+      additionalProperties: false,
+    },
+  },
+  {
+    name: "obsidian_save_attachment",
+    description: "Copy an attachment from a local file path into the configured Obsidian vault with parent directory creation and overwrite protection.",
+    inputSchema: {
+      type: "object",
+      properties: {
+        vault_path: {
+          type: "string",
+          description: "Path to the attachment relative to the vault root.",
+        },
+        source_path: {
+          type: "string",
+          description: "Local file path to copy into the vault.",
+        },
+        overwrite: {
+          type: "boolean",
+          description: "Replace the attachment if it already exists.",
+        },
+      },
+      required: ["vault_path", "source_path"],
       additionalProperties: false,
     },
   },
@@ -131,6 +175,21 @@ const TOOL_DEFINITIONS = [
         },
       },
       required: ["note_path", "content"],
+      additionalProperties: false,
+    },
+  },
+  {
+    name: "obsidian_delete_attachment",
+    description: "Delete a non-markdown attachment from the configured Obsidian vault and report the removed file size.",
+    inputSchema: {
+      type: "object",
+      properties: {
+        vault_path: {
+          type: "string",
+          description: "Path to the attachment relative to the vault root.",
+        },
+      },
+      required: ["vault_path"],
       additionalProperties: false,
     },
   },
@@ -346,24 +405,72 @@ function getActiveVaultPath() {
   );
 }
 
+function ensurePathInsideVault(vaultPath, candidatePath, rawPath) {
+  const relative = path.relative(vaultPath, candidatePath);
+  if (relative.startsWith("..") || path.isAbsolute(relative)) {
+    throw new Error(`Path escapes the vault root: ${rawPath}`);
+  }
+}
+
+function resolveVaultPath(vaultPath, targetPath) {
+  if (typeof targetPath !== "string" || targetPath.length === 0) {
+    throw new Error("vault_path is required.");
+  }
+
+  if (targetPath.includes("\0")) {
+    throw new Error("vault_path must not contain null bytes.");
+  }
+
+  if (path.isAbsolute(targetPath)) {
+    throw new Error("vault_path must be relative to the vault root.");
+  }
+
+  const resolvedVaultPath = fs.realpathSync.native(vaultPath);
+  const normalizedTargetPath = path.normalize(targetPath);
+  const resolvedPath = path.resolve(resolvedVaultPath, normalizedTargetPath);
+  ensurePathInsideVault(resolvedVaultPath, resolvedPath, targetPath);
+
+  const parts = path.relative(resolvedVaultPath, resolvedPath).split(path.sep).filter(Boolean);
+  let currentPath = resolvedVaultPath;
+
+  for (let index = 0; index < parts.length; index += 1) {
+    const nextPath = path.join(currentPath, parts[index]);
+    const exists = fs.existsSync(nextPath);
+
+    if (!exists) {
+      currentPath = nextPath;
+      continue;
+    }
+
+    const stats = fs.lstatSync(nextPath);
+    const realPath = stats.isSymbolicLink() ? fs.realpathSync.native(nextPath) : nextPath;
+    ensurePathInsideVault(resolvedVaultPath, realPath, targetPath);
+
+    if (index < parts.length - 1 && !fs.statSync(realPath).isDirectory()) {
+      throw new Error(`Parent path is not a directory: ${targetPath}`);
+    }
+
+    currentPath = realPath;
+  }
+
+  return currentPath;
+}
+
 function resolveNotePath(vaultPath, notePath) {
-  if (!notePath) {
+  if (typeof notePath !== "string" || notePath.length === 0) {
     throw new Error("note_path is required.");
   }
 
-  if (path.isAbsolute(notePath)) {
-    throw new Error("note_path must be relative to the vault root.");
+  if (notePath.includes("\0")) {
+    throw new Error("note_path must not contain null bytes.");
   }
 
   if (!notePath.endsWith(".md")) {
     throw new Error("note_path must end with .md");
   }
 
-  const resolved = path.resolve(vaultPath, notePath);
-  const relative = path.relative(vaultPath, resolved);
-
-  if (relative.startsWith("..") || path.isAbsolute(relative)) {
-    throw new Error(`Path escapes the vault root: ${notePath}`);
+  if (path.isAbsolute(notePath)) {
+    throw new Error("note_path must be relative to the vault root.");
   }
 
   const parts = notePath.split(/[\\/]+/).filter(Boolean);
@@ -371,7 +478,20 @@ function resolveNotePath(vaultPath, notePath) {
     throw new Error(`Hidden note paths are not allowed: ${notePath}`);
   }
 
-  return resolved;
+  try {
+    return resolveVaultPath(vaultPath, notePath);
+  } catch (error) {
+    if (error.message === "vault_path is required.") {
+      throw new Error("note_path is required.");
+    }
+    if (error.message === "vault_path must not contain null bytes.") {
+      throw new Error("note_path must not contain null bytes.");
+    }
+    if (error.message === "vault_path must be relative to the vault root.") {
+      throw new Error("note_path must be relative to the vault root.");
+    }
+    throw error;
+  }
 }
 
 function listMarkdownFiles(rootPath) {
@@ -402,6 +522,103 @@ function listMarkdownFiles(rootPath) {
 
   results.sort((left, right) => left.localeCompare(right));
   return results;
+}
+
+function listAttachmentFiles(rootPath) {
+  const results = [];
+  const stack = [rootPath];
+
+  while (stack.length > 0) {
+    const current = stack.pop();
+    const entries = fs.readdirSync(current, { withFileTypes: true });
+
+    for (const entry of entries) {
+      if (entry.name.startsWith(".") || entry.name === "node_modules") {
+        continue;
+      }
+
+      const fullPath = path.join(current, entry.name);
+
+      if (entry.isDirectory()) {
+        stack.push(fullPath);
+        continue;
+      }
+
+      if (entry.isFile() && !entry.name.endsWith(".md")) {
+        results.push(fullPath);
+      }
+    }
+  }
+
+  results.sort((left, right) => left.localeCompare(right));
+  return results;
+}
+
+function getAttachmentMaxBytes() {
+  const parsed = Number.parseInt(process.env.OBSIDIAN_MCP_ATTACHMENT_MAX_BYTES || "", 10);
+  return Number.isFinite(parsed) && parsed >= 0 ? parsed : DEFAULT_ATTACHMENT_MAX_BYTES;
+}
+
+function resolveSourceAttachmentPath(sourcePath, maxBytes = getAttachmentMaxBytes()) {
+  if (typeof sourcePath !== "string" || sourcePath.length === 0) {
+    throw new Error("source_path is required.");
+  }
+
+  if (sourcePath.includes("\0")) {
+    throw new Error("source_path must not contain null bytes.");
+  }
+
+  const resolvedSourcePath = path.resolve(expandHome(sourcePath));
+  if (!fs.existsSync(resolvedSourcePath)) {
+    throw new Error(`Source file does not exist: ${sourcePath}`);
+  }
+
+  const stats = fs.statSync(resolvedSourcePath);
+  if (!stats.isFile()) {
+    throw new Error(`Source path is not a file: ${sourcePath}`);
+  }
+
+  if (stats.size > maxBytes) {
+    throw new Error(`Attachment exceeds maximum size of ${maxBytes} bytes.`);
+  }
+
+  return { resolvedSourcePath, bytes: stats.size };
+}
+
+function writeFileAtomic(targetPath, content) {
+  const directory = path.dirname(targetPath);
+  const tempPath = path.join(
+    directory,
+    `.tmp-obsidian-mcp-${process.pid}-${Date.now()}-${Math.random().toString(16).slice(2)}`,
+  );
+
+  try {
+    fs.writeFileSync(tempPath, content);
+    fs.renameSync(tempPath, targetPath);
+  } catch (error) {
+    if (fs.existsSync(tempPath)) {
+      fs.rmSync(tempPath, { force: true });
+    }
+    throw error;
+  }
+}
+
+function copyFileAtomic(sourcePath, targetPath) {
+  const directory = path.dirname(targetPath);
+  const tempPath = path.join(
+    directory,
+    `.tmp-obsidian-mcp-${process.pid}-${Date.now()}-${Math.random().toString(16).slice(2)}`,
+  );
+
+  try {
+    fs.copyFileSync(sourcePath, tempPath);
+    fs.renameSync(tempPath, targetPath);
+  } catch (error) {
+    if (fs.existsSync(tempPath)) {
+      fs.rmSync(tempPath, { force: true });
+    }
+    throw error;
+  }
 }
 
 function getCacheTtlMs() {
@@ -1013,6 +1230,18 @@ const TOOL_HANDLERS = {
     return textResult({ vault_path: vaultPath, notes, returned: notes.length });
   },
 
+  obsidian_list_attachments(args) {
+    const vaultPath = getVaultPath();
+    const prefix = args.prefix || "";
+    const limit = args.limit || 100;
+    const attachments = listAttachmentFiles(vaultPath)
+      .map((filePath) => path.relative(vaultPath, filePath))
+      .filter((relativePath) => relativePath.startsWith(prefix))
+      .slice(0, limit);
+
+    return textResult({ vault_path: vaultPath, attachments, returned: attachments.length });
+  },
+
   obsidian_read_note(args) {
     const vaultPath = getVaultPath();
     const noteFile = resolveNotePath(vaultPath, args.note_path);
@@ -1025,6 +1254,28 @@ const TOOL_HANDLERS = {
       vault_path: vaultPath,
       note_path: args.note_path,
       content: fs.readFileSync(noteFile, "utf8"),
+    });
+  },
+
+  obsidian_save_attachment(args) {
+    const vaultPath = getVaultPath();
+    const attachmentFile = resolveVaultPath(vaultPath, args.vault_path);
+    const { resolvedSourcePath, bytes } = resolveSourceAttachmentPath(args.source_path);
+
+    if (fs.existsSync(attachmentFile) && !args.overwrite) {
+      throw new Error(`Attachment already exists: ${args.vault_path}`);
+    }
+
+    fs.mkdirSync(path.dirname(attachmentFile), { recursive: true });
+    copyFileAtomic(resolvedSourcePath, attachmentFile);
+
+    return textResult({
+      vault_path: vaultPath,
+      attachment_path: args.vault_path,
+      resolved_path: attachmentFile,
+      source_path: resolvedSourcePath,
+      bytes,
+      updated: true,
     });
   },
 
@@ -1064,6 +1315,33 @@ const TOOL_HANDLERS = {
     invalidateVaultIndex(vaultPath);
 
     return textResult({ vault_path: vaultPath, note_path: args.note_path, updated: true });
+  },
+
+  obsidian_delete_attachment(args) {
+    const vaultPath = getVaultPath();
+    const attachmentFile = resolveVaultPath(vaultPath, args.vault_path);
+
+    if (args.vault_path.endsWith(".md")) {
+      throw new Error(`Refusing to delete markdown note with attachment tool: ${args.vault_path}`);
+    }
+
+    if (!fs.existsSync(attachmentFile)) {
+      throw new Error(`Attachment does not exist: ${args.vault_path}`);
+    }
+
+    const stats = fs.statSync(attachmentFile);
+    if (!stats.isFile()) {
+      throw new Error(`Attachment path is not a file: ${args.vault_path}`);
+    }
+
+    fs.rmSync(attachmentFile);
+
+    return textResult({
+      vault_path: vaultPath,
+      attachment_path: args.vault_path,
+      deleted_path: attachmentFile,
+      bytes: stats.size,
+    });
   },
 
   obsidian_patch_heading(args) {
@@ -1338,11 +1616,14 @@ module.exports = {
   findVaultNotesByTitle,
   getHeadingRange,
   getKnowledgeNotePath,
+  listAttachmentFiles,
   listMarkdownFiles,
   searchMarkdownFiles,
   parseSyncedVaultsOutput,
   patchHeadingSection,
   resetVaultCaches,
+  resolveSourceAttachmentPath,
+  resolveVaultPath,
   resolveNotePath,
   resolveExistingNotePathByTitle,
   startServer,
