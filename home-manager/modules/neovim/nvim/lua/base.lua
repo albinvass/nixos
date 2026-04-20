@@ -11,7 +11,8 @@ vim.o.mouse = nil
 vim.g.mapleader = " "
 vim.g.maplocalleader = ","
 local filetype_config = {
-  bash       = {},
+  bash       = { indent = 4 },
+  sh         = { indent = 4 },
   hcl        = {},
   helm       = {},
   javascript = {},

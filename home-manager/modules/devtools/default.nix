@@ -162,7 +162,10 @@ in
       NH_FLAKE = lib.mkDefault config.albinvass.gitDirectory;
     };
 
-    home.sessionPath = [ "$HOME/.npm-global/bin" ];
+    home.sessionPath = [
+      "$HOME/.npm-global/bin"
+      "$HOME/.opencode/bin"
+    ];
 
     home.packages =
       with pkgs;
