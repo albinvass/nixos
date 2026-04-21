@@ -1,6 +1,13 @@
-local format_on_close = function()
-  vim.api.nvim_create_autocmd({"BufWritePre"}, {
-      callback = function()vim.lsp.buf.format { async = false }end
+local format_augroup = vim.api.nvim_create_augroup('UserLspFormatOnSave', {})
+
+local format_on_save = function(bufnr)
+  vim.api.nvim_clear_autocmds({ group = format_augroup, buffer = bufnr })
+  vim.api.nvim_create_autocmd("BufWritePre", {
+    group = format_augroup,
+    buffer = bufnr,
+    callback = function()
+      vim.lsp.buf.format({ async = false, bufnr = bufnr })
+    end,
   })
 end
 
@@ -37,7 +44,9 @@ local servers = {
   },
   eslint={},
   gopls={
-    on_attach=format_on_close,
+    on_attach=function(_, bufnr)
+      format_on_save(bufnr)
+    end,
     settings={
       gopls={
         completeUnimported = true,
@@ -69,8 +78,8 @@ local servers = {
   clangd={},
   starpls={},
   terraformls={
-    on_attach=function()
-      format_on_close()
+    on_attach=function(_, bufnr)
+      format_on_save(bufnr)
     end
   },
   yamlls={},

@@ -76,16 +76,17 @@ local add_to_trouble = require("trouble.sources.telescope").add
 local telescope = require("telescope")
 
 
-local git_root = function()
-  return vim.fn.systemlist("git rev-parse --show-toplevel")[1]
+local repo_root = function()
+  return vim.fs.root(0, { ".git", "flake.nix" }) or vim.loop.cwd()
 end
+
 local telescope_builtin = require("telescope.builtin")
 vim.keymap.set(
   "n",
   "<C-p>",
   function()
     telescope_builtin.find_files({
-      cwd = git_root()
+      cwd = repo_root()
     })
   end
 )
@@ -94,7 +95,7 @@ vim.keymap.set(
   "<C-e>",
   function()
     telescope_builtin.live_grep({
-      cwd = git_root()
+      cwd = repo_root()
     })
   end
 )
