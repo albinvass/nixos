@@ -195,6 +195,7 @@ in
         docker-compose
         duf
         dust
+        flameshot
         fzf
         gnumake
         gnupg
