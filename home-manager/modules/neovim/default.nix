@@ -19,6 +19,7 @@ in
     # https://github.com/nix-community/home-manager/commit/5786e425304ea2788a1cdc2533dd4c53583591bd
     xdg.configFile."nvim/init.lua".enable = false;
     programs.neovim = {
+      sideloadInitLua = true;
       enable = true;
       defaultEditor = true;
       vimAlias = true;
