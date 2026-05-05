@@ -44,6 +44,8 @@ in
           bash-language-server
           pyright
           ripgrep
+          rust-analyzer
+          rustfmt
           shellcheck
           sqls
           starpls
