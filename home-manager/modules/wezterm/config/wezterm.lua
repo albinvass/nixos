@@ -7,6 +7,7 @@ config.hide_tab_bar_if_only_one_tab = true
 config.font = wezterm.font('FiraCode Nerd Font')
 config.adjust_window_size_when_changing_font_size = false
 config.font_size = options.font_size
+config.default_prog = { options.default_prog }
 config.color_scheme = "Catppuccin Mocha"
 config.native_macos_fullscreen_mode = true
 --config.window_decorations = "NONE"
