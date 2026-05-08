@@ -29,9 +29,8 @@ in
       extraPackages =
         with pkgs;
         [
-          bacon
-          bacon-ls
           cargo
+          clippy
           delve
           git
           go-tools

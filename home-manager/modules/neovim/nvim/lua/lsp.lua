@@ -14,12 +14,6 @@ end
 -- See:
 -- https://github.com/neovim/nvim-lspconfig/blob/master/doc/configs.md
 local servers = {
-  bacon_ls={
-    init_options = {
-      updateOnSave = true,
-      updateOnSaveMillis = 1000,
-    }
-  },
   esbonio={},
   lua_ls={
     settings = {
@@ -83,12 +77,20 @@ local servers = {
     end
   },
   yamlls={},
-  rust_analyzer={
-    checkOnSave = {
-     enable = false,
-    },
-    diagnostics = {
-      enable = false,
+  rust_analyzer = {
+    settings = {
+      ["rust-analyzer"] = {
+        cargo = {
+          features = "all",
+        },
+        check = {
+          command = "clippy",
+          allTargets = true,
+        },
+        diagnostics = {
+          enable = true,
+        },
+      },
     },
   },
 }
