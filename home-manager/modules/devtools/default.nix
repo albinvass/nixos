@@ -74,6 +74,19 @@ in
       television = {
         enable = true;
         enableFishIntegration = config.albinvass.fish.enable;
+        channels = lib.mkIf config.albinvass.xonsh.enable {
+          xonsh-history = {
+            metadata = {
+              name = "xonsh-history";
+              description = "A channel to select from your xonsh history";
+              requirements = [ "jq" ];
+            };
+            source = {
+              command = ''cat "''${XONSH_DATA_DIR:-$HOME/.local/share/xonsh}"/history_json/*.json | jq -r '.data.cmds[].inp | rtrimstr("\n")' | tac'';
+              shell = "bash";
+            };
+          };
+        };
       };
       ripgrep.enable = true;
       k9s.enable = true;
