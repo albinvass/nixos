@@ -18,7 +18,6 @@
 
   home.packages = with pkgs; [
     calibre
-    discord
     arduino-ide
     libreoffice-qt
     lutris
