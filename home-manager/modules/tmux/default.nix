@@ -27,8 +27,6 @@ in
           tmux-floax
           battery
           cpu
-          resurrect
-          continuum
           pkgs.fish
         ];
       };
