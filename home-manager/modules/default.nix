@@ -15,6 +15,7 @@
     ./neovim
     ./wezterm
     ./tmux
+    ./xonsh
   ];
   options.albinvass = {
     gitDirectory = lib.options.mkOption {

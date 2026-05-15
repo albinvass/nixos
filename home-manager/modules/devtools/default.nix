@@ -21,6 +21,7 @@ in
     albinvass.kubernetes.enable = true;
     albinvass.neovim.enable = true;
     albinvass.tmux.enable = true;
+    albinvass.xonsh.enable = true;
 
     home.file = {
       tools = {
@@ -50,6 +51,19 @@ in
     };
 
     programs = {
+      starship = {
+        enable = true;
+        enableFishIntegration = config.albinvass.fish.enable;
+        settings =
+          let
+            flavour = "mocha";
+          in
+          {
+            add_newline = true;
+            palette = "catppuccin_${flavour}";
+          }
+          // fromTOML (builtins.readFile "${inputs.catppuccin-starship}/themes/${flavour}.toml");
+      };
       bacon.enable = true;
       nix-index-database.comma.enable = true;
       awscli.enable = true;
@@ -201,7 +215,6 @@ in
         watchexec
         whois
         yq
-        xonsh
         xz
         lld
       ]

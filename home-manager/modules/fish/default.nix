@@ -1,6 +1,5 @@
 {
   config,
-  inputs,
   pkgs,
   lib,
   ...
@@ -29,19 +28,6 @@ in
       );
     };
     programs = {
-      starship = {
-        enable = true;
-        enableFishIntegration = true;
-        settings =
-          let
-            flavour = "mocha";
-          in
-          {
-            add_newline = true;
-            palette = "catppuccin_${flavour}";
-          }
-          // fromTOML (builtins.readFile "${inputs.catppuccin-starship}/themes/${flavour}.toml");
-      };
       fish = {
         enable = true;
         shellAliases = {
