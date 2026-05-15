@@ -53,6 +53,16 @@ require("snacks").setup({
 })
 require("nvim-surround").setup{}
 require('csvview').setup()
+require("trouble").setup({
+  modes = {
+    symbols = {
+      win = {
+        position = "right",
+        size = 50,
+      },
+    },
+  },
+})
 
 vim.diagnostic.config({ virtual_text = true })
 -- keybinds
