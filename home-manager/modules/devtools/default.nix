@@ -201,6 +201,7 @@ in
         watchexec
         whois
         yq
+        xonsh
         xz
         lld
       ]
