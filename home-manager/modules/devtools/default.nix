@@ -191,7 +191,6 @@ in
         atool
         bazelIsBazelisk
         buildozer
-        calcure
         cloud-utils
         devenv
         dig
