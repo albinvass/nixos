@@ -64,6 +64,9 @@ in
           }
           // fromTOML (builtins.readFile "${inputs.catppuccin-starship}/themes/${flavour}.toml");
       };
+      taskwarrior = {
+        enable = true;
+      };
       bacon.enable = true;
       nix-index-database.comma.enable = true;
       awscli.enable = true;
