@@ -29,6 +29,7 @@ local filetype_config = {
   dockerfile = { indent = 4 },
   go         = { indent = 4 },
   python     = { indent = 4 },
+  xonsh      = { indent = 4 },
 }
 vim.api.nvim_create_autocmd('FileType', {
   pattern = vim.tbl_keys(filetype_config),
@@ -39,7 +40,12 @@ vim.api.nvim_create_autocmd('FileType', {
     vim.bo.shiftwidth = indent
     vim.bo.softtabstop = indent
     vim.bo.expandtab = true
-    vim.treesitter.start()
+    vim.bo.autoindent = true
+
+    local treesitter = config.treesitter or true
+    if treesitter then
+      vim.treesitter.start()
+    end
   end,
 })
 

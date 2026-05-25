@@ -1,5 +1,10 @@
 local format_augroup = vim.api.nvim_create_augroup('UserLspFormatOnSave', {})
 
+vim.filetype.add({
+  extension = { xsh = 'xonsh', xonshrc = 'xonshrc' },
+  filename = { ['.xonshrc'] = 'xonsh', ['xonshrc'] = 'xonsh'},
+})
+
 local format_on_save = function(bufnr)
   vim.api.nvim_clear_autocmds({ group = format_augroup, buffer = bufnr })
   vim.api.nvim_create_autocmd("BufWritePre", {
@@ -92,6 +97,19 @@ local servers = {
         },
       },
     },
+  },
+  xonsh_lsp = {
+    cmd = { 'xonsh-lsp' },
+    init_options = {
+      pythonBackend = 'ty',
+      inlayHints = {
+        xonshTypes = true,
+        envVarValues = true,
+        aliasResolution = true,
+      },
+    },
+    filetypes = { 'xonsh' },
+    root_markers = { '.xonshrc', 'xonshrc', '.git' },
   },
 }
 

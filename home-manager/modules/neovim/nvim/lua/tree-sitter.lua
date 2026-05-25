@@ -1,3 +1,4 @@
+
 require('nvim-treesitter-textobjects')
 require('nvim-treesitter.config').setup({
   highlight = {
@@ -36,4 +37,17 @@ require('nvim-treesitter.config').setup({
       include_surrounding_whitespace = true,
     },
   },
+})
+
+-- Register the parser so :TSInstall xonsh works
+vim.api.nvim_create_autocmd('User', {
+  pattern = 'TSUpdate',
+  callback = function()
+    require('nvim-treesitter.parsers').xonsh = {
+      install_info = {
+        url = 'https://github.com/FoamScience/tree-sitter-xonsh',
+        queries = 'queries/',
+      },
+    }
+  end,
 })

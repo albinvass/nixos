@@ -2,7 +2,6 @@
   config,
   pkgs,
   lib,
-  inputs,
   ...
 }:
 let
@@ -41,7 +40,6 @@ in
           marksman
           nixd
           bash-language-server
-          pyright
           ripgrep
           rust-analyzer
           rustfmt
@@ -50,6 +48,7 @@ in
           starpls
           terraform-ls
           tree-sitter
+          ty
           vscode-extensions.ms-vscode.cpptools
           vscode-langservers-extracted
           yaml-language-server
