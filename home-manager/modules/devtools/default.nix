@@ -61,6 +61,9 @@ in
           {
             add_newline = true;
             palette = "catppuccin_${flavour}";
+            git_status = {
+              disabled = true;
+            };
           }
           // fromTOML (builtins.readFile "${inputs.catppuccin-starship}/themes/${flavour}.toml");
       };
