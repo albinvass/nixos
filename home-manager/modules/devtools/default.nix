@@ -123,7 +123,6 @@ in
       eza = {
         enable = true;
         enableFishIntegration = config.albinvass.fish.enable;
-        git = true;
         icons = "auto";
       };
       go.enable = true;
