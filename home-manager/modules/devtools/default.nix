@@ -236,6 +236,7 @@ in
         yq
         xz
         lld
+        zola
       ]
       ++ (
         if pkgs.stdenv.isLinux then
