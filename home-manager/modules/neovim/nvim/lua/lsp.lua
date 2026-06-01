@@ -65,6 +65,10 @@ local servers = {
   marksman={},
   pyright={
     settings = {
+      pyright = {
+        -- Let Ruff handle import organization.
+        disableOrganizeImports = true,
+      },
       python = {
         analysis = {
           reportIncompatibleMethodOverride = true,
@@ -72,6 +76,7 @@ local servers = {
       },
     },
   },
+  ruff={},
   bashls={},
   --dockerls={},
   clangd={},

@@ -40,7 +40,9 @@ in
           marksman
           nixd
           bash-language-server
+          pyright
           ripgrep
+          ruff
           rust-analyzer
           rustfmt
           shellcheck
