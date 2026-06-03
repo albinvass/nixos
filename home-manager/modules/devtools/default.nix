@@ -217,6 +217,7 @@ in
         uv
         restic
         rsync
+        ruff
         rustup
         s
         sesh
