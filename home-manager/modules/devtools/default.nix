@@ -36,8 +36,8 @@ in
       };
     };
 
-    xdg.configFile."opencode/opencode.json".source = config.lib.file.mkOutOfStoreSymlink
-      "${config.albinvass.gitDirectory}/home-manager/modules/devtools/opencode/opencode.json";
+    xdg.configFile."opencode/opencode.json".source =
+      config.lib.file.mkOutOfStoreSymlink "${config.albinvass.gitDirectory}/home-manager/modules/devtools/opencode/opencode.json";
 
     xdg.configFile."opencode/opencode.json".force = true;
 
