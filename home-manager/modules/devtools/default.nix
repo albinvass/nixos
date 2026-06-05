@@ -206,6 +206,7 @@ in
         fzf
         gnumake
         gnupg
+        hyperfine
         jless
         killall
         libarchive
