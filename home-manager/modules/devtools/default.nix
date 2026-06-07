@@ -192,7 +192,6 @@ in
       in
       with pkgs;
       [
-        archivemount
         atool
         bazelIsBazelisk
         buildozer
