@@ -61,6 +61,13 @@ in
           {
             add_newline = true;
             palette = "catppuccin_${flavour}";
+            command_timeout = 100;
+            aws = {
+              disabled = true;
+            };
+            python = {
+              disabled = true;
+            };
             git_status = {
               disabled = true;
             };
