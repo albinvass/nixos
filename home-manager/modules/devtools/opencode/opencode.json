@@ -15,5 +15,6 @@
       ],
       "enabled": true
     }
-  }
+  },
+  "snapshot": false,
 }
