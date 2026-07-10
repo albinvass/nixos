@@ -236,6 +236,7 @@ in
         statix
         tldr
         tokei
+        ty
         unrar
         virtualenv
         watchexec
