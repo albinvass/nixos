@@ -41,6 +41,33 @@ in
 
     xdg.configFile."opencode/opencode.json".force = true;
 
+    # Custom "pi" agent for ralph (@th0rgal/ralph-wiggum). Uses the generic
+    # args template ([--model M] [--full-auto] [extra...] PROMPT); the adapter
+    # drops --full-auto (pi has no permission prompts) and runs in print mode.
+    xdg.configFile."open-ralph-wiggum/agents.json".text = builtins.toJSON {
+      version = "1.0";
+      agents = [
+        {
+          type = "pi";
+          configName = "Pi";
+          command = "${pkgs.writeShellScript "ralph-pi" ''
+            args=()
+            model=0
+            for arg in "$@"; do
+              [ "$arg" = "--model" ] && model=1
+              [ "$arg" = "--full-auto" ] || args+=("$arg")
+            done
+            # Default model for ralph loops unless --model was given
+            [ "$model" = 1 ] || args=(--model github-copilot/claude-opus-5.5 "''${args[@]}")
+            exec ${pkgs.pi-coding-agent}/bin/pi -p "''${args[@]}"
+          ''}";
+          argsTemplate = "default";
+          envTemplate = "default";
+          parsePattern = "default";
+        }
+      ];
+    };
+
     home.shellAliases = {
       "nh-switch" =
         if pkgs.stdenv.hostPlatform.isLinux then
@@ -196,6 +223,22 @@ in
               #!${pkgs.bash}/bin/bash
               sudo --preserve-env --preserve-env=PATH env $@
             '';
+        ralph =
+          let
+            src = fetchzip {
+              url = "https://registry.npmjs.org/@th0rgal/ralph-wiggum/-/ralph-wiggum-1.2.2.tgz";
+              hash = "sha256-Ac7SwbwNeVitKLmJunIos8iTCRM/kkuAHO6hxcgQTVo=";
+            };
+          in
+          # Default to pi unless an agent/rotation is given explicitly.
+          writeShellScriptBin "ralph" ''
+            for arg in "$@"; do
+              case "$arg" in
+                --agent | --rotation | --) exec ${pkgs.bun}/bin/bun ${src}/ralph.ts "$@" ;;
+              esac
+            done
+            exec ${pkgs.bun}/bin/bun ${src}/ralph.ts --agent pi "$@"
+          '';
       in
       with pkgs;
       [
@@ -221,6 +264,8 @@ in
         nodejs
         openssh
         openssl
+        pi-coding-agent
+        ralph
         uv
         restic
         rsync
