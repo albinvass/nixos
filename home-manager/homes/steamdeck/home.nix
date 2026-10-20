@@ -9,7 +9,7 @@
     homeDirectory = "/home/avass";
     stateVersion = "24.11";
     packages = with pkgs; [
-      nixgl.nixGLIntel
+      inputs.nixgl.packages.${pkgs.stdenv.hostPlatform.system}.nixGLIntel
       vivaldi
     ];
   };

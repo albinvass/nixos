@@ -10,7 +10,7 @@
     sessionPath = [ "$HOME/.local/bin" ];
     stateVersion = "23.11";
     packages = with pkgs; [
-      nixgl.nixGLIntel
+      inputs.nixgl.packages.${pkgs.stdenv.hostPlatform.system}.nixGLIntel
       xclip
       vivaldi
       git-lfs

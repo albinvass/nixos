@@ -114,7 +114,6 @@
                 config.allowUnfree = true;
                 overlays = [
                   inputs.bacon-ls.overlay.${system}
-                  inputs.nixgl.overlay
                   inputs.nixneovimplugins.overlays.default
                   inputs.git-toprepo.overlays.default
                 ];

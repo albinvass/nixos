@@ -18,7 +18,7 @@ let
         pbr
         requests
       ];
-      PBR_VERSION = "1.0.0";
+      env.PBR_VERSION = "1.0.0";
     };
   gerrit-cli =
     with pkgs;
@@ -50,7 +50,7 @@ in
         gerrit-cli
         git-absorb
       ]
-      ++ (if pkgs.stdenv.isLinux then [ git-toprepo-stamped ] else [ ]);
+      ++ (if pkgs.stdenv.hostPlatform.isLinux then [ git-toprepo-stamped ] else [ ]);
     programs = {
       difftastic.enable = true;
       gh.enable = true;

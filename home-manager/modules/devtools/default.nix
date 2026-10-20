@@ -43,7 +43,7 @@ in
 
     home.shellAliases = {
       "nh-switch" =
-        if pkgs.stdenv.isLinux then
+        if pkgs.stdenv.hostPlatform.isLinux then
           (if config.submoduleSupport.enable then "nh os switch" else "nh home switch")
         else
           "nh darwin switch";
@@ -137,9 +137,9 @@ in
       ssh = {
         enable = true;
         enableDefaultConfig = false;
-        matchBlocks = {
+        settings = {
           "*" = {
-            identityFile = [
+            IdentityFile = [
               "~/.ssh/id_rsa"
               "~/.ssh/id_ed25519"
               "~/.ssh/id_ed25519_sk_red"
@@ -228,7 +228,6 @@ in
         rustup
         s
         sesh
-        television
         shellcheck
         sops
         ssh-to-age
@@ -247,7 +246,7 @@ in
         zola
       ]
       ++ (
-        if pkgs.stdenv.isLinux then
+        if pkgs.stdenv.hostPlatform.isLinux then
           [
             acpi
             parted

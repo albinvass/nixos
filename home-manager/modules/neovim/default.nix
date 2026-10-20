@@ -55,7 +55,7 @@ in
           vscode-langservers-extracted
           yaml-language-server
         ]
-        ++ (if pkgs.stdenv.isLinux then [ rr ] else [ ]);
+        ++ (if pkgs.stdenv.hostPlatform.isLinux then [ rr ] else [ ]);
 
       extraPython3Packages =
         ps: with ps; [
