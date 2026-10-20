@@ -58,10 +58,6 @@
       url = "github:nix-community/nix-index-database";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    nh = {
-      url = "github:viperML/nh";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
     pygerrit2 = {
       url = "github:dpursehouse/pygerrit2";
       flake = false;
